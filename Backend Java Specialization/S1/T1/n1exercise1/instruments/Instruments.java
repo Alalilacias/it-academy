@@ -34,9 +34,7 @@ public abstract class Instruments {
 
 //    Methods
     public abstract void play();
-
     public String toString(){
-        String s = "This instrument's name is " + this.name + ", it's price is " + this.price + "€";
-        return s;
+        return "This instrument's name is " + this.name + ", it's price is " + this.price + "€.";
     }
 }
