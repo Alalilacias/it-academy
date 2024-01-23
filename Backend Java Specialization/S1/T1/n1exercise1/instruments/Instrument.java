@@ -1,17 +1,17 @@
 package S1.T1.n1exercise1.instruments;
 
-public abstract class Instruments {
+public abstract class Instrument {
 
 //    Class variables
     private String name;
     private int price;
 
 //    Constructors
-    public Instruments () {
+    public Instrument() {
         this.name = "";
         this.price = 0;
     }
-    public Instruments (String name, int price){
+    public Instrument(String name, int price){
         this.name = name;
         this.price = price;
     }
@@ -32,7 +32,7 @@ public abstract class Instruments {
         this.price = price;
     }
 
-//    Methods
+//    User-defined Methods
     public abstract void play();
     public String toString(){
         return "This instrument's name is " + this.name + ", it's price is " + this.price + "€.";
