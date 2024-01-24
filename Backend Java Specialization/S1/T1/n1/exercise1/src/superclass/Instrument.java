@@ -1,4 +1,4 @@
-package S1.T1.n1exercise1.instruments;
+package S1.T1.n1.exercise1.src.superclass;
 
 public abstract class Instrument {
 

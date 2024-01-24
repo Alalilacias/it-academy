@@ -1,11 +1,11 @@
-package S1.T1.n1exercise1;
+package S1.T1.n1.exercise1.src;
 
-import S1.T1.n1exercise1.instruments.Instrument;
-import S1.T1.n1exercise1.instruments.PercussionInstrument;
-import S1.T1.n1exercise1.instruments.StringInstrument;
-import S1.T1.n1exercise1.instruments.WindInstrument;
+import S1.T1.n1.exercise1.src.superclass.Instrument;
+import S1.T1.n1.exercise1.src.subclasses.PercussionInstrument;
+import S1.T1.n1.exercise1.src.subclasses.StringInstrument;
+import S1.T1.n1.exercise1.src.subclasses.WindInstrument;
 
-public class InstrumentStore {
+public class Main {
     public static void main(String[] args) {
 
 //        Printing of the static variable created for the Instrument class, allowing the initial loading of the class by the

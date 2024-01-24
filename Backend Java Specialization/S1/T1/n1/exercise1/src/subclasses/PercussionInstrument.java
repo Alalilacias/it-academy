@@ -1,4 +1,6 @@
-package S1.T1.n1exercise1.instruments;
+package S1.T1.n1.exercise1.src.subclasses;
+
+import S1.T1.n1.exercise1.src.superclass.Instrument;
 
 public class PercussionInstrument extends Instrument {
 

@@ -1,28 +1,36 @@
-package S1.T1.n1exercise2.cars;
+package S1.T1.n1.exercise2.src;
 
-import java.lang.reflect.Constructor;
-
-public abstract class Car {
+public class Car {
 
 //    Class variables
     private static final String MARCA = "Volkswagen";
     private static String model;
+
+    static {
+        model = "Atlas, MSRP";
+    }
+
     private int potencia;
 
 //    Constructor
-    public Car(String modelName, int potencia) {
-        model = modelName;
+    public Car(int potencia) {
         this.potencia = potencia;
     }
 
-//    Getters
+    //    Getters
     public int getPotencia() {
         return potencia;
+    }
+    public static String getModel() {
+        return model;
     }
 
 //    Setters
     public void setPotencia(int potencia) {
         this.potencia = potencia;
+    }
+    public static void setModel(String model) {
+        Car.model = model;
     }
 
 //    User-defined methods
