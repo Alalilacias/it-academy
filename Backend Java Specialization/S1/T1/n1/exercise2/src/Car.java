@@ -13,27 +13,16 @@ public class Car {
         model = "Atlas, MSRP";
     }
 
-    private int potencia;
+    private final int HORSEPOWER = 250;
 
-//    Constructor
-    public Car(int potencia) {
-        this.potencia = potencia;
+//    Constructors
+    public Car(String model){
+        Car.model = model;
     }
 
     //    Getters
-    public int getPotencia() {
-        return potencia;
-    }
     public static String getModel() {
         return model;
-    }
-
-//    Setters
-    public void setPotencia(int potencia) {
-        this.potencia = potencia;
-    }
-    public static void setModel(String model) {
-        Car.model = model;
     }
 
 //    User-defined methods
@@ -42,5 +31,9 @@ public class Car {
     }
     public void accelerate() {
         System.out.println("The vehicle is accelerating");
+    }
+    public String toString(){
+        return "This vehicle's brand is " + BRAND + ", it's model is " + model + ", and it has a horsepower of " +
+                HORSEPOWER + ".";
     }
 }
