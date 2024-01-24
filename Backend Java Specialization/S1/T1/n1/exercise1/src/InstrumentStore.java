@@ -5,7 +5,7 @@ import S1.T1.n1.exercise1.src.subclasses.PercussionInstrument;
 import S1.T1.n1.exercise1.src.subclasses.StringInstrument;
 import S1.T1.n1.exercise1.src.subclasses.WindInstrument;
 
-public class Main {
+public class InstrumentStore {
     public static void main(String[] args) {
 
 //        Printing of the static variable created for the Instrument class, allowing the initial loading of the class by the

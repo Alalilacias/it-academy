@@ -3,9 +3,12 @@ package S1.T1.n1.exercise2.src;
 public class Car {
 
 //    Class variables
-    private static final String MARCA = "Volkswagen";
+    private static final String BRAND = "Volkswagen";
     private static String model;
 
+    /* Class variable is assigned a value in a static block to make sure it isn't empty in case user tries to invoke
+    * getModel() method.
+    */
     static {
         model = "Atlas, MSRP";
     }
