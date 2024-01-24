@@ -9,4 +9,6 @@ The specialization is the final part of this process, where one gets put through
 
 In this folder, you'll find the exercises that the students are made to solve and brief explanations of them. While the level of the initial exercises might seem more that of a beginner, it's meant to be a progression, so looking at all of them gives you an idea of the growth of the student and the latest exercises give you a view of their current skills.
 
+The folders are divided by Springs (Sx, with S being its abbreviation and X the number), Tasks (Tx), Levels (nx), and exercises. The Springs are the different subjects of the course, the tasks are the different sub-subjects they're divided into, the levels are difficulty levels that the student can solve depending on their ability and the time they can spend on the course, exercises are self-explanatory.
+
 As per usual, feel free to contact the owner of this repository for any inquiries you might have.
