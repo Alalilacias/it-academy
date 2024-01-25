@@ -10,7 +10,7 @@ public class Sale {
 //    Constructors
     public Sale(List<Product> products){
         this.products = products;
-
+        this.totalSalePrice = 0;
     }
 //    Getters
     public List<Product> getProducts() {
@@ -26,10 +26,22 @@ public class Sale {
     public void setTotalSalePrice(int totalSalePrice) {
         this.totalSalePrice = totalSalePrice;
     }
+//    Nested inner class
+    private class EmptySaleException extends Exception {
+        public EmptySaleException() {
+            super("To make a sale you must first add products");
+        }
+    }
 //    User-defined methods
-    public void calculateTotal() {
-        if (this.products.isEmpty()){
-            this.products.stream().mapToDouble(Product::getPrice).sum();
+    public void calculateTotal() throws EmptySaleException, ArrayIndexOutOfBoundsException {
+        try {
+            for (Product product : this.products){
+                this.totalSalePrice += product.getPrice();
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            if (this.products.isEmpty()){
+                throw EmptySaleException;
+            }
         }
     }
 }
