@@ -1,4 +1,4 @@
-package S1.T2.n1.src;
+package S1.T2.n1.exercise1.src.classes;
 
 public class Product {
 //    Instance variables. Int is chosen for price for efficiency and to simplify the exercise.
