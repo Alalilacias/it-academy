@@ -11,14 +11,14 @@ Croatia Zagreb
 Cyprus Nicosia
 Czechia Prague
 Denmark Copenhagen
-Estonia Tallin
+Estonia Tallinn
 Finland Helsinki
 France Paris
 Georgia Atlanta
 Germany Berlin
 Greece Athens
 Hungary Budapest
-Iceland Reikiavik
+Iceland Reykjavik
 Ireland Dublin
 Italy Rome
 Kazakhstan Nur-Sultan
@@ -32,7 +32,7 @@ Moldova Chisinau
 Monaco Monte_Carlo
 Montenegro Podgorica
 Netherlands Amsterdam
-North_Macedonia Skpje
+North_Macedonia Skopje
 Norway Oslo
 Poland Warsaw
 Portugal Lisbon
@@ -49,4 +49,3 @@ Turkey Ankara
 Ukraine Kyiv
 United_Kingdom London
 Vatican_City Vatican_City
-
