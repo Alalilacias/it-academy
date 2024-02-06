@@ -3,11 +3,8 @@ package S1.T3.n1.exercise3.src;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class Main {
@@ -49,27 +46,24 @@ public class Main {
     }
 
     private static HashMap<String, String> fileReader() throws RuntimeException {
+
         HashMap<String, String> tempStringHashMap = new HashMap<>();
-        HashMap<String, String> stringHashMap = new HashMap<>();
+
         try (Stream<String> countryLines = Files.lines(Paths.get("C:/Users/alleg/IdeaProjects/it-academy/Backend Java Specialization/S1/T3/n1/exercise3/src/files/countries.txt"))) {
             countryLines.forEach(line -> {
-                String [] lineArray = line.split(" ", 2);
-                tempStringHashMap.put(lineArray[0].replace("_", " "), lineArray[1].replace("_", " "));
+                String[] lineArray = line.split(" ", 2);
+                lineArray[0] = lineArray[0].replace("_", " ");
+                lineArray[1] = lineArray[1].replace("_", " ");
+                tempStringHashMap.put(lineArray[0], lineArray[1]);
             });
         } catch (IOException e) {
             throw new RuntimeException();
         }
 
-        List<String> keyStrings = new ArrayList<>(tempStringHashMap.keySet());
-
-        for(int i = ThreadLocalRandom.current().nextInt(0, 51); tempStringHashMap.size() < 10; i = ThreadLocalRandom.current().nextInt(0, 51)) {
-            stringHashMap.put(keyStrings.get(i), tempStringHashMap.get(keyStrings.get(i)));
-        }
-
-        return stringHashMap;
+        return tempStringHashMap;
     }
     private static void inputScore(String name, int score) throws FileNotFoundException {
-        try (PrintWriter out = new PrintWriter("filename.txt")) {
+        try (PrintWriter out = new PrintWriter("Backend Java Specialization/S1/T3/n1/exercise3/src/files/score.txt")) {
             out.println(name + "'s score: " + score);
         }
     }
