@@ -7,7 +7,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class Calendar {
+public class CalendarIT {
 //    List filled with months of the calendar, the contents and order of which we'll test
     List<String> calendar = List.of("January", "February", "March", "April", "May", "June", "July", "August", "September",
             "October", "November", "December");
