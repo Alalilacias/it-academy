@@ -13,19 +13,19 @@ public class InstrumentStore {
         System.out.println(Instrument.getMusicalScale());
 
 //        Creation of the first instance of the class, it'll print the static block of the class while doing so.
-        WindInstrument Flute = new WindInstrument("Flute", 35);
+        WindInstrument flute = new WindInstrument("Flute", 35);
 //        Creation of reminding classes, with no static or non-static blocks.
-        StringInstrument Viola = new StringInstrument("Viola", 5000);
-        PercussionInstrument Gong = new PercussionInstrument("Gong", 500);
+        StringInstrument viola = new StringInstrument("Viola", 5000);
+        PercussionInstrument gong = new PercussionInstrument("Gong", 500);
 
-//        Showcase of the methods of the classes.
-        Flute.play();
-        System.out.println(Flute);
+//        Showcase of the instance methods.
+        flute.play();
+        System.out.println(flute);
 
-        Viola.play();
-        System.out.println(Viola);
+        viola.play();
+        System.out.println(viola);
 
-        Gong.play();
-        System.out.println(Gong);
+        gong.play();
+        System.out.println(gong);
     }
 }
