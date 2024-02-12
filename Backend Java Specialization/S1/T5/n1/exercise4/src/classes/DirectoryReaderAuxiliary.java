@@ -1,15 +1,14 @@
-package S1.T5.n1.exercise3.src.classes;
+package S1.T5.n1.exercise4.src.classes;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public final class DirectoryReaderAuxiliary2 {
+public final class DirectoryReaderAuxiliary {
 //    String variable to hold the text to print on console
     static String consoleText = "The directory contains the following files, sorted in alphabetical order:\n";
+    static String fileText = "The file you've requested a reading of, says:\n";
 //    SimpleDateFormat for date form control. Took out seconds because I prefer it that way.
     static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm.");
     public static void DirectoryReader(String directoryPath, String savePath) {
@@ -73,5 +72,26 @@ public final class DirectoryReaderAuxiliary2 {
         } catch (IOException e) {
             System.out.println("The named file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.");
         }
+    }
+    public static void readTextFile(String path) {
+        File file = new File(path);
+
+//        Check validity of the text file
+        if ((!file.isFile()) || (!file.getName().toLowerCase().endsWith(".txt"))) {
+            System.out.println("The path provided does not contain a valid TXT file.");
+            return;
+        }
+
+//        File reading and saving in the variable
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            while (reader.readLine() != null) {
+                fileText = fileText.concat(reader.readLine());
+            }
+        } catch (IOException e) {
+            System.out.println("The path given does not contain a readable file.");
+        }
+
+//        Printing of the result by console
+        System.out.println(fileText);
     }
 }

@@ -2,11 +2,11 @@ package S1.T5.n1.exercise2.src;
 
 import S1.T5.n1.exercise2.src.classes.DirectoryReaderAuxiliary;
 
-public class MainS1n1e2 {
+public class MainS1T4n1e2 {
     public static void main(String[] args) {
 //        Check there's one argument, the path. Remind user of instructions if not.
         if (args.length != 1) {
-            System.out.println("To use this file, the correct command is as follows: java MainS1n1e2.java <directory_path>");
+            System.out.println("To use this file, the correct command is as follows: java MainS1T4n1e2.java <directory_path>");
             System.exit(1);
         }
 
