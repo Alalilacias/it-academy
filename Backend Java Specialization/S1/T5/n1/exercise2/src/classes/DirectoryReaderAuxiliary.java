@@ -27,7 +27,7 @@ public final class DirectoryReaderAuxiliary {
 
     public static void recursiveContentsReader(File directory, int depth) {
         try {
-//        Date format to format the last modified date and depth for visual clarity.
+//        Date format to format the last modified date and depth for visual clarity. Took out seconds because I prefer it that way.
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String tabulations = ("\t").repeat(depth);
 //        File extraction into a file Array
@@ -46,11 +46,11 @@ public final class DirectoryReaderAuxiliary {
             for (File file : files) {
                 if (file.isDirectory()) {
                     consoleText = consoleText.concat(tabulations + "- " + file.getName() + "(D)." +
-                            "Last modified: " + new Date(file.lastModified()) + "\n");
+                            "Last modified: " + dateFormat.format(new Date(file.lastModified())) + "\n");
                     recursiveContentsReader(new File(file.getAbsolutePath()), (depth + 1));
                 } else {
                     consoleText = consoleText.concat(tabulations + "- " + file.getName() + "(F)." +
-                            "Last modified: " + new Date(file.lastModified()) + "\n");
+                            "Last modified: " + dateFormat.format(new Date(file.lastModified())) + "\n");
                 }
             }
         } catch (NullPointerException e) {
