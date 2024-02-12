@@ -1,11 +1,10 @@
 package S1.T3.n1.exercise3.src.classes;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class CountriesGame {
@@ -14,7 +13,11 @@ public class CountriesGame {
     static String name;
     static int points;
 
-    public static void start (){
+    public CountriesGame () {
+        start();
+    }
+
+    public static void start () {
         consoleInteractions();
         pointsSave();
     }
@@ -52,7 +55,6 @@ public class CountriesGame {
 
         System.out.println("Prepare for questioning, " + name + ". Press enter when ready.");
         s.nextLine();
-        s.nextLine();
 
         for (String key : INSTANCE_KEYS){
             System.out.println("Introduce the capital of " + key + ":");
@@ -66,18 +68,52 @@ public class CountriesGame {
         }
     }
     private static void pointsSave() {
-        String textToSave;
+        SortedMap<String, Integer> scoreMap = new TreeMap<>();
+        String[] tempArray;
 
-        try (Stream<String> scoreLines = Files.lines(Paths.get("C:\\Users\\alleg\\IdeaProjects\\it-academy\\Backend Java Specialization\\S1\\T3\\n1\\exercise3\\src\\files\\score.txt"))) {
-            if (scoreLines.findAny().isEmpty()) {
-                scoreLines.forEach(line -> {
 
-                });
-            } else {
+        Path pointsPath = Path.of("C:\\Users\\alleg\\IdeaProjects\\it-academy\\Backend Java Specialization\\S1\\T3\\n1\\exercise3\\src\\files\\score.txt");
 
+        String consoleText = "";
+        String line;
+
+        try (BufferedReader scoreReader = new BufferedReader(new FileReader(pointsPath.toFile()))){
+            while ((line = scoreReader.readLine()) != null) {
+                tempArray = line.replace("'s score:", "").split(" ");
+                scoreMap.put(tempArray[0], Integer.valueOf(tempArray[1]));
             }
+        } catch (IOException e) {
+            throw new RuntimeException("File not found, it doesn't exist or the route is incorrect.");
+        }
+
+        if (!scoreMap.containsKey(name)) {
+            consoleText = "You have set your first record at " + points + " points";
+            scoreMap.put(name, points);
+        } else {
+            if(scoreMap.get(name) > points){
+                consoleText = "You have gotten a score below our high score, good luck next time.";
+            } else if(scoreMap.get(name) == points){
+                consoleText = "You have matched your high score, well done.";
+            } else if(scoreMap.get(name) < points) {
+                consoleText = "Congrats, you've surpassed your high score!";
+                scoreMap.put(name, points);
+            }
+        }
+
+        try{
+            Files.delete(pointsPath);
         } catch (IOException e) {
             throw new RuntimeException();
         }
+
+        try (PrintWriter out = new PrintWriter("Backend Java Specialization/S1/T3/n1/exercise3/src/files/score.txt")) {
+            for (String key : scoreMap.keySet()) {
+                out.println(key + "'s score: " + scoreMap.get(key));
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
+        }
+
+        System.out.println(consoleText);
     }
 }
