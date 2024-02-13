@@ -1,0 +1,48 @@
+Reading of file found at C:\Users\alleg\IdeaProjects\it-academy\Backend Java Specialization\S1\T5\n1\exercise3\src\files.
+Date of the reading: 12-02-2024, 21:37..
+The directory contains the following files, sorted in alphabetical order:
+- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+- filesa(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- filesh(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- gfsliug(F).Last modified: 12-02-2024, 16:36.
+- gilesh(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- saveFile.txt(F).Last modified: 12-02-2024, 21:36.
+
+Reading of file found at C:\Users\alleg\IdeaProjects\it-academy\Backend Java Specialization\S1\T5\n1\exercise3\src\files.
+Date of the reading: 12-02-2024, 21:41.
+The directory contains the following files, sorted in alphabetical order:
+- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+- filesa(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- filesh(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- gfsliug(F).Last modified: 12-02-2024, 16:36.
+- gilesh(D).Last modified: 12-02-2024, 20:30.
+	- aanefbshsj(F).Last modified: 12-02-2024, 16:36.
+	- gfsliug(F).Last modified: 12-02-2024, 16:36.
+	- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+	- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- kvhvcxo(F).Last modified: 12-02-2024, 16:36.
+- nmbwberw(F).Last modified: 12-02-2024, 16:36.
+- saveFile.txt(F).Last modified: 12-02-2024, 21:37.
+
