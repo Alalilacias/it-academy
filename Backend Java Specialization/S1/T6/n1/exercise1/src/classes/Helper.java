@@ -1,6 +1,6 @@
 package S1.T6.n1.exercise1.src.classes;
 
-public class Helper {
+public abstract class Helper {
     public static void testExercise(){
 //        Instantiation of the generic class with the same objects in a different order to check that arguments
 //        can be placed anywhere in the constructor call.
