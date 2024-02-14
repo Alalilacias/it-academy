@@ -7,14 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArrayClassTest {
     @Test
     void getArray() {
-        boolean thrown = false;
-
-        try {
-            ArrayClass.getArray(5);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            thrown = true;
-        }
-
-        assertTrue(thrown);
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> ArrayClass.getArray(5));
     }
 }

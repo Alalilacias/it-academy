@@ -1,5 +1,9 @@
 package S1.T4.n1.exercise2.src;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class dniCalculator {
     static char[] dniLetters = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X',
             'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'};
@@ -7,11 +11,21 @@ public class dniCalculator {
         return dniLetters[(dniNumber%23)];
     }
 
-    public static void main(String[] args) {
-        int[] dniNumbers = {15302904, 93261207, 36778938, 77032857, 68078164, 51061574, 50206996, 59480900, 27450753, 43990241, 14998752};
+//    Random method I made to obtain ten numbers that would produce the same number so JUnit could take them in. Not worth the time it takes.
+    @Deprecated
+    public static List<Long> tenDNIsWithChosenLetter(char letter){
+        List<Long> dniList = new ArrayList<>();
 
-        for (int dni : dniNumbers) {
-            System.out.println(letterCalculator(dni));
+        int necessaryRemainder = Arrays.binarySearch(dniLetters, letter);
+        long randomNumber;
+
+        while (dniList.size() < 11) {
+            randomNumber = (int) (10000000 + Math.random() * (100000000 - 10000000));
+            if ((randomNumber / 23) == necessaryRemainder){
+                dniList.add(randomNumber);
+            }
         }
+
+        return dniList;
     }
 }
