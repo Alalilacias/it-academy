@@ -17,6 +17,7 @@ public class LambdaPrinter {
             "October",
             "November",
             "December");
+    @SuppressWarnings("Convert2MethodRef")
     protected static void calendarPrinter(){
         calendar.forEach(calendar -> System.out.println(calendar));
     }
