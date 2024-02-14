@@ -1,4 +1,4 @@
-package Kata.Kata25_01_2024;
+package Katas.Kata01_25_2024;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +17,6 @@ public class Main {
         analizador.unicoBucle("Cuando los jugadores se hayan ido, cuando el tiempo los haya consumido, ciertamente no habrá cesado el rito. En el Oriente se encendió esta guerra cuyo anfiteatro es hoy toda la Tierra. Como el otro, este juego es infinito.");
 
 //        Imprimimos resultado en pantalla
-        System.out.println(analizador.toString());
+        System.out.println(analizador);
     }
 }

@@ -1,4 +1,4 @@
-package Kata.Kata25_01_2024;
+package Katas.Kata01_25_2024;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
