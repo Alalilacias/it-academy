@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class StringListReader {
     protected static List<String> randomNames = Arrays.asList(
+            "The names that contain the letter 'o' are:",
             "Oliver Reynolds",
             "Maya Turner",
             "Sebastian Walsh",
