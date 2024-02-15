@@ -22,18 +22,13 @@ public class Helper {
     );
 
     protected static void testExercise(){
-//        randomList.stream()
-//                .map(Object::toString)
-//                .sorted(Comparator.comparingInt(s -> s.charAt(0)))
-//                .sorted(Comparator.comparing(s -> s.contains("e") ? 0 : 1))
-//                .map(s -> s.replace('a', '4'))
-//                .filter(s -> s.matches(".*\\d.*")).forEach(System.out::println);
-
         sortAlphabetically(randomList).forEach(System.out::println);
         System.out.println("\n");
         sortByContainingE(randomList).forEach(System.out::println);
         System.out.println("\n");
         changeAsFor4s(randomList).forEach(System.out::println);
+        System.out.println("\n");
+        filterAndPrintNumerics(randomList).forEach(System.out::println);
     }
 
     private static List<Object> sortAlphabetically(List<Object> list){
@@ -54,5 +49,10 @@ public class Helper {
                 .map(s -> s.replace("a", "4"))
                 .collect(Collectors.toList());
 
+    }
+    private static List<Object> filterAndPrintNumerics(List<Object> list){
+        return list.stream()
+                .filter(item -> item instanceof Number || item.toString().matches("-?\\d+(\\.\\d+)?"))
+                .collect(Collectors.toList());
     }
 }
