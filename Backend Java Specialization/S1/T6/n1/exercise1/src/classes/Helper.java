@@ -10,8 +10,5 @@ public abstract class Helper {
 //        Retrieval of the objects and printing through console
         System.out.println(textInstance);
         System.out.println(textInstanceII);
-
-//        While not requested by the exercise, test that shows that a different type of object cannot be input. Uncomment to test.
-//        textInstanceII.setObjectIII(85);
     }
 }

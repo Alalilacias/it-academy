@@ -3,6 +3,7 @@ package S1.T2.n2.exercise1.src.classes;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@SuppressWarnings({"DataFlowIssue", "unused"})
 public class Input {
     static Scanner s = new Scanner(System.in);
     static boolean exceptionCaught;
@@ -108,7 +109,7 @@ public class Input {
         return answer;
     }
     public static boolean readIfNo (String message){
-        String tempAnswer = "";
+        String tempAnswer;
         boolean answer = false;
 
         do {

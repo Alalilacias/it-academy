@@ -1,18 +1,13 @@
 package S1.T6.n1.exercise2.src.classes;
+import java.util.stream.Stream;
 
 public class GenericMethods {
-    public static void genericMethod(Object ... objects) {
-        if(objects.length != 3){
-            System.out.println("Three objects are required for this method.");
-            return;
-        }
-
-        String consoleText = "The printed equivalent of the received objects is:";
-
-        for (Object object : objects) {
-            consoleText = consoleText.concat("\n- " + object);
-        }
-
-        System.out.println(consoleText);
+    public static <T,U,V> void genericMethod(T t, U u, V v) {
+        Stream.of(
+                t,
+                u,
+                v
+        ).map(Object::toString)
+                .forEach(System.out::println);
     }
 }
