@@ -52,7 +52,7 @@ public class Helper {
     }
     private static List<Object> filterAndPrintNumerics(List<Object> list){
         return list.stream()
-                .filter(item -> item instanceof Number || item.toString().matches("-?\\d+(\\.\\d+)?"))
+                .filter(item -> item instanceof Number || item.toString().matches("^-?\\d+(\\.\\d+)?$\n"))
                 .collect(Collectors.toList());
     }
 }
