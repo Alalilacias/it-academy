@@ -3,6 +3,7 @@ package S1.T8.n2.exercise4.src.classes;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Helper {
 
@@ -17,15 +18,41 @@ public class Helper {
             6168741354638541351L,
             231531531.21354638613f,
             "I would input a discord :sweat_smile: emoji here if I knew how to",
-            "RANDOMNUMBERTOBECAUGHTBYTHEISNUMERICMETHOD5"
+            "03151631513681"
     );
 
     protected static void testExercise(){
-        randomList.stream()
+//        randomList.stream()
+//                .map(Object::toString)
+//                .sorted(Comparator.comparingInt(s -> s.charAt(0)))
+//                .sorted(Comparator.comparing(s -> s.contains("e") ? 0 : 1))
+//                .map(s -> s.replace('a', '4'))
+//                .filter(s -> s.matches(".*\\d.*")).forEach(System.out::println);
+
+        sortAlphabetically(randomList).forEach(System.out::println);
+        System.out.println("\n");
+        sortByContainingE(randomList).forEach(System.out::println);
+        System.out.println("\n");
+        changeAsFor4s(randomList).forEach(System.out::println);
+    }
+
+    private static List<Object> sortAlphabetically(List<Object> list){
+        return list.stream()
                 .map(Object::toString)
                 .sorted(Comparator.comparingInt(s -> s.charAt(0)))
-                .sorted(Comparator.comparing(s -> s.contains("e") ? 0 : 1))
-                .map(s -> s.replace('a', '4'))
-                .filter(s -> s.matches(".*\\d.*")).forEach(System.out::println);
+                .collect(Collectors.toList());
+    }
+    private static List<Object> sortByContainingE(List<Object> list){
+        return list.stream()
+                .map(Object::toString)
+                .sorted(Comparator.comparing(s -> s.toLowerCase().contains("e") ? 0 : 1))
+                .collect(Collectors.toList());
+    }
+    private static List<Object> changeAsFor4s(List<Object> list){
+        return list.stream()
+                .map(Object::toString)
+                .map(s -> s.replace("a", "4"))
+                .collect(Collectors.toList());
+
     }
 }
