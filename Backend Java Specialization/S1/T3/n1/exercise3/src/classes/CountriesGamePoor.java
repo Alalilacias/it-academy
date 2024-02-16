@@ -7,13 +7,16 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class CountriesGame {
+//While I've modified the class to adapt it to some feedback I've gotte, I'll keep it in the code until I'm sure I won't
+//need to check it, since the other one might have some issues that I could solve by checking this one
+@SuppressWarnings("unused")
+public class CountriesGamePoor {
     private static final HashMap<String, String> INSTANCE_MAP = fileReader();
     private static final List<String> INSTANCE_KEYS = INSTANCE_MAP.keySet().stream().toList();
     static String name;
     static int points;
 
-    public CountriesGame () {
+    public CountriesGamePoor() {
         start();
     }
 
@@ -91,7 +94,7 @@ public class CountriesGame {
             scoreMap.put(name, points);
         } else {
             if(scoreMap.get(name) > points){
-                consoleText = "You have gotten a score below our high score, good luck next time.";
+                consoleText = "You have gotten a score below your high score, good luck next time.";
             } else if(scoreMap.get(name) == points){
                 consoleText = "You have matched your high score, well done.";
             } else if(scoreMap.get(name) < points) {

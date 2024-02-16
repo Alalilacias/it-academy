@@ -11,12 +11,7 @@ import java.util.stream.Stream;
 
 public class Calendar {
     public static void main(String[] args) {
-//        Instance variable used to store the month names to print.
-        StringBuilder text = new StringBuilder();
-//        List instantiation using ArrayList as a base.
-        List<Month> calendar;
-//        Addition of only eleven out of twelve months, leaving out August, to the List.
-        calendar = Stream.of(
+        List<Month> calendar = Stream.of(
                 new Month("January"),
                 new Month("February"),
                 new Month("March"),
@@ -29,29 +24,23 @@ public class Calendar {
                 new Month("November"),
                 new Month("December")
         ).collect(Collectors.toList());
-//        Addition of the August Month in its place according to our calendar.
+
         calendar.add(7, new Month("August"));
-//        Confirmation of the correct insertion of August Month into the ArrayList at the requested place.
-        for (Month month : calendar) {
-            text.append(month.getName()).append("\n");
-        }
-        System.out.println(text);
-//        Instantiation of hashset using ArrayList as a base
+
+        calendar.forEach(System.out::println);
+
         Set<Month> calendarSet = new HashSet<>(calendar);
 //        Confirmation that the hashset doesn't allow for duplicates
         calendarSet.add(new Month("August"));
         calendarSet.add(new Month("May"));
-        text = new StringBuilder();
-        for (Month month : calendarSet){
-            text.append(month.getName()).append("\n");
-        }
-        System.out.println(text);
+
 //        Going through the list with a for loop
         for (Month month : calendar) {
             month.setName(month.getName().toLowerCase());
         }
 //        going through the list with an iterator
         Iterator<Month> iterator = calendar.iterator();
+        //noinspection WhileLoopReplaceableByForEach
         while (iterator.hasNext()) {
             System.out.println(iterator.next().getName());
         }

@@ -2,8 +2,10 @@ package S1.T3.n2.exercise1.src.classes;
 
 import java.util.Objects;
 
+
 public class Restaurant {
     private String name;
+    @SuppressWarnings("FieldMayBeFinal")
     private int score;
 
     public Restaurant (String name, int score) {

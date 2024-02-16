@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Restaurant2 implements Comparable<Restaurant2> {
     private String name;
+    @SuppressWarnings("FieldMayBeFinal")
     private int score;
 
     public Restaurant2(String name, int score) {
