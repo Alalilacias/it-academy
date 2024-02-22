@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
-@JsonSerializer(directory = "C:\\Users\\alleg\\IdeaProjects\\it-academy\\Backend Java Specialization\\S1\\T7\\n2\\exercise1\\src\\files")
+@JsonSerializer(directory = "src/files")
 public class Student {
     protected final String name;
     protected final int currentSprint;

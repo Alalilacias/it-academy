@@ -6,7 +6,7 @@ We keep a unique identifier for each user, as well as:
 - Password.
 - Username.
 - Date of birth.
-- Sex
+- Gender
 - Country
 - Postal code.
 
