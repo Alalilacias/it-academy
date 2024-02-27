@@ -1,22 +1,23 @@
 -- Return a list with the first last name, second last name, and first name of all the students. The list must be ordered alphabetically.
-SELECT first_last_name, second_last_name, first_name
-FROM student
-ORDER BY first_last_name, second_last_name, first_name;
+SELECT last_name1, last_name2, first_name
+FROM person
+WHERE type = 'student'
+ORDER BY last_name1, last_name2, first_name;
 
 -- Find out the first and last names of students who have not registered their phone number in the database.
-SELECT first_name, last_name
+SELECT first_name, last_name1, last_name2
 FROM person
-WHERE id IN (SELECT id FROM student) AND id NOT IN (SELECT id FROM phone WHERE id IS NOT NULL);
+WHERE type = 'student' AND phone IS NULL;
 
 -- Returns the list of students who were born in 1999.
-SELECT first_name, last_name
+SELECT first_name, last_name1, last_name2
 FROM person
-WHERE id IN (SELECT id FROM student) AND EXTRACT(YEAR FROM birth_date) = 1999;
+WHERE type = 'student' AND EXTRACT(YEAR FROM birth_date) = 1999;
 
 -- Returns the list of teachers who have not registered their phone number in the database and also their NIF ends in K.
-SELECT first_name, last_name
+SELECT first_name, last_name1, last_name2
 FROM person
-WHERE id IN (SELECT id FROM professor) AND id NOT IN (SELECT id FROM phone WHERE id IS NOT NULL) AND nif LIKE '%K';
+WHERE type = 'professor' AND phone IS NULL AND nif LIKE '%K';
 
 -- Returns the list of subjects that are taught in the first semester, in the third year of the degree that has the identifier 7.
 SELECT subject_name
