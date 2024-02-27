@@ -18,7 +18,7 @@ Please make the following inquiries:
 - List the name of the products, the price in euros and the price in US dollars (USD). Use the following aliases for the columns: product name, euros, dollars.
 - List the names and prices of all products in the product table, converting the names to uppercase. 
 - List the names and prices of all products in the product table, converting the names to lowercase.
-- List the name of all manufacturers in one column, and in another column capitalize the first two characters of the manufacturer's name.
+- List the name of all manufacturers in one column, and in another column obtain the first two characters of the manufacturer's name capitalized.
 - List the names and prices of all products in the product table, rounding the price value.
 - Lists the names and prices of all products in the product table, truncating the price value to display it without any decimal places.
 - List the code of the manufacturers that have products in the product table.

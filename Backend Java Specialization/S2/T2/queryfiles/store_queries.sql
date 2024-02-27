@@ -1,38 +1,45 @@
 -- List the name of all the products in the product table.
-SELECT name FROM product;
-
--- List the names and prices of all the products in the product table.
-SELECT name, price FROM product;
-
--- List all columns of the product table.
-SELECT * FROM product;
-
--- List the name of the products, the price in euros, and the price in US dollars (USD).
-SELECT name, price, price * 1.18 AS dollars
+SELECT name
 FROM product;
 
--- List the name of the products, the price in euros, and the price in US dollars (USD). Use aliases.
-SELECT name AS "product name", price AS euros, price * 1.18 AS dollars
+-- List the names and prices of all the products in the product table.
+SELECT name, price
+FROM product;
+
+-- List all columns of the product table.
+SELECT *
+FROM product;
+
+-- List the name of the products, the price in euros, and the price in US dollars (USD).
+SELECT name, price, price * 1.18 AS price_in_dollars
+FROM product;
+
+-- List the name of the products, the price in euros, and the price in US dollars (USD). Use the following aliases: product name, euros, dollars.
+SELECT name AS "product name", price AS euros, price * 1.09 AS dollars
 FROM product;
 
 -- List the names and prices of all products in the product table, converting the names to uppercase.
-SELECT UPPER(name) AS name, price FROM product;
+SELECT UPPER(name) AS name, price
+FROM product;
 
 -- List the names and prices of all products in the product table, converting the names to lowercase.
-SELECT LOWER(name) AS name, price FROM product;
+SELECT LOWER(name) AS name, price
+FROM product;
 
 -- List the name of all manufacturers in one column, and in another column capitalize the first two characters.
-SELECT name, CONCAT(UPPER(SUBSTRING(name, 1, 2)), LOWER(SUBSTRING(name, 3))) AS capped_name
+SELECT name, UPPER(SUBSTRING(name, 1, 2)) AS capped_initials
 FROM manufacturer;
 
 -- List the names and prices of all products in the product table, rounding the price value.
-SELECT name, ROUND(price) AS price FROM product;
+SELECT name, ROUND(price) AS rounded_price
+FROM product;
 
 -- Lists the names and prices of all products in the product table, truncating the price value.
-SELECT name, TRUNCATE(price, 0) AS price FROM product;
+SELECT name, TRUNCATE(price, 0) AS truncated_price
+FROM product;
 
 -- List the code of the manufacturers that have products in the product table.
-SELECT DISTINCT m.code
+SELECT m.code
 FROM manufacturer m
 JOIN product p ON m.code = p.manufacturer_code;
 
@@ -42,25 +49,37 @@ FROM manufacturer m
 JOIN product p ON m.code = p.manufacturer_code;
 
 -- List manufacturer names in ascending order.
-SELECT name FROM manufacturer ORDER BY name ASC;
+SELECT name
+FROM manufacturer
+ORDER BY name ASC;
 
 -- List manufacturer names in descending order.
-SELECT name FROM manufacturer ORDER BY name DESC;
+SELECT name
+FROM manufacturer
+ORDER BY name DESC;
 
 -- Lists product names sorted first by name in ascending order and second by price in descending order.
-SELECT name, price FROM product ORDER BY name ASC, price DESC;
+SELECT name, price
+FROM product
+ORDER BY name ASC, price DESC;
 
 -- Returns a list with the first 5 rows of the manufacturer table.
-SELECT * FROM manufacturer LIMIT 5;
+SELECT *
+FROM manufacturer LIMIT 5;
 
 -- Returns a list with 2 rows starting from the fourth row of the manufacturer table.
-SELECT * FROM manufacturer LIMIT 2 OFFSET 3;
+SELECT *
+FROM manufacturer LIMIT 2 OFFSET 3;
 
 -- List the cheapest product name and price. (Use only the ORDER BY and LIMIT clauses).
-SELECT name, price FROM product ORDER BY price LIMIT 1;
+SELECT name, price
+FROM product
+ORDER BY price LIMIT 1;
 
 -- List the name and price of the most expensive product. (Use only the ORDER BY and LIMIT clauses).
-SELECT name, price FROM product ORDER BY price DESC LIMIT 1;
+SELECT name, price
+FROM product
+ORDER BY price DESC LIMIT 1;
 
 -- List the name of all products from the manufacturer whose manufacturer code is equal to 2.
 SELECT p.name
@@ -80,7 +99,7 @@ JOIN manufacturer m ON p.manufacturer_code = m.code
 ORDER BY manufacturer_name;
 
 -- Returns a list with the product code, product name, manufacturer code, and manufacturer name of all products in the database.
-SELECT p.code AS product_code, p.name AS product_name, p.manufacturer_code, m.name AS manufacturer_name
+SELECT p.code AS product_code, p.name AS product_name, p.manufacturer_code AS manufacturer_code, m.name AS manufacturer_name
 FROM product p
 JOIN manufacturer m ON p.manufacturer_code = m.code;
 
@@ -97,10 +116,13 @@ JOIN manufacturer m ON p.manufacturer_code = m.code
 ORDER BY p.price DESC LIMIT 1;
 
 -- Returns a list of all products from manufacturer Lenovo.
-SELECT * FROM product WHERE manufacturer_code = (SELECT code FROM manufacturer WHERE name = 'Lenovo');
+SELECT *
+FROM product
+WHERE manufacturer_code = (SELECT code FROM manufacturer WHERE name = 'Lenovo');
 
 -- Returns a list of all products from manufacturer Crucial that have a price greater than €200.
-SELECT * FROM product
+SELECT *
+FROM product
 WHERE manufacturer_code = (SELECT code FROM manufacturer WHERE name = 'Crucial')
 AND price > 200;
 
@@ -120,7 +142,7 @@ WHERE m.name IN ('Asus', 'Hewlett-Packard', 'Seagate');
 SELECT p.name, p.price
 FROM product p
 JOIN manufacturer m ON p.manufacturer_code = m.code
-WHERE RIGHT(m.name, 1) IN ('a', 'e', 'i', 'o', 'u');
+WHERE RIGHT(m.name, 1) IN ('e');
 
 -- Returns a list with the name and price of all products whose manufacturer name contains the character w in their name.
 SELECT p.name, p.price
@@ -152,9 +174,9 @@ LEFT JOIN product p ON m.code = p.manufacturer_code
 WHERE p.manufacturer_code IS NULL;
 
 -- Returns all products from the manufacturer Lenovo. (Without using INNER JOIN).
-SELECT p.*
-FROM product p, manufacturer m
-WHERE p.manufacturer_code = m.code AND m.name = 'Lenovo';
+SELECT *
+FROM product
+WHERE manufacturer_code = (SELECT code FROM manufacturer where name = 'Lenovo');
 
 -- Returns all data for products that have the same price as the most expensive product from the manufacturer Lenovo. (Without using INNER JOIN).
 SELECT *
@@ -165,15 +187,13 @@ WHERE price = (SELECT MAX(price) FROM product WHERE manufacturer_code = (SELECT 
 SELECT name
 FROM product
 WHERE manufacturer_code = (SELECT code FROM manufacturer WHERE name = 'Lenovo')
-ORDER BY price DESC
-LIMIT 1;
+ORDER BY price DESC LIMIT 1;
 
 -- List the cheapest product name from the manufacturer Hewlett-Packard.
 SELECT name
 FROM product
 WHERE manufacturer_code = (SELECT code FROM manufacturer WHERE name = 'Hewlett-Packard')
-ORDER BY price
-LIMIT 1;
+ORDER BY price LIMIT 1;
 
 -- Returns all products in the database that have a price greater than or equal to the most expensive product from manufacturer Lenovo.
 SELECT *
