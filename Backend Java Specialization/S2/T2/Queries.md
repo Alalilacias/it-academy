@@ -64,7 +64,7 @@ Please download the database from the schema_universidad.sql file, view the E-R 
 - Returns the list of subjects that are taught in the first semester, in the third year of the degree that has the identifier 7.
 - Returns a list of professors along with the name of the department to which they are linked. The listing should return four columns, first last name, second last name, first name and department name. The result will be sorted alphabetically from lowest to highest by last name and first name.
 - Returns a list with the name of the subjects, start year and end year of the student's school year with NIF 26902806M.
-- Returns a list with the name of all the departments that have professors who teach a subject in the Degree in Computer Engineering (Plan 2015).
+- Returns a list with the name of all the departments that have professors who teach a subject in the Degree in Computer Science (Plan 2015).
 - Returns a list of all students who have enrolled in a subject during the 2018/2019 school year.
 
 Solve the following 6 queries using the LEFT JOIN and RIGHT JOIN clauses:

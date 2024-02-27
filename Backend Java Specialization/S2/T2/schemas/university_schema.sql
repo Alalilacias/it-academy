@@ -100,9 +100,9 @@ INSERT INTO person VALUES (23, '64753215G', 'Irene', 'Hernandez', 'Martinez', 'A
 INSERT INTO person VALUES (24, '85135690V', 'Sonia', 'Gea', 'Ruiz', 'Almeria', 'C/ Mercurio', '678812017', '1995/04/13', 'F', 'student');
 
 /* Professor */
-INSERT INTO professor VALUES (3, 1));
-INSERT INTO professor VALUES (5, 2));
-INSERT INTO professor VALUES (8, 3));
+INSERT INTO professor VALUES (3, 1);
+INSERT INTO professor VALUES (5, 2);
+INSERT INTO professor VALUES (8, 3);
 INSERT INTO professor VALUES (10, 4);
 INSERT INTO professor VALUES (12, 4);
 INSERT INTO professor VALUES (13, 6);
@@ -113,7 +113,7 @@ INSERT INTO professor VALUES (17, 4);
 INSERT INTO professor VALUES (18, 5);
 INSERT INTO professor VALUES (20, 6);
 
-/* Degree */
+-- Degree --
 INSERT INTO degree VALUES (1, 'Bachelor in Agricultural Engineering (2015 Plan)');
 INSERT INTO degree VALUES (2, 'Bachelor in Electrical Engineering (2014 Plan)');
 INSERT INTO degree VALUES (3, 'Bachelor in Industrial Electronics Engineering (2010 Plan)');
