@@ -64,6 +64,7 @@ SELECT d.name AS department_name, p.last_name1 AS last_name1, p.last_name2 AS la
 FROM department d
 LEFT JOIN professor pr ON d.id = pr.id_department
 RIGHT JOIN person p ON pr.id_professor = p.id
+WHERE p.type = 'professor'
 ORDER BY department_name ASC, last_name1 ASC, last_name2 ASC, first_name ASC;
 
 -- Returns a list of professors who are not associated with a department.
@@ -71,7 +72,7 @@ SELECT d.name AS department_name, p.last_name1 AS last_name1, p.last_name2 AS la
 FROM department d
 LEFT JOIN professor pr ON d.id = pr.id_department
 RIGHT JOIN person p ON pr.id_professor = p.id
-WHERE d.name IS NULL;
+WHERE d.name IS NULL AND p.type = 'professor';
 
 -- Returns a list of departments that do not have associate professors.
 SELECT d.name AS department_name
