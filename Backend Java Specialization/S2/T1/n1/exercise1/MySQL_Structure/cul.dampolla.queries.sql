@@ -6,7 +6,7 @@ SELECT DISTINCT e.name AS employee_name, g.id AS glassmodel_id
 FROM glasses g
 JOIN sales s ON s.glass_id = g.idglasses
 JOIN employees e ON e.idemployees = s.seller_id
-ORDER BY employee_name, glassmodel_id
+ORDER BY employee_name, glassmodel_id;
 
 
 -- List the different suppliers who have supplied glasses sold successfully by the optician.
