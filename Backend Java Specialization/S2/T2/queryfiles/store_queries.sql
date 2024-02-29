@@ -11,7 +11,7 @@ SELECT *
 FROM product;
 
 -- List the name of the products, the price in euros, and the price in US dollars (USD).
-SELECT name, price, price * 1.18 AS price_in_dollars
+SELECT name, price AS price_ind_euros, price * 1.09 AS price_in_dollars
 FROM product;
 
 -- List the name of the products, the price in euros, and the price in US dollars (USD). Use the following aliases: product name, euros, dollars.
