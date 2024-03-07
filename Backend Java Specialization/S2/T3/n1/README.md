@@ -10,7 +10,7 @@ They want to keep track of:
   - NIF.
 - The glasses. In particular, about each glass:
   - The brand
-  - The graduation of each of the glasses
+  - The prescription of each of the lenses.
   - The type of frame (floating, paste or metallic)
   - The color of the frame
   - The color of each glass, and
