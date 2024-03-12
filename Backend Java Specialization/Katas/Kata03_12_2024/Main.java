@@ -4,6 +4,6 @@ import Katas.Kata03_12_2024.src.Helper;
 
 public class Main extends Helper {
     public static void main(String[] args) {
-        testKata("Damn, this is fun");
+        testKata("Hola, zorra");
     }
 }
