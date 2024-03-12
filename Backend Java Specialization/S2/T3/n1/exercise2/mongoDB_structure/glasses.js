@@ -1,4 +1,4 @@
-db.createCollection('purchasedGlasses',
+db.createCollection('glasses',
 validator:
 {
   $jsonSchema: {

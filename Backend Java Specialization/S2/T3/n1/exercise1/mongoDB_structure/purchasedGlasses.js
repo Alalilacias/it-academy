@@ -14,17 +14,20 @@ validator:
               enum: ["floating", "paste", "metallic"]
             },
       frame_color: { bsonType: "string" },
-      glass_color_left: { bsonType: "string" },
       glass_color_right: { bsonType: "string" },
+      glass_color_left: { bsonType: "string" },
       price: { bsonType: "double" },
       supplier: { bsonType: "objectId" },
       sales_information: {
-              bsonType: "object",
-              required: ["employee", "date", "time"],
-              properties: {
-                employee: { bsonType: "string" },
-                date: { bsonType: "date" },
-                time: { bsonType: "string"}
+              bsonType: "array",
+              items: {
+                bsonType: "object",
+                  required: ["employee", "date", "time"],
+                  properties: {
+                    employee: { bsonType: "string" },
+                    date: { bsonType: "date" },
+                    time: { bsonType: "string"}
+                  }
               }
             }
     }
