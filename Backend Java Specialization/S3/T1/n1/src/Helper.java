@@ -5,15 +5,16 @@ import java.util.Scanner;
 public class Helper {
     public static void testExercise(){
         Scanner scanner = new Scanner(System.in);
-        Undo undo = Undo.getInstance();
 
         while (true) {
-            System.out.println("Options:");
-            System.out.println("1. Add Command");
-            System.out.println("2. Remove Last Command");
-            System.out.println("3. List Commands");
-            System.out.println("4. Exit");
-            System.out.print("Enter option: ");
+            System.out.println("""
+                    Select your choice of action:
+                    1. Add Command.
+                    2. Remove Last Command.
+                    3. List Commands.
+                    4. Exit.
+                    Your choice here:
+                    """);
 
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume the newline
@@ -22,14 +23,14 @@ public class Helper {
                 case 1:
                     System.out.print("Enter command to add: ");
                     String commandToAdd = scanner.nextLine();
-                    undo.addCommand(commandToAdd);
+                    Undo.INSTANCE.addCommand(commandToAdd);
                     break;
                 case 2:
-                    undo.removeLastCommand();
+                    Undo.INSTANCE.removeLastCommand();
                     System.out.println("Last command removed.");
                     break;
                 case 3:
-                    undo.listCommands();
+                    Undo.INSTANCE.listCommands();
                     break;
                 case 4:
                     System.out.println("Exiting...");

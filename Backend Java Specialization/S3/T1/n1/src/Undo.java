@@ -1,31 +1,21 @@
 package S3.T1.n1.src;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Undo {
-    private static Undo instance;
-    @SuppressWarnings("FieldMayBeFinal")
-    private List<String> commandHistory;
+// Singleton Enum representing the Undo command
+enum Undo {
+    INSTANCE;
 
-    private Undo() {
-        commandHistory = new ArrayList<>();
-    }
-
-    public static Undo getInstance() {
-        if (instance == null) {
-            instance = new Undo();
-        }
-        return instance;
-    }
+    private final List<String> commandHistory = new ArrayList<>();
 
     public void addCommand(String command) {
         commandHistory.add(command);
     }
 
-    @SuppressWarnings("SequencedCollectionMethodCanBeUsed")
     public void removeLastCommand() {
         if (!commandHistory.isEmpty()) {
-            commandHistory.remove(commandHistory.size() - 1);
+            commandHistory.removeLast();
         }
     }
 
@@ -33,10 +23,13 @@ public class Undo {
         if (commandHistory.isEmpty()) {
             System.out.println("No commands in history.");
         } else {
-            System.out.println("Command History:");
+            String textToPrint = "Command History:";
             for (int i = 0; i < commandHistory.size(); i++) {
-                System.out.println((i + 1) + ". " + commandHistory.get(i));
+                textToPrint = textToPrint.concat ((i + 1) + ". " + commandHistory.get(i));
             }
+            System.out.println(textToPrint);
         }
+
     }
 }
+
