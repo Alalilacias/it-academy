@@ -13,4 +13,9 @@ public abstract class Phone {
     }
 
     abstract void create();
+
+    @Override
+    public String toString() {
+        return "- [Type: " + this.type + ", Prefix: " + this.prefix + ", Number: " + this.number + "]\n";
+    }
 }

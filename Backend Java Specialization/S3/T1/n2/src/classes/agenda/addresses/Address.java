@@ -12,5 +12,11 @@ public abstract class Address {
         this.address = address;
     }
 
-abstract void create();
+    abstract void create();
+
+    @Override
+    public String toString() {
+
+        return "- [Type: " + this.type + ", Country: " + this.country + ", Address: " + this.address + "]\n";
+    }
 }
