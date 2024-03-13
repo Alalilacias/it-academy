@@ -1,4 +1,4 @@
-package S3.T1.n1.src;
+package S3.T1.n1.src.classes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,14 @@ enum Undo {
 
     public void addCommand(String command) {
         commandHistory.add(command);
+        System.out.println("Command \"" + command + "\" added");
     }
 
     public void removeLastCommand() {
-        if (!commandHistory.isEmpty()) {
+        if (commandHistory.isEmpty()) {
+            System.out.println("No commands in history.");
+        } else {
+            System.out.println("Command \"" + commandHistory.getLast() + "\" removed.");
             commandHistory.removeLast();
         }
     }
@@ -24,8 +28,8 @@ enum Undo {
             System.out.println("No commands in history.");
         } else {
             String textToPrint = "Command History:";
-            for (int i = 0; i < commandHistory.size(); i++) {
-                textToPrint = textToPrint.concat ((i + 1) + ". " + commandHistory.get(i));
+            for (int i = commandHistory.size() - 1; i >= 0; i--) {
+                textToPrint = textToPrint.concat ("\n"+ (i + 1) + ". " + commandHistory.get(i) + ".");
             }
             System.out.println(textToPrint);
         }

@@ -1,4 +1,4 @@
-package S3.T1.n1.src;
+package S3.T1.n1.src.classes;
 
 import java.util.Scanner;
 
@@ -27,7 +27,6 @@ public class Helper {
                     break;
                 case 2:
                     Undo.INSTANCE.removeLastCommand();
-                    System.out.println("Last command removed.");
                     break;
                 case 3:
                     Undo.INSTANCE.listCommands();
