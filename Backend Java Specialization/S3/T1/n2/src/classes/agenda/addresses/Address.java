@@ -13,10 +13,8 @@ public abstract class Address {
     }
 
     abstract void create();
-
     @Override
     public String toString() {
-
         return "- [Type: " + this.type + ", Country: " + this.country + ", Address: " + this.address + "]\n";
     }
 }

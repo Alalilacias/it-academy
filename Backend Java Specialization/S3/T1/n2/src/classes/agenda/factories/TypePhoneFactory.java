@@ -16,11 +16,10 @@ public class TypePhoneFactory implements AbstractTypePhoneFactory {
         return new NonMobilePhone(country, number);
     }
 
-    Phone createPhone (PhoneType type, Countries country, String number) {
-        switch (type) {
+    public Phone createPhone(PhoneType type, Countries country, String number) {
+        return switch (type) {
             case MOBILE -> makeMobilePhone(country, number);
             case NON_MOBILE -> makeNonMobilePhone(country, number);
-        }
-        return null;
+        };
     }
 }

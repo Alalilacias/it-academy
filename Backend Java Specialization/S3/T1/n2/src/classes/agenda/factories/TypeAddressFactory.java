@@ -16,11 +16,10 @@ public class TypeAddressFactory implements AbstractTypeAddressFactory {
         return new FiscalAddress(country, address);
     }
 
-    Address createAddress(AddressType type, Countries country, String address){
-        switch (type) {
-            case HOME -> makeHomeAddress(country, address);
-            case FISCAL -> makeFiscalAddress(country, address);
-        }
-        return null;
-    }
+     public Address createAddress(AddressType type, Countries country, String address){
+         return switch (type) {
+             case HOME -> makeHomeAddress(country, address);
+             case FISCAL -> makeFiscalAddress(country, address);
+         };
+     }
 }

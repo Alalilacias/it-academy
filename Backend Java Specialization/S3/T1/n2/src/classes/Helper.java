@@ -13,8 +13,7 @@ public class Helper extends Agenda {
                 Select your choice of action:
                 1. See current agenda's contents.
                 2. Introduce information to agenda.
-                3. Eliminate information from agenda.
-                4. Exit.
+                3. Exit.
                 Write your number of choice here:
                 """);
             option = s.nextInt();
@@ -28,8 +27,7 @@ public class Helper extends Agenda {
                     introduceInformation();
                     break;
                 case 3:
-                    break;
-                case 4:
+                    System.out.println("Closing system. Goodbye.");
                     System.exit(0);
                     break;
                 default:

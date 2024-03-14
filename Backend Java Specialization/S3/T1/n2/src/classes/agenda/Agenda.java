@@ -30,7 +30,7 @@ public class Agenda {
         textToReturn.append("Addresses:\n");
 
         if (addresses.isEmpty()){
-            textToReturn.append("- Empty.");
+            textToReturn.append("- Empty.\n");
         } else {
             for (Address address : addresses){
                 textToReturn.append(address.toString());
@@ -40,7 +40,7 @@ public class Agenda {
         textToReturn.append("Phones:\n");
 
         if (phones.isEmpty()){
-            textToReturn.append("- Empty.");
+            textToReturn.append("- Empty.\n");
         } else {
             for (Phone phone : phones){
                 textToReturn.append(phone.toString());
@@ -73,8 +73,8 @@ public class Agenda {
             }
         }
     private static void introduceAddress(){
-        AddressType addressType = null;
-        Countries country = null;
+        AddressType addressType;
+        Countries country;
 
         String input;
 
@@ -84,6 +84,7 @@ public class Agenda {
             addressType = AddressType.valueOf(input);
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid choice.");
+            return;
         }
 
         System.out.println("Input the country of the address to introduce:");
@@ -92,17 +93,17 @@ public class Agenda {
             country = Countries.valueOf(input);
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid choice.");
+            return;
         }
 
         System.out.println("Input the complete address to introduce:");
-        input = s.nextLine().toUpperCase();
+        input = s.nextLine();
 
-        assert addressType != null;
-        addressFactory.createAddress(addressType, country, input);
+        addresses.add(addressFactory.createAddress(addressType, country, input));
     }
     private static void introducePhone(){
-        Countries country = null;
-        PhoneType phoneType = null;
+        Countries country;
+        PhoneType phoneType;
 
         String input;
 
@@ -112,6 +113,7 @@ public class Agenda {
             phoneType = PhoneType.valueOf(input);
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid choice.");
+            return;
         }
 
         System.out.println("Input the country of the phone to introduce:");
@@ -120,12 +122,12 @@ public class Agenda {
             country = Countries.valueOf(input);
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid choice.");
+            return;
         }
 
         System.out.println("Input the complete phone to introduce:");
-        input = s.nextLine().toUpperCase();
+        input = s.nextLine();
 
-        assert phoneType != null;
-        phoneFactory.createPhone(phoneType, country, input);
+        phones.add(phoneFactory.createPhone(phoneType, country, input));
     }
 }
