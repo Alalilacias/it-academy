@@ -1,0 +1,6 @@
+# Carpetas y archivos generados por Gradle
+build/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
