@@ -23,6 +23,9 @@ mvnw.cmd
 # Carpetas y archivos generados por Gradle
 build/
 .gradle/
+gradle/
+gradlew
+gradlew.bat
 
 # Carpeta y archivos de dependencias
 lib/
