@@ -1,5 +1,7 @@
 package code;
 
+import code.classes.Payments;
+import code.classes.ShoeStore;
 import code.utils.Input;
 
 public class Helper {
@@ -31,12 +33,12 @@ public class Helper {
         }
     }
     private static void creditPayment(){
-
+        ShoeStore.payWith(Payments.CREDIT_CARD);
     }
     private static void paypalPayment(){
-
+        ShoeStore.payWith(Payments.PAYPAL);
     }
     private static void bankDebtPayment(){
-
+        ShoeStore.payWith(Payments.BANK_ACCOUNT_DEBT);
     }
 }

@@ -9,6 +9,6 @@ public enum Payments implements Callback {
 
     @Override
     public String onEvent() {
-        return "Paying with " + this.name().toLowerCase().replace("_"," ") + ".";
+        return "Payment done with " + this.name().toLowerCase().replace("_"," ") + ".";
     }
 }

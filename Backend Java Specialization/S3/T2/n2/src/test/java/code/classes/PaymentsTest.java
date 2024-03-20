@@ -8,6 +8,6 @@ class PaymentsTest {
 
     @Test
     void onEvent() {
-        assertEquals("Paying with bank account debt.", Payments.BANK_ACCOUNT_DEBT.onEvent());
+        assertEquals("Payment done with bank account debt.", Payments.BANK_ACCOUNT_DEBT.onEvent());
     }
 }
