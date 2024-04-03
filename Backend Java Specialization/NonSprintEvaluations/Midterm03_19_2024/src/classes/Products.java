@@ -1,30 +1,30 @@
 package NonSprintEvaluations.Midterm03_19_2024.src.classes;
 
 public enum Products {
-    BURRITOS("6.5€", "Pin"),
-    BURGERS("8.9€", "Cap"),
-    KEBAB("4.5€"),
-    PIZZA("7.9€");
+    BURRITOS(6.5, "Pin"),
+    BURGERS(8.9, "Cap"),
+    KEBAB(4.5),
+    PIZZA(7.9);
 
-    private final String price;
+    private final double price;
     private String gift = null;
 
-    Products(String price){
+    Products(double price){
         this.price = price;
     }
-    Products(String price, String gift){
+    Products(double price, String gift){
         this.price = price;
         this.gift = gift;
     }
 
-    public String getPrice(){
+    public double getPrice(){
         return this.price;
     }
     @Override
     public String toString() {
         StringBuilder textToReturn = new StringBuilder();
-        //noinspection StringConcatenationInsideStringBufferAppend
-        textToReturn.append("\n\t\t- " + this.name() + ", price: " + this.price + ".");
+
+        textToReturn.append("\n\t- ").append(this.name()).append(", price: ").append(this.price).append("€.");
         if(gift != null){
             textToReturn.append(" We have added a ").append(gift).append(" as a gift.");
         }

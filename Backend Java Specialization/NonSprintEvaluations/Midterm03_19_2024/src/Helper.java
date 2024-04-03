@@ -4,9 +4,10 @@ import NonSprintEvaluations.Midterm03_19_2024.src.classes.*;
 import S1.T2.n2.exercise1.src.classes.Input;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Helper {
-    private static final List<DeliveryPerson> availableDeliveryPeople = Arrays.asList(
+    private static final List<DeliveryPerson> availableDeliveryPeople = new ArrayList<>(Arrays.asList(
             new DeliveryPerson.Builder()
                     .name("Hermenegildo")
                     .methodOfTransportation(MethodOfTransportation.FOOT)
@@ -31,7 +32,7 @@ public class Helper {
                     .name("Veneranda")
                     .methodOfTransportation(MethodOfTransportation.MOTORCYCLE)
                     .build()
-    );
+    ));
     private static final List<Orders> pendingOrders = new ArrayList<>();
     private static final List<Orders> deliveredOrders = new ArrayList<>();
     protected static void testExercise(){
@@ -52,10 +53,10 @@ public class Helper {
                     markOrderAsDelivered();
                     break;
                 case 3:
-                    System.out.println(pendingOrders);
+                    printPendingOrders();
                     break;
                 case 4:
-                    System.out.println(deliveredOrders);
+                    printDeliveredOrders();
                     break;
                 default:
                     System.out.println("That option is not included, try again dearest.");
@@ -64,9 +65,9 @@ public class Helper {
     }
 
     private static void createOrder(){
-
         if (availableDeliveryPeople.isEmpty()){
-            throw new RuntimeException("There is no one left who wants to work in this country!");
+            System.out.println("There is no one left who wants to work in this country!");
+            System.exit(0);
         }
 
         int quantity;
@@ -99,7 +100,7 @@ public class Helper {
             return;
         }
 
-        boolean orderCorrect = Input.readIfNo("Is the order information correct?"
+        boolean orderCorrect = Input.readBoolean("Is the order information correct?"
                                     + "\n- Client's name: " + clientName
                                     + "\n- Client's address: " + clientAddress
                                     + "\n- Products:" + printMap(tempMap));
@@ -142,5 +143,17 @@ public class Helper {
         }
 
         System.out.println("No pending order found with the given id.");
+    }
+    private static void printPendingOrders(){
+        System.out.println((pendingOrders.isEmpty()) ? "There are currently no pending oders" :
+                pendingOrders.stream()
+                        .map(Orders::toString)
+                        .collect(Collectors.joining("\n", "Current pending orders:", "")));
+    }
+    private static void printDeliveredOrders(){
+        System.out.println((deliveredOrders.isEmpty()) ? "There are currently no delivered orders" :
+                deliveredOrders.stream()
+                        .map(Orders::toString)
+                        .collect(Collectors.joining("\n", "Current pending orders:", "")));
     }
 }

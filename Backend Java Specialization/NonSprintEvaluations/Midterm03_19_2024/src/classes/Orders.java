@@ -1,6 +1,7 @@
 package NonSprintEvaluations.Midterm03_19_2024.src.classes;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Orders {
     private static int currentTotalOrders = 0;
@@ -17,9 +18,8 @@ public class Orders {
     }
 
     private String getTotalPrice(){
-        return this.productsList.keySet().stream()
-                .map(Products::getPrice)
-                .mapToDouble(price -> Integer.parseInt(price) * this.deliveryPerson.getPriceMultiplier())
+        return this.productsList.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue() * this.deliveryPerson.getPriceMultiplier())
                 .sum() + "€.";
     }
     public int getId(){
@@ -30,12 +30,17 @@ public class Orders {
         return deliveryPerson;
     }
 
+    public String productsListToString(){
+        return productsList.entrySet().stream()
+                .map(entry -> entry.getKey().toString() + " Amount purchased: " + entry.getValue())
+                .collect(Collectors.joining("", "\nProducts:", ""));
+    }
     @Override
     public String toString() {
         return "- Order ID: " + this.id
-                + "\n\t" + this.client
-                + "Products: " + this.productsList
-                + "Delivery person: " + this.deliveryPerson
-                + "Total: " + getTotalPrice();
+                + "\n" + this.client
+                + productsListToString()
+                + "\nDelivery person: " + this.deliveryPerson
+                + "\nTotal: " + getTotalPrice();
     }
 }
