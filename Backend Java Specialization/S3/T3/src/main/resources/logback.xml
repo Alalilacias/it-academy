@@ -1,10 +1,5 @@
 <configuration>
 <!--    Appenders-->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%n</pattern>
-        </encoder>
-    </appender>
     <appender name="CUSTOM_MONGO_APPENDER" class="Mongo.Logging.Mongo_Appender">
     <uri>mongodb://localhost:27017</uri>
         <databaseName>"gardenShop"</databaseName>

@@ -48,11 +48,7 @@ public class GardenShopManager {
                 .stockList(stockList)
                 .build();
     }
-    public static GardenShop createGardenShopFromResultSet(ResultSet resultSet){
 
-
-        return new GardenShop.Builder().build();
-    }
     public static void readActiveGardenShops(ConnectType connectType){
         List<GardenShop> activeGardenShops = switch (connectType){
             case MONGO -> MongoDAO.INSTANCE.readGardenShops();
@@ -60,7 +56,11 @@ public class GardenShopManager {
             case CHOOSE -> null;
         };
         if(activeGardenShops == null){
-            logger.atError().log("MongoDAO.INSTANCE.readGardenShops() == null, check it.");
+            switch(connectType){
+                case MONGO -> logger.atError().log("MongoDAO.INSTANCE.readGardenShops() == null, check it.");
+                case MySQL -> logger.atError().log("MySQLDAO.INSTANCE.readGardenShops() == null, check it.");
+            }
+
             return;
         }
 

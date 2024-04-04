@@ -1,6 +1,6 @@
 package Generic.classes.qualities;
 
-public enum Material implements Generic.classes.qualities.Quality {
+public enum Material implements Quality {
     WOOD,
     PLASTIC;
 

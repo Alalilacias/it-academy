@@ -1,6 +1,6 @@
 package Generic.classes.qualities;
 
-public enum Color implements Generic.classes.qualities.Quality {
+public enum Color implements Quality {
     RED,
     ORANGE,
     YELLOW,

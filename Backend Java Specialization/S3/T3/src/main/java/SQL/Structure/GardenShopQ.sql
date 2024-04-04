@@ -1,6 +1,12 @@
--- Crear usuario si no existe y dar accesso con todos los privilegios a la base de datos creada.
-CREATE USER 'it-academy-access'@'%' IDENTIFIED BY 'fneH5P95Yqmfnm';
-GRANT ALL PRIVILEGES ON Garden_shop.* TO 'it-academy-access'@'%';
+CREATE USER 'it_academy_access' IDENTIFIED BY 'fneH5P95Yqmfnm';
+GRANT ALL ON `Garden_shop`.* TO 'it_academy_access';
+
+-- Formula para asignar ese objeto al stock.
+SET @idstock := 0;
+
+INSERT INTO stock (idstore, idproduct, quantity, idstock)
+SELECT 1, idproducts, FLOOR(RAND() * (100 - 10 + 1) + 10), (@idstock := @idstock + 1)
+FROM products;
 
 -- Mostrar el stock de un producto de una tienda
 SELECT p.idproducts, p.type, p.price, p.height, p.color, p.material, s.quantity

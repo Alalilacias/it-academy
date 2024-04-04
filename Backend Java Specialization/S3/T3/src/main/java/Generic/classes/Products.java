@@ -3,6 +3,8 @@ package Generic.classes;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.sql.PreparedStatement;
+
 public class Products {
     private final String product_id;
     private final int quantity;
@@ -14,6 +16,12 @@ public class Products {
         this.total = builder.total;
     }
 
+    public String getProduct_id() {
+        return product_id;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
     public double getTotal() {
         return total;
     }

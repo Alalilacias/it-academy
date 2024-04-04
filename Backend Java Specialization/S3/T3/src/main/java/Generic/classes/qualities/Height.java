@@ -1,6 +1,6 @@
 package Generic.classes.qualities;
 
-public enum Height implements Generic.classes.qualities.Quality {
+public enum Height implements Quality {
     SMALL,
     MEDIUM,
     TALL;

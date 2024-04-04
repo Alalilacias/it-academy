@@ -1,6 +1,6 @@
 package Generic.classes.qualities;
 
-public enum Error implements Generic.classes.qualities.Quality {
+public enum Error implements Quality {
     TREE,
     FLOWER,
     DECORATION,
