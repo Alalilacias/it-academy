@@ -6,7 +6,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public class Stock {
-    private final String product_id;
+    private String product_id;
     private final Types type;
     private double price;
     private int quantity;
@@ -36,6 +36,9 @@ public class Stock {
         return quality;
     }
 
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
+    }
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -46,7 +49,7 @@ public class Stock {
     public Document getStockDocument(){
         return new Document()
                 .append("product_id", new ObjectId(this.product_id))
-                .append("type" , type.getDbValue())
+                .append("type" , type.getMongoValue())
                 .append("price", price)
                 .append("quantity", quantity)
                 .append(quality.getClass().getSimpleName(), quality.getName());
@@ -58,7 +61,6 @@ public class Stock {
                 + "\n\t\t\tType: " + this.type.name()
                 + "\n\t\t\tPrice: " + this.price + "€"
                 + "\n\t\t\tQuantity: " + this.quantity
-//                Remember to code it, so it follows the structure when it's being made lmao
                 + "\n\t\t\t" + this.quality.getClass().getSimpleName() + ": " + this.quality.getName();
     }
 

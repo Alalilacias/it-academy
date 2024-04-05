@@ -1,17 +1,20 @@
 package Generic.Managers.Stores.stock;
 
-import Generic.Managers.MongoUtilities;
+import Generic.Managers.Utilities;
 import Generic.Managers.Stores.EnteredGardenShop;
 import Generic.Utilities.Input;
 import Generic.classes.Stock;
-import Generic.classes.qualities.Error;
 import Generic.classes.qualities.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class StockManager {
     private static final Logger logger = LoggerFactory.getLogger(StockManager.class);
@@ -59,13 +62,12 @@ public class StockManager {
         double price = Input.readDouble("Introduce the price per unit.");
         int quantity = Input.readInt("Introduce how many there'll be in stock");
 
-        Quality quality;
-        switch (type){
-            case TREE -> quality = MongoUtilities.chooseHeight();
-            case FLOWER ->  quality = MongoUtilities.chooseColor();
-            case DECORATION -> quality = MongoUtilities.chooseDecoration();
-            default -> quality = Error.ERROR;
-        }
+        Quality quality = switch (type){
+            case TREE -> Utilities.chooseHeight();
+            case FLOWER -> Utilities.chooseColor();
+            case DECORATION -> Utilities.chooseDecoration();
+            default -> null;
+        };
 
         return new Stock.Builder()
                 .product_id(new ObjectId().toString())
@@ -95,6 +97,34 @@ public class StockManager {
                 .quality(quality)
                 .build();
     }
+    @SuppressWarnings("unused")
+    public static Stock createStockFromResultSet(ResultSet resultSet) {
+        try {
+            String product_id = resultSet.getString("product_id");
+            Types type = Types.valueOf(resultSet.getString("type"));
+            double price = resultSet.getDouble("price");
+            int quantity = resultSet.getInt("quantity");
+            Quality quality = switch (type){
+                case TREE -> Height.valueOf(resultSet.getString("quality"));
+                case FLOWER -> Color.valueOf(resultSet.getString("quality"));
+                case DECORATION -> Material.valueOf(resultSet.getString("quality"));
+                default -> null;
+            };
+
+            return new Stock.Builder()
+                    .product_id(product_id)
+                    .type(type)
+                    .price(price)
+                    .quantity(quantity)
+                    .quality(quality)
+                    .build();
+        } catch (SQLException e) {
+            getLogger(StockManager.class).atError().log("Unable to create connection at createGardenShop(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+            return null;
+        }
+    }
     public static void readStock(){
         if(EnteredGardenShop.INSTANCE.isStockListEmpty()){
             System.out.println("Stock empty.");
@@ -111,7 +141,8 @@ public class StockManager {
         }
     }
     public static void updateStock(){
-        switch (Input.readInt("""
+        switch (Input.readInt(EnteredGardenShop.INSTANCE.readStockInFull() +
+                """
                 What would you like to do with the stock?
                 1. Replace stock (eliminate and create a new one, empty or not).
                 2. Add item to stock.
@@ -125,7 +156,7 @@ public class StockManager {
             default -> System.out.println("Invalid choice.");
         }
     }
-    public static Stock updateStockDocument(Stock stock){
+    public static Stock updateStockItem(Stock stock){
         boolean isModifyQuantity = Input.readBoolean("Would you like to modify the quantity?");
         if (isModifyQuantity) {
             int newQuantity = Input.readInt("Introduce new quantity.");

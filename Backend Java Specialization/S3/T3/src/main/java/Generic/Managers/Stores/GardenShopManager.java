@@ -6,7 +6,7 @@ import Generic.Utilities.Input;
 import Generic.classes.GardenShop;
 import Generic.classes.Stock;
 import Mongo.Connectivity.MongoDAO;
-import Generic.Managers.MongoUtilities;
+import Generic.Managers.Utilities;
 import Generic.Managers.Tickets.TicketManager;
 import SQL.Connectivity.MySQLDAO;
 import org.bson.Document;
@@ -14,9 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class GardenShopManager {
     private static final Logger logger = LoggerFactory.getLogger(GardenShopManager.class);
@@ -48,19 +51,35 @@ public class GardenShopManager {
                 .stockList(stockList)
                 .build();
     }
-
+    @SuppressWarnings("unused")
+    public static GardenShop createGardenShopFromResultSet(ResultSet resultSet){
+        try {
+            List<Stock> stockList = MySQLDAO.INSTANCE.readShopStock(String.valueOf(resultSet.getInt("idstores")));
+            return new GardenShop.Builder()
+                    ._id(String.valueOf(resultSet.getInt("idstores")))
+                    .name(resultSet.getString("name"))
+                    .stockList(stockList)
+                    .currentStockValue(resultSet.getDouble("current_stock_value"))
+                    .currentSalesValue(resultSet.getDouble("current_sales_value"))
+                    .build();
+        } catch (SQLException e) {
+            getLogger(GardenShopManager.class).atError().log("Unable to create connection at createGardenShop(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+            return null;
+        }
+    }
     public static void readActiveGardenShops(ConnectType connectType){
         List<GardenShop> activeGardenShops = switch (connectType){
             case MONGO -> MongoDAO.INSTANCE.readGardenShops();
             case MySQL -> MySQLDAO.INSTANCE.readGardenShops();
-            case CHOOSE -> null;
+            default -> null;
         };
         if(activeGardenShops == null){
             switch(connectType){
                 case MONGO -> logger.atError().log("MongoDAO.INSTANCE.readGardenShops() == null, check it.");
                 case MySQL -> logger.atError().log("MySQLDAO.INSTANCE.readGardenShops() == null, check it.");
             }
-
             return;
         }
 
@@ -77,8 +96,7 @@ public class GardenShopManager {
     }
     public static void enterGardenShop(ConnectType connectType){
         String name = Input.readString("Introduce the name of the Garden Shop whose Management System you'd like to enter.");
-
-        boolean isInDatabase = MongoUtilities.enterGardenShop(name, connectType);
+        boolean isInDatabase = Utilities.enterGardenShop(name, connectType);
 
         if (!isInDatabase){
             System.out.println("That garden shop isn't registered in our system.");

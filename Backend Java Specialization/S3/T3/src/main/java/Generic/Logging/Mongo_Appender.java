@@ -1,4 +1,4 @@
-package Mongo.Logging;
+package Generic.Logging;
 
 import Mongo.Connectivity.MongoConfig;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -10,28 +10,25 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.util.Date;
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+
+@SuppressWarnings("FieldCanBeLocal")
 public class Mongo_Appender extends UnsynchronizedAppenderBase<ILoggingEvent> {
-    private String uri = MongoConfig.getConnectionString();
-    private String databaseName = MongoConfig.DATABASE;
-    private String collectionName = "logs";
+    private final String uri = MongoConfig.getConnectionString();
+    private final  String databaseName = MongoConfig.DATABASE;
+    private final String collectionName = "logs";
 
     private MongoClient mongoClient;
     private MongoCollection<Document> collection;
 
     @Override
-    public void start (){
-        if (uri == null || databaseName == null || collectionName == null) {
-            addError("URI, Database Name or Collection Name not set.");
-            return;
-        }
-
+    public void start() {
         mongoClient = MongoClients.create(uri);
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         collection = database.getCollection(collectionName);
 
         super.start();
     }
+
     @Override
     public void stop() {
         if (mongoClient != null) {
@@ -39,9 +36,10 @@ public class Mongo_Appender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         }
         super.stop();
     }
+
     @Override
     protected void append(ILoggingEvent event) {
-        if(!isStarted()){
+        if (!isStarted()) {
             return;
         }
 

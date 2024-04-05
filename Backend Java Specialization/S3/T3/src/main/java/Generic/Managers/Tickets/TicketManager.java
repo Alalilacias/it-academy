@@ -3,7 +3,6 @@ package Generic.Managers.Tickets;
 import Generic.Managers.Stores.EnteredGardenShop;
 import Generic.classes.Products;
 import Generic.classes.Tickets;
-import Mongo.Connectivity.MongoDAO;
 import Generic.Managers.Tickets.Products.ProductManager;
 import org.bson.Document;
 
@@ -17,7 +16,7 @@ public class TicketManager {
                 .mapToDouble(Products::getTotal)
                 .sum();
 
-        MongoDAO.INSTANCE.createTicket(EnteredGardenShop.INSTANCE.get_id(), productsList, total);
+        EnteredGardenShop.INSTANCE.createTicket(productsList, total);
     }
     public static Tickets createTicketFromDocument(Document document){
         List<Products> productsList = document.getList("products", Document.class).stream()

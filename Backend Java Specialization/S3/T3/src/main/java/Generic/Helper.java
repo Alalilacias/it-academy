@@ -4,10 +4,13 @@ import Generic.Managers.Stores.GardenShopManager;
 import Generic.Utilities.ConnectType;
 import Generic.Utilities.Input;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class Helper {
     @SuppressWarnings("SameParameterValue")
-    protected static void connectWith(ConnectType connectType){
-        if(connectType.equals(ConnectType.CHOOSE)){
+    protected static void connectWith(ConnectType connectType) {
+        getLogger(Helper.class).atInfo().log("Starting Application");
+        if (connectType.equals(ConnectType.CHOOSE)){
             System.out.println("Please choose a connection type before turning on the machine.");
             return;
         }

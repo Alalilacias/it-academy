@@ -2,6 +2,7 @@ package Generic.Managers.Stores;
 
 import Generic.Utilities.ConnectType;
 import Generic.Utilities.Input;
+import Generic.classes.Products;
 import Generic.classes.Stock;
 import Generic.classes.Tickets;
 import Mongo.Connectivity.MongoDAO;
@@ -44,26 +45,48 @@ public enum EnteredGardenShop {
             return;
         }
 
-        int result = MongoDAO.INSTANCE.createSingleStock(this._id, stock);
+        switch (connectType){
+            case MONGO -> {
+                switch (MongoDAO.INSTANCE.createSingleStock(this._id, stock)){
+                    case 0 -> System.out.println("At least one matching product in stock, to change one of it's qualities, use the \"Modify item from stock\" option.");
+                    case 1 -> {
+                        stockList.add(stock);
+                        this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
 
-        switch (result){
-            case 0 -> System.out.println("At least one matching product in stock, to change one of it's qualities, use the \"Modify item from stock\" option.");
-            case 1 -> {
-                stockList.add(stock);
-                this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
+                        MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
 
-                MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
-
-                System.out.println("Stock added: " + stock);
+                        System.out.println("Stock added: " + stock);
+                    }
+                    case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                }
             }
-            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+            case MySQL -> {
+                switch (MySQLDAO.INSTANCE.createSingleStock(this._id, stock)){
+                    case 0 -> System.out.println("At least one matching product in stock, to change one of it's qualities, use the \"Modify item from stock\" option.");
+                    case 1 -> {
+                        stockList.add(stock);
+                        this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
+
+                        MySQLDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+
+                        System.out.println("Stock added: " + stock);
+                    }
+                    case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                }
+            }
+        }
+    }
+    public void createTicket(List<Products> productsList, double total){
+        switch (connectType){
+            case MONGO -> MongoDAO.INSTANCE.createTicket(this._id, productsList, total);
+            case MySQL -> MySQLDAO.INSTANCE.createTicket(this._id, productsList, total);
         }
     }
 
     public String readStockInFull(){
         return this.stockList.stream()
                 .map(Stock::toString)
-                .collect(Collectors.joining("\n", "Current Stock: ", ""));
+                .collect(Collectors.joining("", "Current Stock: ", ""));
     }
     public String readStockInQuantities(){
         return stockList.stream()
@@ -76,7 +99,12 @@ public enum EnteredGardenShop {
         );
     }
     public String readTickets(){
-        List<Tickets> pastTicketList = MongoDAO.INSTANCE.readTicketsFromEnteredStore(this._id);
+        List<Tickets> pastTicketList = switch (connectType){
+            case MONGO -> MongoDAO.INSTANCE.readTicketsFromEnteredStore(this._id);
+            case MySQL -> MySQLDAO.INSTANCE.readTicketsFromEnteredStore(this._id);
+            default -> null;
+        };
+
         if(pastTicketList == null){
             return "";
         }
@@ -101,9 +129,10 @@ public enum EnteredGardenShop {
             case MySQL -> {
                 MySQLDAO.INSTANCE.deleteFullStock(this._id);
 
-                MySQLDAO.INSTANCE.createStock(this._id, (ArrayList<Stock>) this.stockList);}
+                MySQLDAO.INSTANCE.createStock(this._id, (ArrayList<Stock>) this.stockList);
+                MySQLDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+            }
         }
-
         System.out.println("Stock replaced.");
     }
     public void updateItemFromStock(){
@@ -118,48 +147,84 @@ public enum EnteredGardenShop {
             stock = stockList.get(i);
 
             if(stock.getProduct_id().equals(product_id)){
-                Stock updatedStock = StockManager.updateStockDocument(stock);
+                Stock updatedStock = StockManager.updateStockItem(stock);
 
-                int result = MongoDAO.INSTANCE.updateStock(this._id, updatedStock);
+                switch (connectType){
+                    case MONGO -> {
+                        switch (MongoDAO.INSTANCE.updateStock(this._id, updatedStock)){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                stockList.set(i, updatedStock);
+                                this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
+                                MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
 
-                switch (result){
-                    case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
-                    case 1 -> {
-                        stockList.set(i, updatedStock);
-                        this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
-                        MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
-
-                        System.out.println(stock
-                                + "\nChanged to:"
-                                + updatedStock);
+                                System.out.println(stock
+                                        + "\nChanged to:"
+                                        + updatedStock);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
+                        return;
                     }
-                    case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                    case MySQL -> {
+                        switch (MySQLDAO.INSTANCE.updateStock(this._id, updatedStock)){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                stockList.set(i, updatedStock);
+                                this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
+                                MySQLDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+
+                                System.out.println(stock
+                                        + "\nChanged to:"
+                                        + updatedStock);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
+                        return;
+                    }
                 }
-                return;
             }
-            System.out.println("No matching product in stock, make sure the object_id is properly copied.");
         }
+        System.out.println("No matching product in stock, make sure the object_id is properly copied.");
     }
     public void updateItemFromStockForTicketCreation(Stock updatedStock){
         for(Stock stock : stockList){
             if(stock.getProduct_id().equals(updatedStock.getProduct_id())){
                 stock.setQuantity(updatedStock.getQuantity());
 
-                int result = MongoDAO.INSTANCE.updateStock(this._id, stock);
-
-                switch (result){
-                    case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
-                    case 1 -> {
-                        this.currentSalesValue += this.currentStockValue - stockList.stream()
-                                .mapToDouble(s -> s.getPrice() * s.getQuantity())
-                                .sum();
-                        this.currentStockValue = stockList.stream()
-                                .mapToDouble(s -> s.getPrice() * s.getQuantity())
-                                .sum();
-                        MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
-                        MongoDAO.INSTANCE.updateCurrentSalesValue(this._id, this.currentSalesValue);
+                switch (connectType){
+                    case MONGO -> {
+                        switch (MongoDAO.INSTANCE.updateStock(this._id, stock)){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                this.currentSalesValue += this.currentStockValue - stockList.stream()
+                                        .mapToDouble(s -> s.getPrice() * s.getQuantity())
+                                        .sum();
+                                this.currentStockValue = stockList.stream()
+                                        .mapToDouble(s -> s.getPrice() * s.getQuantity())
+                                        .sum();
+                                MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+                                MongoDAO.INSTANCE.updateCurrentSalesValue(this._id, this.currentSalesValue);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
                     }
-                    case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                    case MySQL -> {
+                        switch (MySQLDAO.INSTANCE.updateStock(this._id, stock)){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                this.currentSalesValue += this.currentStockValue - stockList.stream()
+                                        .mapToDouble(s -> s.getPrice() * s.getQuantity())
+                                        .sum();
+                                this.currentStockValue = stockList.stream()
+                                        .mapToDouble(s -> s.getPrice() * s.getQuantity())
+                                        .sum();
+                                MySQLDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+                                MySQLDAO.INSTANCE.updateCurrentSalesValue(this._id, this.currentSalesValue);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
+                    }
                 }
             }
         }
@@ -179,18 +244,33 @@ public enum EnteredGardenShop {
             isFound = stock.getProduct_id().equals(product_id);
 
             if (isFound) {
-                int result = MongoDAO.INSTANCE.deleteSingleStock(this._id, stock.getProduct_id());
+                switch (connectType){
+                    case MONGO -> {
+                        switch (MongoDAO.INSTANCE.deleteSingleStock(this._id, stock.getProduct_id())){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                stockList.remove(stock);
+                                this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
 
-                switch (result){
-                    case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
-                    case 1 -> {
-                        stockList.remove(stock);
-                        this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
-
-                        MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
-                        System.out.println("Stock item deleted: " + stock);
+                                MongoDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+                                System.out.println("Stock item deleted: " + stock);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
                     }
-                    case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                    case MySQL -> {
+                        switch (MySQLDAO.INSTANCE.deleteSingleStock(this._id, stock.getProduct_id())){
+                            case 0 -> System.out.println("No matching product in stock, make sure the object_id is properly copied.");
+                            case 1 -> {
+                                stockList.remove(stock);
+                                this.currentStockValue = stockList.stream().mapToDouble(s -> s.getPrice() * s.getQuantity()).sum();
+
+                                MySQLDAO.INSTANCE.updateCurrentStockValue(this._id, this.currentStockValue);
+                                System.out.println("Stock item deleted: " + stock);
+                            }
+                            case 2 -> System.out.println("Failed to update matching product in stock, check for connection errors.");
+                        }
+                    }
                 }
                 return;
             }

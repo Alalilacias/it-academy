@@ -1,7 +1,7 @@
 package Mongo.Managers.Stores;
 
 import Generic.Utilities.ConnectType;
-import Generic.Managers.MongoUtilities;
+import Generic.Managers.Utilities;
 import Generic.Managers.Stores.EnteredGardenShop;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ class EnteredGardenShopTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     @BeforeEach
     public void EnterGardenShopAndCreateCaptor(){
-        MongoUtilities.enterGardenShop("Test2", ConnectType.MONGO);
+        Utilities.enterGardenShop("Test2", ConnectType.MONGO);
         System.setOut(new PrintStream(outputStream));
     }
     @AfterEach
@@ -32,7 +32,6 @@ class EnteredGardenShopTest {
                 			Price: 1000.0€
                 			Quantity: 15
                 			Height: TALL
-                                
                 		- Product_id: 6606f3e4bc32641f26393323
                 			Type: FLOWER
                 			Price: 25.0€

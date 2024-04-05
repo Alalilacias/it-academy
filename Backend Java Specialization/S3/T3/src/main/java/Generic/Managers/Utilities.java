@@ -8,7 +8,7 @@ import Generic.classes.qualities.*;
 import Mongo.Connectivity.MongoDAO;
 import SQL.Connectivity.MySQLDAO;
 
-public class MongoUtilities {
+public class Utilities {
     public static boolean enterGardenShop(String name, ConnectType connectType){
         GardenShop currentShop = switch (connectType){
             case MONGO -> MongoDAO.INSTANCE.readGardenShop(name);

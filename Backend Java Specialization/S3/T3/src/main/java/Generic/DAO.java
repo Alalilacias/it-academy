@@ -23,6 +23,8 @@ public interface DAO {
 
 //    Update methods
     int updateStock(String store_id, Stock update);
+    void updateCurrentStockValue(String store_id, double newStockValue);
+    void updateCurrentSalesValue(String store_id, double newSalesValue);
 
 //    Delete methods
     boolean deleteGardenShop(String store_id);

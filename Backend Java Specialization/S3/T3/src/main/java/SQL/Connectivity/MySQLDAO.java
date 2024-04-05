@@ -7,54 +7,63 @@ import Generic.classes.Stock;
 import Generic.classes.Tickets;
 import Generic.classes.qualities.*;
 import Generic.classes.qualities.Types;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO:
-// - Check the whole thing to make sure it works.
-// - Marine: deleteGardenShop(), deleteSingleGardenShop(), deleteFullStock()
-// - Jorge: createTicket(), readTicketsFromEnteredStore(), updateStock()
+import static org.slf4j.LoggerFactory.*;
 
+@SuppressWarnings("LoggingSimilarMessage")
 public enum MySQLDAO implements DAO {
     INSTANCE;
 
-    private static final Logger logger = LoggerFactory.getLogger(MySQLDAO.class);
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB = "garden_shop";
-    //    User and password are based on my personal deployment, make sure to change if you're going to test
     private static final String USER = "it_academy_access";
     private static final String PASSWORD = "fneH5P95Yqmfnm";
 
+    //    Create methods implemented
     @Override
-    public void createGardenShop(String name, ArrayList<Stock> stockList, double currentValue) {
+    public void createGardenShop(String name, ArrayList<Stock> stockList, double currentStockValue) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-            String sql = "INSERT INTO stores (name) VALUES (?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            String sql = "INSERT INTO stores (name, current_stock_value, current_sales_value) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, name);
+            statement.setDouble(2, currentStockValue);
+            statement.setDouble(3, 0);
             int result = statement.executeUpdate();
-            statement.close();
 
             if (result == 0) {
-                logger.atError().log("Error creating garden shop. Check code.");
+                getLogger(MySQLDAO.class).atError().log("Error creating garden shop. Check code.");
             }
 
             try (ResultSet generatedKey = statement.getGeneratedKeys()) {
                 if (generatedKey.next()) {
                     int id = generatedKey.getInt(1);
+                    GardenShop createdGardenShop = new GardenShop.Builder()
+                            ._id(String.valueOf(id))
+                            .name(name)
+                            .stockList(stockList)
+                            .currentStockValue(currentStockValue)
+                            .currentSalesValue(0)
+                            .build();
+
+                    if (stockList.isEmpty()){
+                        System.out.println("Garden Shop Properly Created:" + createdGardenShop.toString());
+                        return;
+                    }
+
                     createStock(String.valueOf(id), stockList);
+                    System.out.println("Garden Shop Properly Created:" + createdGardenShop.toString());
                 }
             }
-
-
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createGardenShop(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at createGardenShop(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
     }
-
     @Override
     public void createStock(String store_id, ArrayList<Stock> newStockList) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
@@ -65,43 +74,43 @@ public enum MySQLDAO implements DAO {
             PreparedStatement stockStatement = connection.prepareStatement(stockSql);
 
             for (Stock stock : newStockList) {
-                productStatement.setString(1, stock.getType().name());
+                productStatement.setInt(1, stock.getType().getMySqlValue());
                 productStatement.setDouble(2, stock.getPrice());
                 productStatement.setString(3, stock.getQuality().getName());
 
                 int productResult = productStatement.executeUpdate();
 
                 if (productResult == 0) {
-                    logger.atError().log("Error creating product. Check code.");
+                    getLogger(MySQLDAO.class).atError().log("Error creating product. Check code.");
                     continue;
                 }
 
                 try (ResultSet generatedKeys = productStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
+                        int storeID = Integer.parseInt(store_id);
                         int productId = generatedKeys.getInt(1);
+                        stock.setProduct_id(String.valueOf(productId));
 
-                        // Insert data into stock table
-                        stockStatement.setString(1, store_id);
+                        stockStatement.setInt(1, storeID);
                         stockStatement.setInt(2, productId);
                         stockStatement.setInt(3, stock.getQuantity());
 
                         int stockResult = stockStatement.executeUpdate();
 
                         if (stockResult == 0) {
-                            logger.atError().log("Error creating stock entry. Check code.");
-                        } else {
-                            System.out.println("Stock entry properly created.");
+                            getLogger(MySQLDAO.class).atError().log("Error creating stock entry. Check code.");
                         }
                     } else {
-                        logger.atError().log("Failed to retrieve auto-generated keys for product insertion.");
+                        getLogger(MySQLDAO.class).atError().log("Failed to retrieve auto-generated keys for product insertion.");
                     }
                 }
             }
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createStock(), check connection settings.", e);
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at createStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
     }
-
     @Override
     public int createSingleStock(String store_id, Stock stock) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
@@ -111,57 +120,52 @@ public enum MySQLDAO implements DAO {
             PreparedStatement productStatement = connection.prepareStatement(productSql, Statement.RETURN_GENERATED_KEYS);
             PreparedStatement stockStatement = connection.prepareStatement(stockSql);
 
-            // Insert data into products table
-            productStatement.setString(1, stock.getType().name());
+            productStatement.setInt(1, stock.getType().getMySqlValue());
             productStatement.setDouble(2, stock.getPrice());
             productStatement.setString(3, stock.getQuality().getName());
 
             int productResult = productStatement.executeUpdate();
 
             if (productResult == 0) {
-                logger.atError().log("Error creating product. Check code.");
-                return 0;
+                getLogger(MySQLDAO.class).atError().log("Error creating product. Check code.");
+                return 2;
             }
-
             try (ResultSet generatedKeys = productStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
+                    int storeID = Integer.parseInt(store_id);
                     int productId = generatedKeys.getInt(1);
+                    stock.setProduct_id(String.valueOf(productId));
 
-                    stockStatement.setString(1, store_id);
+                    stockStatement.setInt(1, storeID);
                     stockStatement.setInt(2, productId);
                     stockStatement.setInt(3, stock.getQuantity());
 
                     int stockResult = stockStatement.executeUpdate();
 
                     if (stockResult == 0) {
-                        logger.atError().log("Error creating stock entry. Check code.");
-                        return 0;
-                    } else {
-                        logger.info("Stock entry properly created.");
-                        return 1;
+                        getLogger(MySQLDAO.class).atError().log("Error creating stock entry. Check code.");
                     }
+                    return 1;
                 } else {
-                    logger.atError().log("Failed to retrieve auto-generated keys for product insertion.");
-                    return 0;
+                    getLogger(MySQLDAO.class).atError().log("Failed to retrieve auto-generated keys for product insertion.");
+                    return 2;
                 }
             }
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createSingleStock(), check connection settings.", e);
-            return 0;
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at createSingleStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+            return 2;
         }
     }
-
     public void createTicket(String store_id, List<Products> products, double total) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-
-            //Crear ticket
-            String insertTicket = "INSERT INTO tickets (idstore, total) VALUES (?, ?)";
-            PreparedStatement ticketStatement = connection.prepareStatement(insertTicket, Statement.RETURN_GENERATED_KEYS);
-            ticketStatement.setString(1, store_id);
+            String ticketSql = "INSERT INTO tickets (idstore, total) VALUES (?, ?)";
+            PreparedStatement ticketStatement = connection.prepareStatement(ticketSql, Statement.RETURN_GENERATED_KEYS);
+            ticketStatement.setInt(1, Integer.parseInt(store_id));
             ticketStatement.setDouble(2, total);
             ticketStatement.executeUpdate();
 
-            //Obtener el ID del ticket
             int ticketId;
             try (java.sql.ResultSet generatedKeys = ticketStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -171,9 +175,8 @@ public enum MySQLDAO implements DAO {
                 }
             }
 
-            // Insertar las compras asociadas al ticket
-            String insertPurchase = "INSERT INTO purchases (idtickets, idproduct, quantity, total) VALUES (?,?,?,?)";
-            PreparedStatement purchaseStatement = connection.prepareStatement(insertPurchase);
+            String purchaseSql = "INSERT INTO purchases (idtickets, idproduct, quantity, total) VALUES (?,?,?,?)";
+            PreparedStatement purchaseStatement = connection.prepareStatement(purchaseSql);
             for (Products product : products) {
                 purchaseStatement.setInt(1, ticketId);
                 purchaseStatement.setInt(2, Integer.parseInt(product.getProduct_id()));
@@ -183,10 +186,13 @@ public enum MySQLDAO implements DAO {
             }
 
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createTicket(), check connection settings");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at createTicket(), check connection settings" + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
     }
 
+    //    Read methods implemented
     @Override
     public List<GardenShop> readGardenShops() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
@@ -195,29 +201,26 @@ public enum MySQLDAO implements DAO {
             String sql = "SELECT * FROM stores";
             PreparedStatement statement = connection.prepareStatement(sql);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    while (resultSet.next()) {
-                        List<Stock> stockList = readShopStock(String.valueOf(resultSet.getInt("idstores")));
-                        gardenShop = new GardenShop.Builder()
-                                ._id(String.valueOf(resultSet.getInt("idstores")))
-                                .name(resultSet.getString("name"))
-                                .stockList(stockList)
-                                .currentStockValue(resultSet.getDouble("current_stock_value"))
-                                .currentSalesValue(resultSet.getDouble("current_sales_value"))
-                                .build();
-                        gardenShops.add(gardenShop);
-                    }
-                    return gardenShops;
-                } else {
-                    return null;
+                while (resultSet.next()) {
+                    List<Stock> stockList = readShopStock(String.valueOf(resultSet.getInt("idstores")));
+                    gardenShop = new GardenShop.Builder()
+                            ._id(String.valueOf(resultSet.getInt("idstores")))
+                            .name(resultSet.getString("name"))
+                            .stockList(stockList)
+                            .currentStockValue(resultSet.getDouble("current_stock_value"))
+                            .currentSalesValue(resultSet.getDouble("current_sales_value"))
+                            .build();
+                    gardenShops.add(gardenShop);
                 }
+                return gardenShops;
             }
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createStock(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at readGardenShops(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
             return null;
         }
     }
-
     @Override
     public GardenShop readGardenShop(String name) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
@@ -239,11 +242,12 @@ public enum MySQLDAO implements DAO {
                 }
             }
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at createStock(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at readGardenShop(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
         return null;
     }
-
     @Override
     public List<Stock> readShopStock(String gardenShop_id) {
         List<Stock> stockList = new ArrayList<>();
@@ -290,72 +294,123 @@ public enum MySQLDAO implements DAO {
             }
 
         } catch (SQLException e) {
-            logger.atError().log("Error reading shop stock. Check connection settings.", e);
+            getLogger(MySQLDAO.class).atError().log("Error reading shop stock. Check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
 
         return stockList;
     }
-
-    //    In this method, we need to read all information from the tickets whose store_id matches the one input.
-//    Make sure you fill the logger error message that is sent if there's a connection error
     @Override
     public List<Tickets> readTicketsFromEnteredStore(String store_id) {
         List<Tickets> ticketsList = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-            String query = "SELECT t.idtickets, t.idstore, p.idproduct, p.quantity, p.total " +
+            String sql = "SELECT t.idtickets, t.idstore, t.total, p.idproduct, p.quantity, p.purchase_total " +
                     "FROM tickets t " +
                     "JOIN purchases p ON t.idtickets = p.idtickets " +
                     "WHERE t.idstore = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, Integer.parseInt(store_id));
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                int ticketId = resultSet.getInt("idtickets");
-                int productId = resultSet.getInt("idproduct");
-                int quantity = resultSet.getInt("quantity");
-                double total = resultSet.getDouble("total");
+                String ticketId = String.valueOf(resultSet.getInt("idtickets"));
 
-                System.out.println("Ticket ID: " + ticketId + ", Store ID: " + store_id + ", Product ID: " + productId + ", Quantity: " + quantity + ", Total: " + total);
+                Tickets ticket = null;
+                for (Tickets t : ticketsList) {
+                    if (t.get_id().equals(ticketId)) {
+                        ticket = t;
+                        break;
+                    }
+                }
+                if (ticket == null) {
+                    // If ticket does not exist, create a new one and add to ticketsList
+                    ticket = new Tickets.Builder()
+                            ._id(ticketId)
+                            .store_id(store_id)
+                            .total(resultSet.getDouble("total")) // Total for the ticket
+                            .build();
+                    ticketsList.add(ticket);
+                }
+
+                ticket.getProductsList().add(new Products.Builder()
+                        .product_id(String.valueOf(resultSet.getString("idproduct")))
+                        .quantity(resultSet.getInt("quantity"))
+                        .total(resultSet.getDouble("purchase_total"))
+                        .build());
             }
             return ticketsList;
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at readTickets(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at readTicketsFromEnteredStore(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
             return null;
         }
     }
 
-    //    The only purpose of this method is to update one item from the stock of a store whose id we get from input.
-//    The return should be 0 if no matching product is found, 1 if found and updated and 2 if found but unable to update, or you have connection issues.
-//    Make sure you fill the logger error message that is sent if there's a connection error
+    //    Update methods implemented
     @Override
     public int updateStock(String store_id, Stock update) {
-
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-            String query = "UPDATE stock SET quantity = ? WHERE idstore = ? AND idproduct = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            String sql = "UPDATE stock, products " +
+                    "SET stock.quantity = ?, products.price = ? " +
+                    "WHERE stock.idproduct = products.idproducts AND stock.idproduct = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, update.getQuantity());
-            statement.setInt(2, Integer.parseInt(store_id));
+            statement.setDouble(2, update.getPrice());
             statement.setInt(3, Integer.parseInt(update.getProduct_id()));
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
                 return 0;
-            } else if (rowsAffected == 1) {
-                return 1;
             } else {
-                // Se encontró más de un producto coincidente o hubo un problema de actualización
-                return 2;
+                return 1;
             }
-
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at updateStock(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at updateStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
             return 2;
         }
     }
+    @Override
+    public void updateCurrentStockValue(String store_id, double newStockValue) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
+            String query = "UPDATE stores SET current_stock_value = ? WHERE idstores = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setDouble(1, newStockValue);
+            statement.setInt(2, Integer.parseInt(store_id));
+            int rowsAffected = statement.executeUpdate();
 
-    //    The only purpose of this method is to update one item from the stock of a store whose id we get from input.
-//    Make sure you fill the logger error message that is sent if there's a connection error
+            if (rowsAffected == 0) {
+                getLogger(MySQLDAO.class).atError().log("No rows affected in updateCurrentStockValue()'s statement.executeUpdate() method execution.");
+            }
+        } catch (SQLException e) {
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at updateStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+        }
+    }
+    @Override
+    public void updateCurrentSalesValue(String store_id, double newSalesValue) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
+            String query = "UPDATE stores SET current_sales_value = ? WHERE idstores = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, Integer.parseInt(store_id));
+            statement.setDouble(2, newSalesValue);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                getLogger(MySQLDAO.class).atError().log("No rows affected in updateCurrentStockValue()'s statement.executeUpdate() method execution.");
+            }
+        } catch (SQLException e) {
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at updateStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+        }
+    }
+
+    //    Delete methods implemented
     @Override
     public boolean deleteGardenShop(String store_id) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
@@ -364,46 +419,53 @@ public enum MySQLDAO implements DAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at deleteGardenShop(), check connection settings");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at deleteGardenShop(), check connection settings" + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
             return false;
         }
     }
-
-    //    The only purpose of this method is to delete one item from the stock of a store whose id we get from input.
-//    The return should be 0 if no matching product is found, 1 if found and updated and 2 if found but unable to update, or you have connection issues.
-//    Make sure you fill the logger error message that is sent if there's a connection error
     @Override
     public int deleteSingleStock(String ignored, String stock_id) {
-        int rowsAffected;
-
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-            String sql = "DELETE FROM products WHERE idproducts = ?";
-            String sql2 = "DELETE FROM stock WHERE idproduct = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            PreparedStatement statement2 = connection.prepareStatement(sql2);
-            statement.setInt(1, Integer.parseInt(stock_id));
-            statement2.setInt(1, Integer.parseInt(stock_id));
-            rowsAffected = statement.executeUpdate();
-            rowsAffected += statement2.executeUpdate();
-            if(rowsAffected == 0){return 0;}
+            String stockSql = "DELETE FROM stock WHERE idproduct = ?";
+            String productSql = "DELETE FROM products WHERE idproducts = ?";
+
+            PreparedStatement productStatement = connection.prepareStatement(productSql);
+            PreparedStatement stockStatement = connection.prepareStatement(stockSql);
+
+            productStatement.setInt(1, Integer.parseInt(stock_id)); // Assuming stock_id is the product ID
+            stockStatement.setInt(1, Integer.parseInt(stock_id));
+
+            stockStatement.executeUpdate();
+            int rowsAffected = productStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                return 0;
+            }
+
             return 1;
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at deleteSingleStock(), check connection settings.");
-            return 2; // Return 2 to indicate connection issues or inability to update.
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at deleteSingleStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
+            return 2;
         }
     }
-
-    //    The only purpose of this method is to delete all items from the stock of a store whose id we get from input.
-//    Make sure you fill the logger error message that is sent if there's a connection error
     @Override
     public void deleteFullStock(String store_id) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
-            String sql = "DELETE FROM products WHERE store_id = ?";
+            String sql = "DELETE stock, products " +
+                    "FROM stock " +
+                    "JOIN products ON stock.idproduct = products.idproducts " +
+                    "WHERE stock.idstore = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, Integer.parseInt(store_id));
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.atError().log("Unable to create connection at deleteFullStock(), check connection settings.");
+            getLogger(MySQLDAO.class).atError().log("SQLException caught at deleteFullStock(), check connection settings." + "\n"
+                    + "Error Message: " + e.getMessage() + "\n"
+                    + "SQL State: " + e.getSQLState());
         }
     }
 }

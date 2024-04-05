@@ -16,7 +16,13 @@ public class Tickets {
         this.total = builder.total;
     }
 
-    public String getProductsList(){
+    public String get_id() {
+        return _id;
+    }
+    public List<Products> getProductsList() {
+        return productsList;
+    }
+    public String productsListToString(){
         return this.productsList.stream()
                 .map(Products::toString)
                 .collect(Collectors.joining("", "\n\tProducts bought:", ""));
@@ -25,7 +31,7 @@ public class Tickets {
     public String toString() {
         return "Ticket " + _id
                 + "\n\tStore ID: " + this.store_id
-                + getProductsList()
+                + productsListToString()
                 + "\n\tTotal: " + this.total + "€";
     }
     public static class Builder{
