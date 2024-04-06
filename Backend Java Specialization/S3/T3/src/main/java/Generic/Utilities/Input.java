@@ -126,7 +126,7 @@ public class Input {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage());
-                scanner.nextLine(); // Clear the input buffer
+                scanner.nextLine();
             }
         }
         return answer;

@@ -175,7 +175,7 @@ public enum MySQLDAO implements DAO {
                 }
             }
 
-            String purchaseSql = "INSERT INTO purchases (idtickets, idproduct, quantity, total) VALUES (?,?,?,?)";
+            String purchaseSql = "INSERT INTO purchases (idtickets, idproduct, quantity, purchase_total) VALUES (?,?,?,?)";
             PreparedStatement purchaseStatement = connection.prepareStatement(purchaseSql);
             for (Products product : products) {
                 purchaseStatement.setInt(1, ticketId);
@@ -375,6 +375,11 @@ public enum MySQLDAO implements DAO {
     }
     @Override
     public void updateCurrentStockValue(String store_id, double newStockValue) {
+        if (store_id == null) {
+            getLogger(MySQLDAO.class).atError().log("store_id is null in updateCurrentStockValue().");
+            return;
+        }
+
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
             String query = "UPDATE stores SET current_stock_value = ? WHERE idstores = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -383,21 +388,25 @@ public enum MySQLDAO implements DAO {
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
-                getLogger(MySQLDAO.class).atError().log("No rows affected in updateCurrentStockValue()'s statement.executeUpdate() method execution.");
+                getLogger(MySQLDAO.class).atError().log("No rows affected in updateCurrentStockValue()'s statement.executeUpdate() method execution."
+                        + "Store_id = " + store_id + "Store_id numerical value = " + Integer.parseInt(store_id));
             }
         } catch (SQLException e) {
             getLogger(MySQLDAO.class).atError().log("SQLException caught at updateStock(), check connection settings." + "\n"
                     + "Error Message: " + e.getMessage() + "\n"
                     + "SQL State: " + e.getSQLState());
+        } catch (NumberFormatException e) {
+            getLogger(MySQLDAO.class).atError().log("NumberFormatException caught when parsing store_id to integer: " + store_id);
         }
     }
+
     @Override
     public void updateCurrentSalesValue(String store_id, double newSalesValue) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL + DB, USER, PASSWORD)) {
             String query = "UPDATE stores SET current_sales_value = ? WHERE idstores = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, Integer.parseInt(store_id));
-            statement.setDouble(2, newSalesValue);
+            statement.setDouble(1, newSalesValue);
+            statement.setInt(2, Integer.parseInt(store_id));
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
