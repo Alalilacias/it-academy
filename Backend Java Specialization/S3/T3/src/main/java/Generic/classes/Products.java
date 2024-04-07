@@ -3,8 +3,6 @@ package Generic.classes;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.sql.PreparedStatement;
-
 public class Products {
     private final String product_id;
     private final int quantity;
