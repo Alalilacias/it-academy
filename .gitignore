@@ -17,6 +17,7 @@ nb-configuration.xml
 
 # Carpetas y archivos generados por Maven
 target/
+.mvn.wrapper/
 mvnw
 mvnw.cmd
 
