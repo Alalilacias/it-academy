@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.allegue.andres.s04.t01.n01.S04T01N01AllegueZabala;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t01.n02.S04T01N02AndresAllegue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,11 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = S04T01N01AllegueZabalaApplication.class)
-class S04T01N01AllegueZabalaApplicationTests {
+@SpringBootTest(classes = S04T01N02AndresAllegueApplicationTests.class)
+class S04T01N02AndresAllegueApplicationTests {
 
 	@Autowired
 	private ApplicationContext applicationContext;

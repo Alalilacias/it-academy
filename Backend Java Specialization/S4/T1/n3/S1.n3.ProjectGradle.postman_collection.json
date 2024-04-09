@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "fdf4cc63-fc6e-4e6b-ab5a-55af417240c8",
+		"name": "S1.n3.ProjectGradle",
+		"description": "```\nPostman Collection for the Spring Boot RESTful API made using Gradle following the instructions of the academy.\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34173504"
+	},
+	"item": [
+		{
+			"name": "HelloWorld2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}:{{Port}}/HelloWorld2/Test",
+					"host": [
+						"{{Server}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"HelloWorld2",
+						"Test"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Server",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "Port",
+			"value": "9002",
+			"type": "string"
+		}
+	]
+}
