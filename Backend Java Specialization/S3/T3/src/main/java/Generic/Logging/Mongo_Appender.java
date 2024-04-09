@@ -3,6 +3,8 @@ package Generic.Logging;
 import Mongo.Connectivity.MongoConfig;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -22,7 +24,13 @@ public class Mongo_Appender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     @Override
     public void start() {
-        mongoClient = MongoClients.create(uri);
+        ConnectionString connectionString = new ConnectionString(uri);
+
+        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+
+        mongoClient = MongoClients.create(mongoClientSettings);
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         collection = database.getCollection(collectionName);
 

@@ -23,6 +23,10 @@ public class GardenShop {
     public void enterGardenShop(ConnectType connectType){
         EnteredGardenShop.INSTANCE.enter(_id, name, currentStockValue, currentSalesValue, stockList, connectType);
     }
+
+    public List<Stock> getStockList() {
+        return stockList;
+    }
     @Override
     public String toString() {
         return "\n- Store_id: " + this._id

@@ -15,7 +15,7 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver-sync:5.0.0' //    MongoDB Driver
     implementation 'mysql:mysql-connector-java:8.0.33' //    MySQL Driver
     implementation 'org.slf4j:slf4j-api:2.0.12' //    SLF4J, latest version as of 25/03/2024
-    implementation 'ch.qos.logback:logback-classic:1.5.3' //    Logback, latest version as of 25/03/2024
+    implementation 'ch.qos.logback:logback-classic:1.4.14' //    Logback, latest version as of 25/03/2024
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4' //    Logstash, latest version as of 27/03/2024
 }
 
