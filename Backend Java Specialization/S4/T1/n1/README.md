@@ -1,4 +1,4 @@
-# Level 1
+# Level 1, Maven Project
 This exercise is a first contact with Spring and Maven. The instructions are as follows:
 
 Access the page ->https://start.spring.io/, and generate a Spring boot project with the following characteristics:

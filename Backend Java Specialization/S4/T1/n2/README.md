@@ -1,4 +1,4 @@
-# Level 2
+# Level 2, Gradle Project
 This level is almost identical to level 1, but using Gradle as the Dependency Manager.
 
 Access the page ->https://start.spring.io/, and generate a Spring boot project with the following characteristics:
