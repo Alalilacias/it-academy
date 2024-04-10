@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Test html file made for the level 1 exercise of the task 2 of the Sprint 4 of the it-academy backend course.">
+    <meta name="keywords" content="Fruits, Database">
+    <meta name="author" content="Alalin Allalilacias">
+    <link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.min.css">
+    <title>Fruit Operations</title>
+    <link rel="icon" type="image/png" href="/static/index_icon.png">
+    <link rel="canonical" href="https://www.allalilacias-s4-t2-n1.com">
+</head>
+<body>
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="FruitOperationTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="true">Add</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="getOne-tab" data-toggle="tab" href="#getOne" role="tab" aria-controls="getOne" aria-selected="false">Get One</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="getAll-tab" data-toggle="tab" href="#getAll" role="tab" aria-controls="getAll" aria-selected="false">Get All</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="false">Update</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="delete-tab" data-toggle="tab" href="#delete" role="tab" aria-controls="delete" aria-selected="false">Delete</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="FruitOperationTabContent">
+        <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+            <form id="addFruitForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <select class="form-control" id="name" name="name" required>
+                        <option value="">Select Fruit</option>
+                        <option value="APPLE">Apple</option>
+                        <option value="ORANGE">Orange</option>
+                        <option value="BANANA">Banana</option>
+                        <option value="MANGO">Mango</option>
+                        <option value="STRAWBERRY">Strawberry</option>
+                        <option value="GRAPE">Grape</option>
+                        <option value="PINEAPPLE">Pineapple</option>
+                        <option value="WATERMELON">Watermelon</option>
+                        <option value="PEACH">Peach</option>
+                        <option value="PEAR">Pear</option>
+                        <option value="CHERRY">Cherry</option>
+                        <option value="LEMON">Lemon</option>
+                        <option value="LIME">Lime</option>
+                        <option value="BLUEBERRY">Blueberry</option>
+                        <option value="RASPBERRY">Raspberry</option>
+                        <option value="BLACKBERRY">Blackberry</option>
+                        <option value="COCONUT">Coconut</option>
+                        <option value="KIWI">Kiwi</option>
+                        <option value="PLUM">Plum</option>
+                        <option value="APRICOT">Apricot</option>
+                        <option value="FIG">Fig</option>
+                        <option value="AVOCADO">Avocado</option>
+                        <option value="PAPAYA">Papaya</option>
+                        <option value="GUAVA">Guava</option>
+                        <option value="PASSION_FRUIT">Passion Fruit</option>
+                        <option value="LYCHEE">Lychee</option>
+                        <option value="DATE">Date</option>
+                        <option value="MELON">Melon</option>
+                        <option value="NECTARINE">Nectarine</option>
+                        <option value="TANGERINE">Tangerine</option>
+                        <option value="CLEMENTINE">Clementine</option>
+                        <option value="PERSIMMON">Persimmon</option>
+                        <option value="KUMQUAT">Kumquat</option>
+                        <option value="CRANBERRY">Cranberry</option>
+                        <option value="GOOSEBERRY">Gooseberry</option>
+                        <option value="MANGOSTEEN">Mangosteen</option>
+                        <option value="STAR_FRUIT">Star Fruit</option>
+                        <option value="JACKFRUIT">Jackfruit</option>
+                        <option value="DURIAN">Durian</option>
+                        <option value="CANTALOUPE">Cantaloupe</option>
+                        <option value="HONEYDEW">Honeydew</option>
+                        <option value="EGGPLANT">Eggplant</option>
+                        <option value="TOMATO">Tomato</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantityKilos">Quantity Kilos</label>
+                    <input type="number" class="form-control" id="quantityKilos" name="quantityKilos">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Fruit</button>
+            </form>
+
+            <div id="responseMessage"></div>
+        </div>
+        <div class="tab-pane fade show active" id="getOne" role="tabpanel" aria-labelledby="getOne-tab">
+            <div class="container mt-5">
+                <form id="getOneFruitForm">
+                    <div class="form-group">
+                        <label for="fruitId">Fruit ID</label>
+                        <input type="number" class="form-control" id="fruitId" name="fruitId">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Fruit</button>
+                </form>
+                <div id="getOneFruitResult"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="getAll" role="tabpanel" aria-labelledby="getAll-tab">
+            <div class="container mt-5">
+                <button type="button" class="btn btn-primary" id="getAllFruitsBtn">Get All Fruits</button>
+                <div id="getAllFruitsResult"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
+            <div class="container mt-5">
+                <form id="updateFruitForm">
+                    <div class="form-group">
+                        <label for="updateFruitId">Fruit ID</label>
+                        <input type="number" class="form-control" id="updateFruitId" name="updateFruitId">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateName">New Name</label>
+                        <input type="text" class="form-control" id="updateName" name="updateName">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateQuantity">New Quantity Kilos</label>
+                        <input type="number" class="form-control" id="updateQuantity" name="updateQuantity">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Fruit</button>
+                </form>
+                <div id="updateFruitResult"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+            <div class="container mt-5">
+                <form id="deleteFruitForm">
+                    <div class="form-group">
+                        <label for="deleteFruitId">Fruit ID</label>
+                        <input type="number" class="form-control" id="deleteFruitId" name="deleteFruitId">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Delete Fruit</button>
+                </form>
+                <div id="deleteFruitResult"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+<script src="libraries/jquery/jquery-3.3.1.min.js"></script>
+<script src="libraries/popperjs/popper-2.4.4.min.js"></script>
+<script src="libraries/bootstrap/js/bootstrap.min.js"></script>
+<!--<script src="/templates/libraries/bootstrap/css/bootstrap.min.css"></script>-->
+</body>
+</html>
