@@ -1,8 +1,8 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.services;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.model.services;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.exceptions.FruitNotFoundException;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.repository.FruitRepository;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.model.repository.FruitRepository;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.exceptions.FruitNotFoundException;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.model.domain.Fruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

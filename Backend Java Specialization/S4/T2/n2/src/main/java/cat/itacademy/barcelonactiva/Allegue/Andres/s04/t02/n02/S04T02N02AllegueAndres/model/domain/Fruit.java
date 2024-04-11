@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.domain;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n02.S04T02N02AllegueAndres.model.domain;
 
 import jakarta.persistence.*;
 
@@ -8,33 +8,46 @@ public class Fruit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "fruit_name")
-    private FruitTypes name;
+    private String name;
 
     @Column(name = "quantity_kilos")
     private int quantityKilos;
 
-    protected Fruit(){}
-    public Fruit(FruitTypes type, int quantityKilos){
-        this.name = type;
+    public Fruit() {
+    }
+
+    protected Fruit(long id){
+        this.id = id;
+    }
+    public Fruit(String name, int quantityKilos){
+        this.name = name;
         this.quantityKilos = quantityKilos;
     }
 
     public long getId() {
         return id;
     }
-    public FruitTypes getName() {
+    public String getName() {
         return name;
     }
     public int getQuantityKilos() {
         return quantityKilos;
     }
 
-    public void setName(FruitTypes name) {
+    public void setName(String name) {
         this.name = name;
     }
     public void setQuantityKilos(int quantityKilos) {
         this.quantityKilos = quantityKilos;
+    }
+
+    @Override
+    public String toString() {
+        return "Fruit{" +
+                "id=" + id +
+                ", name=" + name +
+                ", quantityKilos=" + quantityKilos +
+                '}';
     }
 }

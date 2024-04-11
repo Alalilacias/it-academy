@@ -32,12 +32,12 @@ Taking advantage of the JPA specification, you will have to persist this entity 
 
 The class located in the controllers package (FruitaController, for example), must be able to respond to the following requests to update and consult information:
 
-http://localhost:8080/fruit/add
+http://localhost:8080/fruits/add
 
-http://localhost:8080/fruit/update
+http://localhost:8080/fruits/update
 
-http://localhost:8080/fruita/delete/{id}
+http://localhost:8080/fruits/delete/{id}
 
-http://localhost:8080/fruita/getOne/{id}
+http://localhost:8080/fruits/getOne/{id}
 
-http://localhost:8080/fruit/getAll
+http://localhost:8080/fruits/getAll

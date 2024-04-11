@@ -8,7 +8,7 @@
     <meta name="author" content="Alalin Allalilacias">
     <link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.min.css">
     <title>Fruit Operations</title>
-    <link rel="icon" type="image/png" href="/static/index_icon.png">
+    <link rel="icon" type="image/png" href="/static/images/index_icon.png">
     <link rel="canonical" href="https://www.allalilacias-s4-t2-n1.com">
 </head>
 <body>
@@ -144,12 +144,53 @@
     </div>
 </div>
 
-<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 <script src="libraries/jquery/jquery-3.3.1.min.js"></script>
 <script src="libraries/popperjs/popper-2.4.4.min.js"></script>
 <script src="libraries/bootstrap/js/bootstrap.min.js"></script>
-<!--<script src="/templates/libraries/bootstrap/css/bootstrap.min.css"></script>-->
+<script>
+    $('#addFruitForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        var formData = {
+            name: $('#name').val(),
+            quantityKilos: $('#quantityKilos').val()
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/add', // The URL of your Spring Boot backend endpoint
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                $('#responseMessage').text(response); // Display response message
+            },
+            error: function(xhr, status, error) {
+                $('#responseMessage').text('Error: ' + error); // Display error message
+            }
+        });
+    });
+
+    $('#getOneFruitForm').submit(function(event) {
+        event.preventDefault();
+        var fruitId = $('#fruitId').val();
+        $.get('/getOne/' + fruitId, function(response) {
+            $('#getOneFruitResult').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+        }).fail(function(xhr, status, error) {
+            $('#getOneFruitResult').text('Error: ' + error);
+        });
+    });
+
+    $('#getAllFruitsBtn').click(function() {
+        $.get('/getAll', function(response) {
+            var html = '<ul>';
+            $.each(response, function(index, fruit) {
+                html += '<li>' + fruit.name + ': ' + fruit.quantityKilos + '</li>';
+            });
+            html += '</ul>';
+            $('#getAllFruitsResult').html(html);
+        }).fail(function(xhr, status, error) {
+            $('#getAllFruitsResult').text('Error: ' + error);
+        });
+    });
+</script>
+
 </body>
 </html>

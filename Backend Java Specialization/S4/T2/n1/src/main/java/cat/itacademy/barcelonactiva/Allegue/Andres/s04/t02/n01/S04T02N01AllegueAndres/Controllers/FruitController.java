@@ -1,7 +1,7 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.Controllers;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.Controllers;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.services.FruitService;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.model.services.FruitService;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.S04T02N01AllegueAndres.model.domain.Fruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Fruits")
+@RequestMapping("/fruits")
 public class FruitController {
     @Autowired
     private FruitService fruitService;
 
     @PostMapping("/add")
     public ResponseEntity<String> addFruit(@RequestBody Fruit fruit) {
-        Fruit savedFruit = fruitService.add(fruit);
-        String responseMessage = "Fruit created: " + savedFruit.getName() + ", Quantity: " + savedFruit.getQuantityKilos();
-        return ResponseEntity.ok().body(responseMessage);
+        try {
+            Fruit savedFruit = fruitService.add(fruit);
+            String responseMessage = "Fruit created: " + savedFruit.getName() + ", Quantity: " + savedFruit.getQuantityKilos();
+            return ResponseEntity.ok().body(responseMessage);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating fruit: " + e.getMessage());
+        }
     }
     @GetMapping("/getOne/{id}")
     public ResponseEntity<Fruit> getOneFruit(@PathVariable long id) {

@@ -1,5 +1,6 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n01.model.domain;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n02.S04T02N02AllegueAndres.model.domain;
 
+@SuppressWarnings("unused")
 public enum FruitTypes {
     APPLE,
     ORANGE,
