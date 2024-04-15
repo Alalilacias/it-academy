@@ -1,37 +1,36 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n02.S04T02N02AllegueAndres.model.domain;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s04.t02.n03.S04T02N03AllegueAndres.model.domain;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document(collection = "Fruit")
 public class Fruit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idfruits")
-    private int id;
+    private String id;
 
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "quantity_kilos")
     private int quantityKilos;
 
     public Fruit() {
     }
 
-    protected Fruit(int id){
+    protected Fruit(String id){
         this.id = id;
     }
+
     public Fruit(String name, int quantityKilos){
         this.name = name;
         this.quantityKilos = quantityKilos;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public int getQuantityKilos() {
         return quantityKilos;
     }
@@ -39,6 +38,7 @@ public class Fruit {
     public void setName(String name) {
         this.name = name;
     }
+
     public void setQuantityKilos(int quantityKilos) {
         this.quantityKilos = quantityKilos;
     }
@@ -46,8 +46,8 @@ public class Fruit {
     @Override
     public String toString() {
         return "Fruit{" +
-                "id=" + id +
-                ", name=" + name +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", quantityKilos=" + quantityKilos +
                 '}';
     }
