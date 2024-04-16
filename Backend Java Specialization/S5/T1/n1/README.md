@@ -63,3 +63,5 @@ http://localhost:9000/branch/getAll
 The port to be used is 9000.
 
 The view must be developed with Thymeleaf.
+
+> Swagger has been implemented on this project and it can be accessed through the following link: http://localhost:9000/swagger-ui.html
