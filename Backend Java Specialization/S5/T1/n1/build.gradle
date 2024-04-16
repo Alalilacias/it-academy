@@ -26,11 +26,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-	implementation 'io.springfox:springfox-swagger2:3.0.0'	// Swagger SpringFox implementation.
-	implementation 'io.springfox:springfox-swagger-ui:3.0.0'	// Swagger SpringFox UI implementation.
+	implementation 'org.springdoc:springdoc-openapi-data-rest:1.8.0'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
 
-	compileOnly 'org.projectlombok:lombok:1.18.20'	// Lombok implementation. To reduce boilerplate code.
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	compileOnly 'org.projectlombok:lombok:1.18.32'	// Lombok implementation. To reduce boilerplate code.
+	annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
 tasks.named('test') {

@@ -1,13 +1,11 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto;
 
-import io.swagger.annotations.ApiModel;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullCountryException;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-@ApiModel("Enum containing all current members of the EU.")
 @SuppressWarnings("unused")
 public enum EUCountries {
     AUSTRIA,
@@ -44,10 +42,14 @@ public enum EUCountries {
             .collect(Collectors.toSet());
 
 
-    public boolean isEuCountry(String country) {
+    public static BranchType getBranchType(String country) {
         if (country == null) {
-            return false; // Or throw an IllegalArgumentException
+            throw new NullCountryException("Country cannot be null");
         }
-        return euCountryNames.contains(country.toLowerCase());
+        if (euCountryNames.contains(country.toLowerCase())) {
+            return BranchType.EU;
+        } else {
+            return BranchType.NON_EU;
+        }
     }
 }
