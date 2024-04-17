@@ -1,7 +1,5 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullCountryException;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,7 +42,7 @@ public enum EUCountries {
 
     public static BranchType getBranchType(String country) {
         if (country == null) {
-            throw new NullCountryException("Country cannot be null");
+            throw new IllegalArgumentException("Country cannot be null");
         }
         if (euCountryNames.contains(country.toLowerCase())) {
             return BranchType.EU;

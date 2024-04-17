@@ -1,6 +1,6 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullCountryException;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullBranchTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +9,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @SuppressWarnings("unused")
 public class BranchExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(NullCountryException.class)
-    public ResponseEntity<String> nullCountryExceptionHandler(NullCountryException nullCountryException){
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalArgumentException illegalArgumentException){
+        logger.debug("Error message:" + illegalArgumentException.getMessage()
+        + "\nError cause: " + illegalArgumentException.getCause());
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT)
                 .body("""
                         There is coffee all over the world.\
@@ -24,5 +26,15 @@ public class BranchExceptionHandler extends ResponseEntityExceptionHandler {
                         Coffee is brewed using coffee pots.\
 
                         Any attempt to brew coffee with a teapot will result in this error code\s""");
+    }
+
+    @ExceptionHandler(NullBranchTypeException.class)
+    public ResponseEntity<String> nullBranchTypeExceptionHandler(NullBranchTypeException branchTypeException){
+        logger.error("Error message: " + branchTypeException.getMessage()
+        + "\nError cause: " + branchTypeException.getCause()
+        + "\nBranch type: " + branchTypeException.getType().name());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("An error occurred when processing your request, please contact our support team.");
     }
 }
