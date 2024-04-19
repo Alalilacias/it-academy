@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions;
 
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullBranchTypeException;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,13 @@ public class BranchExceptionHandler extends ResponseEntityExceptionHandler {
         + "\nBranch type: " + branchTypeException.getType().name());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("An error occurred when processing your request, please contact our support team.");
+    }
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<String> serviceExceptionHandler(ServiceException serviceException){
+        logger.error("Error message: " + serviceException.getMessage()
+        + "\nError cause: " + serviceException.getCause());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An error occurred when processing your request, please contact our support team.");
     }
 }
