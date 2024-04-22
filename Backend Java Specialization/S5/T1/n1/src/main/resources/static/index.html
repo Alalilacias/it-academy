@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="HTML file made for the level 1 exercise of the task 1 of the Sprint 5 of the it-academy backend course.">
+    <meta name="keywords" content="Fruits, Database">
+    <meta name="author" content="Alalin Allalilacias">
+
+    <title>Branch Management Example Web-App</title>
+    <link rel="icon" type="image/png" href="/static/images/index_icon.png">
+
+    <link rel="stylesheet" href="/static/libraries/css/bootstrap.min.css">
+
+    <script src="/static/libraries/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        .navbar-nav .nav-item:hover {
+            background-color: #820000 !important;
+        }
+        a {
+            color: #820000;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark navbar-static-top">
+    <a class="navbar-brand" href="index.html" th:object="">
+        <!--suppress CheckImageSize -->
+        <img src="/static/images/dead_island.png" alt="nav_logo" width="40">
+        DI Branch Manager
+    </a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#" th:>Documentation</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../templates/secondary%20pages/manager.html">Manager</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <h1>Welcome to our Branch Manager™</h1>
+    <p><br>We are here to help you properly and more comfortably manage your branches.
+        If unsure on how to use our service, feel free to check the <a href="../templates/secondary%20pages/documentation.html">user manual</a>.</p>
+    <p>We encourage you to browse and test our product and see if you enjoy it. </p>
+    <p></p>
+</div>
+
+</body>
+</html>
