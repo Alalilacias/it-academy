@@ -9,7 +9,7 @@
 
     <title>Branch Management Example Web-App</title>
     <!--suppress HtmlUnknownTarget -->
-    <link rel="icon" type="image/png" href="/images/index_icon.png">
+    <link rel="icon" type="image/png" href="/images/dead_island.png">
 
     <!--suppress HtmlUnknownTarget -->
     <link rel="stylesheet" href="/libraries/css/bootstrap.min.css">
@@ -20,34 +20,99 @@
         a {
             color: #820000;
         }
+        .rounded-circle{
+            border:1px solid;
+            border-radius:50%;
+            width:30px;
+            height:30px;
+        }
+        .rounded{
+            width:30px;
+            height:20px;
+        }
+        .dropdown-menu {
+            max-width: 100vw;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark navbar-static-top">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top">
     <a class="navbar-brand" href="/templates/index.html">
         <!--suppress CheckImageSize -->
         <!--suppress HtmlUnknownTarget -->
         <img src="/images/dead_island.png" alt="nav_logo" width="40">
-        DI Branch Manager
+        Isle
     </a>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="#">Documentation</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Manager</a>
-        </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{messages.documentation}">Documentation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{messages.manager}">Manager</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{messages.contact}">Manager</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="img-fluid rounded"
+                         src="#"
+                         th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+                         alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li th:if="${#locale.language != 'es'}">
+                        <a class="dropdown-item me-auto" href="#" th:src="@{/images/es_flag.png}" th:onclick="changeLanguage('es')">
+                            <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
+                        </a>
+                    </li>
+                    <li th:if="${#locale.language != 'ca'}">
+                        <a class="dropdown-item me-auto" href="#" th:src="@{/images/ca_flag.png}" th:onclick="changeLanguage('ca')">
+                            <img class="rounded" src="#" th:src="@{/images/cat_flag.png}" alt="cat_image">
+                        </a>
+                    </li>
+                    <li th:if="${#locale.language != 'en'}">
+                        <a class="dropdown-item me-auto" href="#" th:src="@{/images/en_flag.png}" th:onclick="changeLanguage('en')">
+                            <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                    <!--suppress HtmlUnknownTarget -->
+                    <img class="img-fluid rounded-circle" src="/images/empty_user.png" alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" th:text="messages.profile"></a></li>
+                    <li><a class="dropdown-item" href="#" ></a></li>
+                    <li><a class="dropdown-item" href="#"></a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </nav>
 
+
 <div class="container-fluid">
-    <h1 th:text="#{greeting}">There's no way you got here, you little shit.™</h1>
-    <p th:utext="#{body1}">Please fucking try again or contact us.</p>
-    <p th:utext="#{body2}">I apologize for my language, I'm just so pissed lmao</p>
+    <h1 th:text="#{messages.index_header}">There's no way you got here, you little shit.™</h1>
+    <p th:utext="#{messages.index_body1}">Please fucking try again or contact us.</p>
+    <p th:utext="#{messages.index_body2}">I apologize for my language, I'm just so pissed lmao</p>
+    <p th:utext="#{messages.index_body3}">Even if you were to apologize, I wouldn't find it in me to forgive you</p>
     <p></p>
 </div>
 
 <!--suppress HtmlUnknownTarget -->
 <script src="/libraries/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    function changeLanguage(lang) {
+        var url = /*[[@{'index.html?lang='}]]*/ + lang;
+        window.location.replace = url;
+    }
+</script>
 </body>
 </html>
