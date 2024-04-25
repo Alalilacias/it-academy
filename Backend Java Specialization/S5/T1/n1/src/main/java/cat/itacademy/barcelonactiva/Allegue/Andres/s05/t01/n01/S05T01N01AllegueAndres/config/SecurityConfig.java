@@ -19,7 +19,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-            (requests) -> requests.requestMatchers("/", "/index.html", "/home", "/images/**", "/libraries/**")
+            (requests) -> requests.requestMatchers("/", "/**", "/index.html", "/home", "/images/**", "/libraries/**")
                     .permitAll()
                     .anyRequest().authenticated()
         )
@@ -39,4 +39,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new Argon2PasswordEncoder(16, 32, 1, 60000, 10);
     }
+
 }

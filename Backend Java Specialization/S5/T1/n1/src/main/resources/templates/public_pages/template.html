@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en" th:fragment="layout(title,content)" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="HTML file made for the level 1 exercise of the task 1 of the Sprint 5 of the it-academy backend course.">
+    <meta name="keywords" content="Student, ">
+    <meta name="author" content="Alalin Allalilacias">
+
+    <title th:replace="${title}"></title>
+
+    <link rel="icon" type="image/png" href="/images/dead_island.png">
+
+
+    <link rel="stylesheet" href="/libraries/css/bootstrap.min.css">
+
+    <script src="/libraries/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .navbar-nav .nav-item:hover {
+            background-color: #820000 !important;
+        }
+        a {
+            color: #820000;
+        }
+        .rounded-circle{
+            border:1px solid;
+            border-radius:50%;
+            width:30px;
+            height:30px;
+        }
+        .rounded{
+            width:30px;
+            height:20px;
+        }
+        .dropdown-menu {
+            max-width: 100vw;
+            padding: 0.5rem;
+        }
+
+        .dropdown-item {
+            min-width: auto;
+            margin: 0;
+            padding: 0.5rem 1rem;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
+    <a class="navbar-brand" href="/">
+        <!--suppress CheckImageSize -->
+
+        <img src="/images/dead_island.png" alt="nav_logo" width="40">
+        Isle
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/documentation}" th:text="#{messages.documentation}">Documentation</a>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{messages.manager}">Manager</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{messages.contact}">Contact</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="img-fluid rounded"
+                         src="#"
+                         th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+                         alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
+                    <li th:if="${#locale.language != 'es'}">
+                        <a class="dropdown-item" href="#" th:src="@{/images/es_flag.png}" th:href="@{?lang=es}">
+                            <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
+                        </a>
+                    </li>
+                    <li th:if="${#locale.language != 'ca'}">
+                        <a class="dropdown-item" href="#" th:src="@{/images/ca_flag.png}" th:href="@{?lang=ca}">
+                            <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image">
+                        </a>
+                    </li>
+                    <li th:if="${#locale.language != 'en'}">
+                        <a class="dropdown-item" href="#" th:src="@{/images/en_flag.png}" th:href="@{?lang=en}">
+                            <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                <a class="dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Render profile picture or default picture -->
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li><a class="dropdown-item" href="#" th:text="#{messages.profile}"></a></li>
+
+                    <li>
+                        <a class="dropdown-item" href="/logout" th:text="#{messages.logout}"></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+
+                <button class="nav-link btn" data-bs-toggle="modal" data-bs-target="#loginModal" th:text="#{messages.login}"></button>
+                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <!--                            Modal header-->
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loginModalLabel" th:text="#{messages.login}">Login</h5>
+                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!--                            Modal body-->
+                            <div class="modal-body">
+                                <!-- Your login form goes here -->
+                                <!-- You can use Thymeleaf to include a login form if needed -->
+                            </div>
+
+                            <!--                            Modal footer-->
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+    <div th:replace="${content}"></div>
+</body>
+<footer class="bg-dark text-center text-white py-3 fixed-bottom">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/" class="text-white" th:text="#{messages.home}">Home</a>
+                <a href="/documentation" class="text-white" th:text="#{messages.documentation}">Documentation</a>
+                <a href="#" class="text-white" th:text="#{messages.contact}">Contact</a>
+            </div>
+        </div>
+    </div>
+    <p th:text="#{messages.footer}">Isle, designed with tons of love. Made by and for learners.</p>
+</footer>
+</html>
