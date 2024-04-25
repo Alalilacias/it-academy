@@ -150,12 +150,17 @@
                                     <div class="text-left">
 <!--                                        tODO finish setting up buttons on the registration form.-->
                                         <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" th:text="#{messages.register}">Register</button>
-                                        <button class="btn btn-custom btn-sm ps-1" data-bs-toggle="modal" data-bs-target="#resetPasswordModal" th:text="#{messages.reset_password}">Reset Password</button>
+                                        <button class="btn btn-custom btn-sm [[${#locale.language == 'en'} ? 'ps-4 me-5' : 'ps-1 me-3']]"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#resetPasswordModal"
+                                                th:text="#{messages.reset_password}">Reset Password</button>
+
+
+                                        <!-- Login with Google button -->
+    <!--                                TODO Setup google login process. Finish setting up register, login and reset password processes-->
+                                        <button class="btn btn-primary btn-sm ms-5" onclick="redirectToGoogle()" th:text="#{messages.login_with_google}">Login with Google</button>
                                     </div>
                                 </form>
-                                <!-- Login with Google button -->
-<!--                                TODO Setup google login process. Finish setting up register, login and reset password processes-->
-                                <button class="btn btn-primary mt-3" onclick="redirectToGoogle()">Login with Google</button>
                             </div>
 
                             <!-- Modal footer -->
