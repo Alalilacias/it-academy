@@ -148,9 +148,8 @@
                                     </div>
                                     <!-- Registration and password reset links -->
                                     <div class="text-left">
-<!--                                        tODO finish setting up buttons on the registration form.-->
                                         <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" th:text="#{messages.register}">Register</button>
-                                        <button class="btn btn-custom btn-sm [[${#locale.language == 'en'} ? 'ps-4 me-5' : 'ps-1 me-3']]"
+                                        <button class="btn btn-custom btn-sm"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#resetPasswordModal"
                                                 th:text="#{messages.reset_password}">Reset Password</button>
@@ -158,7 +157,7 @@
 
                                         <!-- Login with Google button -->
     <!--                                TODO Setup google login process. Finish setting up register, login and reset password processes-->
-                                        <button class="btn btn-primary btn-sm ms-5" onclick="redirectToGoogle()" th:text="#{messages.login_with_google}">Login with Google</button>
+                                        <button class="btn btn-primary btn-sm float-end" onclick="redirectToGoogle()" th:text="#{messages.login_with_google}">Login with Google</button>
                                     </div>
                                 </form>
                             </div>
@@ -166,8 +165,8 @@
                             <!-- Modal footer -->
                             <div class="modal-footer">
                                 <!-- Login button -->
-                                <button type="button" class="btn btn-custom" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
-                                <button type="submit" class="btn btn-custom ms-auto" th:text="#{messages.login}">Login</button>
+                                <button type="button" class="btn btn-custom btn-sm float-start me-auto" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
+                                <button type="submit" class="btn btn-custom btn-sm float-end" th:text="#{messages.login}">Login</button>
                             </div>
                         </div>
                     </div>
