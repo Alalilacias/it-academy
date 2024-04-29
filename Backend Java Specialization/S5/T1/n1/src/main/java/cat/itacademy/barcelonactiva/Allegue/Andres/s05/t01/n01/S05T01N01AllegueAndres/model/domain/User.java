@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain;
 
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.UserRoles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -37,14 +38,18 @@ public class User {
     private String email;
 
     @Column(name = "password", nullable = false, length = 64)
-    @Email(message = "Please enter a valid email.")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    @NotEmpty(message = "Please enter an email")
+    @NotEmpty(message = "Please enter a password")
     @Schema(description = "Self-explanatory")
     private String password;
 
-    @Column(name = "profile_image")
-    @Lob
-    private byte[] profileImage;
+    @Column(name = "roles", nullable = false, length = 64)
+    @Enumerated(EnumType.STRING)
+    @Schema(description = "Self-explanatory")
+    private UserRoles roles;
 
+    @Column(name = "profile_pic")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Schema(description = "Self-explanatory")
+    private String profile_pic;
 }
