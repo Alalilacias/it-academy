@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.enums;
 
 import java.util.Arrays;
 import java.util.Set;
