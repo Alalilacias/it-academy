@@ -3,9 +3,9 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("")
@@ -23,13 +23,13 @@ public class WebController {
         return "public_pages/contact";
     }
     @GetMapping("/profile")
-    public String profile(Model model){
+    public String profile(RedirectAttributes redirectAttributes){
         if (isAuthenticated()){
             return "public_pages/profile";
         }
 
-        model.addAttribute("modal_pressed", true);
-        return "/";
+        redirectAttributes.addFlashAttribute("modal_pressed", true);
+        return "redirect:/";
     }
 
     // This method checks if the user is authenticated

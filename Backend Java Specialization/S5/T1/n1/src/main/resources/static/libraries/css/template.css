@@ -1,0 +1,50 @@
+.navbar-nav .nav-item:hover {
+    background-color: #820000 !important;
+}
+.navbar-nav .navbar-link:hover {
+    background-color: #820000 !important;
+}
+.btn-custom {
+    background-color: #820000;
+    color: #ffffff; /* Text color */
+}
+
+/* Hover style for buttons */
+.btn-custom:hover {
+    background-color: #6a0000; /* Darker shade on hover */
+}
+.button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #820000 !important;
+}
+a {
+    color: #820000;
+}
+.rounded-circle{
+    border:1px solid;
+    border-radius:50%;
+    width:30px;
+    height:30px;
+}
+.rounded{
+    width:30px;
+    height:20px;
+}
+.dropdown-menu {
+    max-width: 100vw;
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    min-width: auto;
+    margin: 0;
+    padding: 0.5rem 1rem;
+}

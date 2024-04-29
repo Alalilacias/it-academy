@@ -15,11 +15,20 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private static final String[] allowedRequests = {
+//            "/",
+            "/**",
+//            "/index.html",
+//            "/home",
+//            "/images/**",
+//            "/libraries/**",
+//            "redirectToGoogle()"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-            (requests) -> requests.requestMatchers("/", "/**", "/index.html", "/home", "/images/**", "/libraries/**")
+            (requests) -> requests.requestMatchers(allowedRequests)
                     .permitAll()
                     .anyRequest().authenticated()
         )
