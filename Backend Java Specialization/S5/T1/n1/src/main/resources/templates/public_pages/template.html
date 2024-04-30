@@ -15,9 +15,9 @@
 
     <link rel="stylesheet" href="/libraries/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libraries/css/template.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <script src="/libraries/js/bootstrap.bundle.min.js"></script>
-    <script src="/libraries/js/template.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
@@ -75,7 +75,7 @@
                         <div class="modal-content">
                             <!-- Modal header -->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                                <h5 class="modal-title" id="loginModalLabel" th:text="#{messages.login}">Login</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
@@ -92,7 +92,7 @@
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="loginPassword" name="password" required>
                                             <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle">
-                                                <i class="bi bi-eye-fill"></i>
+                                                <i class="bi-eye-fill"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -131,18 +131,23 @@
                             <!-- Modal body -->
                             <div class="modal-body">
                                 <!-- Registration form -->
-                                <form id="registrationForm" action="/register" method="post">
+                                <form id="registrationForm" action="/users/register" method="post">
                                     <div class="mb-3">
                                         <label for="username" class="form-label" th:text="#{messages.username}">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" required>
+                                        <input type="text" class="form-control" id="username" name="username" th:placeholder="#{messages.username_placeholder}" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label" th:text="#{messages.email}">Email address</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
+                                        <input type="email" class="form-control" id="email" name="email" th:placeholder="#{messages.email_placeholder}" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="password" class="form-label" th:text="#{messages.password}">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" required>
+                                        <label for="registrationPassword" class="form-label" th:text="#{messages.password}">Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="registrationPassword" name="password" required>
+                                            <button class="btn btn-outline-secondary" type="button" id="showPasswordToggleRegistration" th:placeholder="#{messages.password_placeholder}">
+                                                <i class="bi-eye-fill"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="text-left">
                                         <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal" th:text="#{messages.login2}">Go back to login</button>
@@ -170,7 +175,7 @@
                         <div class="modal-content">
                             <!-- Modal header -->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="resetPasswordModalLabel" th:text="messages.reset_password">Reset Password</h5>
+                                <h5 class="modal-title" id="resetPasswordModalLabel" th:text="#{messages.reset_password}">Reset Password</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <!-- Modal body -->
@@ -200,14 +205,20 @@
             </li>
         </ul>
     </div>
-</nav>
+    </nav>
 
     <div th:replace="${content}"></div>
-    <script th:if="${modal_pressed}">
+    <script th:if="${login_modal_pressed}">
         window.onload = function() {
             document.querySelector('[data-bs-target="#loginModal"]').click();
         };
     </script>
+    <script th:if="${register_modal_pressed}">
+        window.onload = function() {
+            document.querySelector('[data-bs-target="#registrationModal"]').click();
+        };
+    </script>
+    <script src="/libraries/js/template.js"></script>
 </body>
 <footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom">
     <div class="button-toolbar" role="toolbar" aria-label="Toolbar with buttons redirecting to home, Documentation, and Contact">

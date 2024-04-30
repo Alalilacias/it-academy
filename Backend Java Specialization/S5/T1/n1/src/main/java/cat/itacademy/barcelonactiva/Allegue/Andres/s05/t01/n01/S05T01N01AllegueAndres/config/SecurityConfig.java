@@ -16,26 +16,31 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final String[] allowedRequests = {
-//            "/",
-            "/**",
-//            "/index.html",
-//            "/home",
-//            "/images/**",
-//            "/libraries/**",
-//            "redirectToGoogle()"
+            "/",
+            "/index.html",      //Allow homepage for public view.
+            "/documentation",
+            "/manager",
+            "/contact",         //Allow public common requests.
+            "/images/**",       //Allow images to be extracted.
+            "/fonts/**",        //Allow bootstrap-icons fonts to be extracted.
+            "/libraries/**",    //Allow libraries to be extracted.
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(
-            (requests) -> requests.requestMatchers(allowedRequests)
-                    .permitAll()
-                    .anyRequest().authenticated()
-        )
-        .formLogin(
-                (form) -> form.loginPage("/").permitAll()
-        )
-        .logout(LogoutConfigurer::permitAll);
+        httpSecurity.
+                authorizeHttpRequests(
+                        (requests) -> requests.requestMatchers(allowedRequests)
+                                .permitAll()
+                                .anyRequest().authenticated()
+                )
+                .formLogin(
+                        (form) -> form.loginPage("/login").permitAll()
+                )
+                .logout(LogoutConfigurer::permitAll)
+                .requiresChannel(
+                        (requiresChannel) -> requiresChannel.anyRequest().requiresSecure()
+        );
 
         return httpSecurity.build();
     }

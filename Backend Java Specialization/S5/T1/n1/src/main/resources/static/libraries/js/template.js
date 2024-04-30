@@ -6,6 +6,14 @@ document.getElementById('showPasswordToggle').addEventListener('click', function
         passwordInput.type = 'password';
     }
 });
+document.getElementById('showPasswordToggleRegistration').addEventListener('click', function() {
+    var passwordInput = document.getElementById('registrationPassword');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+});
 document.addEventListener('hidden.bs.modal', function (event) {
     var modal = event.target;
     var modalContent = modal.querySelector('.modal-body');
