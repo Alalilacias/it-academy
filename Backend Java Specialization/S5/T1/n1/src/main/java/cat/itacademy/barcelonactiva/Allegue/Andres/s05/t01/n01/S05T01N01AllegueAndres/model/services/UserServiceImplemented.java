@@ -28,8 +28,9 @@ public class UserServiceImplemented implements UserService {
 
     @Override
     public UserDTO add(UserDTO userDTO, String password) {
-
-        return null;
+        User userToSave = convertToNonDTO(userDTO, password);
+        User savedUser = userRepository.save(userToSave);
+        return convertToDTO(savedUser);
     }
 
     @Override
@@ -53,6 +54,14 @@ public class UserServiceImplemented implements UserService {
                 .email(userDTO.email())
                 .roles(UserRoles.USER)
                 .password(passwordEncoder.encode(password))
+                .build();
+    }
+    private UserDTO convertToDTO(User user){
+        return UserDTO.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .roles(String.valueOf(user.getRoles()))
+                .profile_pic_link(user.getProfile_pic())
                 .build();
     }
 }

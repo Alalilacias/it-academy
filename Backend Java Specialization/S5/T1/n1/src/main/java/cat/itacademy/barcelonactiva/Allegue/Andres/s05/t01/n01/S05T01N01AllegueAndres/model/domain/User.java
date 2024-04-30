@@ -44,7 +44,7 @@ public class User {
     private String password;
 
     @Column(name = "roles", nullable = false, length = 64)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Schema(description = "Self-explanatory")
     private UserRoles roles;
 

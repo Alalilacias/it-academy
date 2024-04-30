@@ -1,8 +1,10 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 @SuppressWarnings("unused")
+@Builder
 public record UserDTO(
         @Schema(description = "The username of the user", example = "Bayonetta345") String username,
         @Schema(description = "The email address of the user", example = "bayonetta345@gmail.com") String email,
