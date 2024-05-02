@@ -83,6 +83,7 @@
                             <div class="modal-body">
                                 <!-- Login form -->
                                 <form id="loginForm" action="/login" method="post">
+                                    <div class="alert alert-success alert-dismissible mb-3" th:if="${already_registered_username}" th:text="${messages.registration_success}"></div>
                                     <div class="mb-3">
                                         <label for="loginUsername" class="form-label">Username</label>
                                         <input type="text" class="form-control" id="loginUsername" name="username" required>
@@ -128,20 +129,22 @@
                                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
+                        <!-- Registration form -->
+                        <form id="registrationForm" action="" th:action="@{/users/register}" th:object="${RegistrationDTO}" method="post">
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <!-- Registration form -->
-                                <form id="registrationForm" action="/users/register" method="post">
                                     <div class="mb-3">
                                         <label for="username" class="form-label" th:text="#{messages.username}">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" th:placeholder="#{messages.username_placeholder}" required>
+                                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}" th:placeholder="#{messages.username_placeholder}" required>
+                                        <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_username}" th:text="${messages.registration_warning_username}"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label" th:text="#{messages.email}">Email address</label>
-                                        <input type="email" class="form-control" id="email" name="email" th:placeholder="#{messages.email_placeholder}" required>
+                                        <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:placeholder="#{messages.email_placeholder}" required>
+                                        <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_email}" th:text="${messages.registration_warning_email}"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="registrationPassword" class="form-label" th:text="#{messages.password}">Password</label>
+                                        <label for="registrationPassword" class="form-label" th:field="*{password}" th:text="#{messages.password}">Password</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="registrationPassword" name="password" required>
                                             <button class="btn btn-outline-secondary" type="button" id="showPasswordToggleRegistration" th:placeholder="#{messages.password_placeholder}">
@@ -157,15 +160,15 @@
                                         <!-- Unimplemented due to time constraints, will be implemented in final assignment-->
                                         <button class="btn btn-primary btn-sm float-end" onclick="redirectToGoogle('registrationModal')" th:text="#{messages.register_with_google}">Login with Google</button>
                                     </div>
-                                </form>
                             </div>
 
                             <!-- Modal footer -->
                             <div class="modal-footer">
                                 <!-- Login button -->
                                 <button type="button" class="btn btn-custom btn-sm float-start me-auto" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
-                                <button type="submit" class="btn btn-custom btn-sm float-end" th:text="#{messages.register}">Login</button>
+                                <button type="submit" id="registrationSubmitButton" class="btn btn-custom btn-sm float-end" th:text="#{messages.register}">Login</button>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -216,6 +219,11 @@
     <script th:if="${register_modal_pressed}">
         window.onload = function() {
             document.querySelector('[data-bs-target="#registrationModal"]').click();
+        };
+    </script>
+    <script th:if="${user_registered}">
+        window.onload = function() {
+            document.querySelector('[data-bs-target="#loginModal"]').click();
         };
     </script>
     <script src="/libraries/js/template.js"></script>

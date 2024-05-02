@@ -2,14 +2,16 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.User;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.UserRoles;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegistrationDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.UserDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.UserRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
+/**/@Service
 public class UserServiceImplemented implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -27,8 +29,8 @@ public class UserServiceImplemented implements UserService {
     }
 
     @Override
-    public UserDTO add(UserDTO userDTO, String password) {
-        User userToSave = convertToNonDTO(userDTO, password);
+    public UserDTO add(RegistrationDTO registrationDTO) {
+        User userToSave = convertToNonDTO(registrationDTO);
         User savedUser = userRepository.save(userToSave);
         return convertToDTO(savedUser);
     }
@@ -48,12 +50,12 @@ public class UserServiceImplemented implements UserService {
         return false;
     }
 
-    private User convertToNonDTO(UserDTO userDTO, String password){
+    private User convertToNonDTO(RegistrationDTO registrationDTO){
         return User.builder()
-                .username(userDTO.username())
-                .email(userDTO.email())
-                .roles(UserRoles.USER)
-                .password(passwordEncoder.encode(password))
+                .username(registrationDTO.username())
+                .email(registrationDTO.email())
+                .roles(UserRoles.USER.name())
+                .password(passwordEncoder.encode(registrationDTO.password()))
                 .build();
     }
     private UserDTO convertToDTO(User user){

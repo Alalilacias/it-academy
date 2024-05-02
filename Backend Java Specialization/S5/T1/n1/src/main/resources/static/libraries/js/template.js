@@ -23,6 +23,9 @@ document.addEventListener('hidden.bs.modal', function (event) {
         alertElement.remove();
     }
 });
+document.getElementById("registrationSubmitButton").addEventListener("click", function() {
+    document.getElementById("registrationForm").submit();
+});
 function redirectToGoogle(modalId) {
     var modalContent = document.querySelector('#' + modalId + ' .modal-body');
 
