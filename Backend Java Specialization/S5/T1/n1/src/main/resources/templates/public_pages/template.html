@@ -3,7 +3,7 @@
 <html lang="en" th:fragment="layout(title,content)" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0, myUser-scalable=yes">
     <meta name="description" content="HTML file made for the level 1 exercise of the task 1 of the Sprint 5 of the it-academy backend course.">
     <meta name="keywords" content="Student, ">
     <meta name="author" content="Alalin Allalilacias">
@@ -130,21 +130,21 @@
                             </div>
 
                         <!-- Registration form -->
-                        <form id="registrationForm" action="" th:action="@{/users/register}" th:object="${RegistrationDTO}" method="post">
+                        <form id="registrationForm" action="" th:action="@{/auth/register}" th:object="${RegistrationDTO}" method="post">
                             <!-- Modal body -->
                             <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="username" class="form-label" th:text="#{messages.username}">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}" th:placeholder="#{messages.username_placeholder}" required>
+                                        <input type="text" class="form-control" id="username" name="username" th:field="*{RegistrationDTO.username}" th:placeholder="#{messages.username_placeholder}" required>
                                         <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_username}" th:text="${messages.registration_warning_username}"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label" th:text="#{messages.email}">Email address</label>
-                                        <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:placeholder="#{messages.email_placeholder}" required>
+                                        <input type="email" class="form-control" id="email" name="email" th:field="*{RegistrationDTO.email}" th:placeholder="#{messages.email_placeholder}" required>
                                         <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_email}" th:text="${messages.registration_warning_email}"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="registrationPassword" class="form-label" th:field="*{password}" th:text="#{messages.password}">Password</label>
+                                        <label for="registrationPassword" class="form-label" th:field="*{RegistrationDTO.password}" th:text="#{messages.password}">Password</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="registrationPassword" name="password" required>
                                             <button class="btn btn-outline-secondary" type="button" id="showPasswordToggleRegistration" th:placeholder="#{messages.password_placeholder}">

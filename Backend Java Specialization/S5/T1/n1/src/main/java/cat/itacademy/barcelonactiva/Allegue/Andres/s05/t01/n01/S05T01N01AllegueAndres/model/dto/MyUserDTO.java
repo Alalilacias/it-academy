@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @SuppressWarnings("unused")
 @Builder
-public record UserDTO(
+public record MyUserDTO(
         @Schema(description = "The username of the user", example = "Bayonetta345") String username,
         @Schema(description = "The email address of the user", example = "bayonetta345@gmail.com") String email,
         @Schema(description = "The roles of the user, used for Spring Security purposes. Might be deprecated later", example = "USER") String roles,

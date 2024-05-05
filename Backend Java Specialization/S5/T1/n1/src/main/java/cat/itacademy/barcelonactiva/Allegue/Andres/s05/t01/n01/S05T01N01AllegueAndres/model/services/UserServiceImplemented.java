@@ -1,47 +1,46 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.User;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.MyUser;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.UserRoles;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegistrationDTO;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.UserDTO;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.UserRepository;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.MyUserDTO;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.MyUserRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**/@Service
 public class UserServiceImplemented implements UserService {
     @Autowired
-    private UserRepository userRepository;
+    private MyUserRepository myUserRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public boolean isUserRegisteredByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return myUserRepository.existsByUsername(username);
     }
 
     @Override
     public boolean isUserRegisteredByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return myUserRepository.existsByEmail(email);
     }
 
     @Override
-    public UserDTO add(RegistrationDTO registrationDTO) {
-        User userToSave = convertToNonDTO(registrationDTO);
-        User savedUser = userRepository.save(userToSave);
-        return convertToDTO(savedUser);
+    public MyUserDTO add(RegistrationDTO registrationDTO) {
+        MyUser myUserToSave = convertToNonDTO(registrationDTO);
+        MyUser savedMyUser = myUserRepository.save(myUserToSave);
+        return convertToDTO(savedMyUser);
     }
 
     @Override
-    public UserDTO getOne(UserDTO userDTO) {
+    public MyUserDTO getOne(MyUserDTO myUserDTO) {
         return null;
     }
 
     @Override
-    public UserDTO update(UserDTO userDTO) {
+    public MyUserDTO update(MyUserDTO myUserDTO) {
         return null;
     }
 
@@ -50,20 +49,20 @@ public class UserServiceImplemented implements UserService {
         return false;
     }
 
-    private User convertToNonDTO(RegistrationDTO registrationDTO){
-        return User.builder()
+    private MyUser convertToNonDTO(RegistrationDTO registrationDTO){
+        return MyUser.builder()
                 .username(registrationDTO.username())
                 .email(registrationDTO.email())
-                .roles(UserRoles.USER.name())
+                .roles(UserRoles.USER)
                 .password(passwordEncoder.encode(registrationDTO.password()))
                 .build();
     }
-    private UserDTO convertToDTO(User user){
-        return UserDTO.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .roles(String.valueOf(user.getRoles()))
-                .profile_pic_link(user.getProfile_pic())
+    private MyUserDTO convertToDTO(MyUser myUser){
+        return MyUserDTO.builder()
+                .username(myUser.getUsername())
+                .email(myUser.getEmail())
+                .roles(String.valueOf(myUser.getRoles()))
+                .profile_pic_link(myUser.getProfile_pic())
                 .build();
     }
 }

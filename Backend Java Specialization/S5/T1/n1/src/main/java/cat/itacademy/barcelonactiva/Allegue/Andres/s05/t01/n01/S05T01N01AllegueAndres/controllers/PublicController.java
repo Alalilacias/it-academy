@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("")
-public class WebController {
+@RequestMapping("/public")
+public class PublicController {
     @GetMapping("/documentation")
     public String documentation(){
         return "public_pages/documentation";
@@ -29,16 +29,6 @@ public class WebController {
         }
 
         redirectAttributes.addFlashAttribute("modal_pressed", true);
-        return "redirect:/";
-    }
-    @GetMapping("/login")
-    public String login(RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("login_modal_pressed", true);
-        return "redirect:/";
-    }
-    @GetMapping("/register")
-    public String register(RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("register_modal_pressed", true);
         return "redirect:/";
     }
     // This method checks if the user is authenticated

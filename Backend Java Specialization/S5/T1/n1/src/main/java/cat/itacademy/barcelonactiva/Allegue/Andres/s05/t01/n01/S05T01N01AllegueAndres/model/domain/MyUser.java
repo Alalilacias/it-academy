@@ -17,7 +17,7 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 @Setter
 @Table(name = "users")
-public class User {
+public class MyUser {
     @Column(name = "idusers", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -45,9 +45,9 @@ public class User {
     private String password;
 
     @Column(name = "roles", nullable = false, length = 64)
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Enumerated(EnumType.ORDINAL)
     @Schema(description = "Self-explanatory")
-    private String roles;
+    private UserRoles roles;
 
     @Column(name = "profile_pic")
     @JdbcTypeCode(SqlTypes.VARCHAR)

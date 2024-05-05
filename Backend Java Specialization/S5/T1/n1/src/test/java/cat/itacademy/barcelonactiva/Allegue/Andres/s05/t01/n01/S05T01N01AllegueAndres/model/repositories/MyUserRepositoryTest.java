@@ -1,6 +1,6 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.User;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.MyUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -14,27 +14,27 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
-class UserRepositoryTest {
+class MyUserRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
     @Autowired
-    private UserRepository repository;
+    private MyUserRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Test
     public void testCreateUser(){
-        User user = User.builder()
+        MyUser myUser = MyUser.builder()
                 .username("testUser")
                 .email("testuser@gmail.com")
                 .password(passwordEncoder.encode("test_password"))
                 .build();
 
-        User savedUser = repository.save(user);
+        MyUser savedMyUser = repository.save(myUser);
 
-        User existsUser = entityManager.find(User.class, savedUser.getId());
+        MyUser existsMyUser = entityManager.find(MyUser.class, savedMyUser.getId());
 
-        assertEquals(user.getEmail(), existsUser.getEmail());
+        assertEquals(myUser.getEmail(), existsMyUser.getEmail());
     }
   
 }
