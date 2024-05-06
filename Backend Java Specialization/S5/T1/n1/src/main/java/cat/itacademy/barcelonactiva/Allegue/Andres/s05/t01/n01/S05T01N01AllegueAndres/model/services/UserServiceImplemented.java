@@ -14,12 +14,28 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**/@Service
-public class UserServiceImplemented implements UserService {
+public class UserServiceImplemented implements UserService, UserDetailsService {
     @Autowired
     private MyUserRepository myUserRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<MyUser> user = myUserRepository.findByUsername(username);
+        if (user.isPresent()){
+            return new User(
+                    user.get().getUsername(),
+                    user.get().getPassword(),
+                    user.get().getRoles().getAuthority()
+            );
+        } else {
+            throw new UsernameNotFoundException("Username " + username + " not found.");
+        }
+    }
 
     @Override
     public boolean isUserRegisteredByUsername(String username) {
