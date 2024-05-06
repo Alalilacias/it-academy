@@ -7,6 +7,10 @@ import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueA
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.MyUserRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +33,14 @@ public class UserServiceImplemented implements UserService {
 
     @Override
     public MyUserDTO add(RegistrationDTO registrationDTO) {
-        MyUser myUserToSave = convertToNonDTO(registrationDTO);
-        MyUser savedMyUser = myUserRepository.save(myUserToSave);
-        return convertToDTO(savedMyUser);
+        MyUser userToSave = convertToNonDTO(registrationDTO);
+        return convertToDTO(myUserRepository.save(userToSave));
     }
 
     @Override
     public MyUserDTO getOne(MyUserDTO myUserDTO) {
-        return null;
+        return convertToDTO(myUserRepository.findByUsername(myUserDTO.username())
+                .orElseThrow());
     }
 
     @Override

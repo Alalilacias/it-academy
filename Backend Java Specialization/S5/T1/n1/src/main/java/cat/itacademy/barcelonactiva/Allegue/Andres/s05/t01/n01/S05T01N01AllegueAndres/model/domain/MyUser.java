@@ -8,6 +8,12 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @Schema($schema = "Entity for the users.")
@@ -16,8 +22,11 @@ import org.hibernate.type.SqlTypes;
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "users")
-public class MyUser {
+@Table(name = "users",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")})
+public class MyUser implements UserDetails {
     @Column(name = "idusers", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -53,4 +62,32 @@ public class MyUser {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Schema(description = "Self-explanatory")
     private String profile_pic;
+
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        return List.of(new SimpleGrantedAuthority(roles.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+//        No logic for now, modify as needed
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+//        No logic for now, modify as needed
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+//        No logic for now, modify as needed
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+//        No logic for now, modify as needed
+        return true;
+    }
 }
