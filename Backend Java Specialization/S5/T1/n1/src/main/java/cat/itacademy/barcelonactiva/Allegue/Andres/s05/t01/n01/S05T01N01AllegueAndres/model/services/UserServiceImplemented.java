@@ -2,40 +2,21 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.MyUser;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.UserRoles;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegistrationDTO;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.AuthenticateRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegisterRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.MyUserDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.MyUserRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**/@Service
-public class UserServiceImplemented implements UserService, UserDetailsService {
+public class UserServiceImplemented implements UserService {
     @Autowired
     private MyUserRepository myUserRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<MyUser> user = myUserRepository.findByUsername(username);
-        if (user.isPresent()){
-            return new User(
-                    user.get().getUsername(),
-                    user.get().getPassword(),
-                    user.get().getRoles().getAuthority()
-            );
-        } else {
-            throw new UsernameNotFoundException("Username " + username + " not found.");
-        }
-    }
+    private static PasswordEncoder passwordEncoder;
 
     @Override
     public boolean isUserRegisteredByUsername(String username) {
@@ -48,14 +29,14 @@ public class UserServiceImplemented implements UserService, UserDetailsService {
     }
 
     @Override
-    public MyUserDTO add(RegistrationDTO registrationDTO) {
-        MyUser userToSave = convertToNonDTO(registrationDTO);
+    public MyUserDTO add(RegisterRequest registerRequest) {
+        MyUser userToSave = convertToNonDTO(registerRequest);
         return convertToDTO(myUserRepository.save(userToSave));
     }
 
     @Override
-    public MyUserDTO getOne(MyUserDTO myUserDTO) {
-        return convertToDTO(myUserRepository.findByUsername(myUserDTO.username())
+    public MyUserDTO getOne(AuthenticateRequest authenticateRequest) {
+        return convertToDTO(myUserRepository.findByUsername(authenticateRequest.username())
                 .orElseThrow());
     }
 
@@ -69,12 +50,20 @@ public class UserServiceImplemented implements UserService, UserDetailsService {
         return false;
     }
 
-    private MyUser convertToNonDTO(RegistrationDTO registrationDTO){
+    public static MyUser convertToNonDTO(RegisterRequest registerRequest){
         return MyUser.builder()
-                .username(registrationDTO.username())
-                .email(registrationDTO.email())
+                .username(registerRequest.username())
+                .email(registerRequest.email())
                 .roles(UserRoles.USER)
-                .password(passwordEncoder.encode(registrationDTO.password()))
+                .password(passwordEncoder.encode(registerRequest.password()))
+                .build();
+    }
+    public static MyUser convertToNonDTO(AuthenticateRequest authenticateRequest){
+        return MyUser.builder()
+                .username(authenticateRequest.username())
+                .email(null)
+                .roles(UserRoles.USER)
+                .password(passwordEncoder.encode(authenticateRequest.password()))
                 .build();
     }
     private MyUserDTO convertToDTO(MyUser myUser){

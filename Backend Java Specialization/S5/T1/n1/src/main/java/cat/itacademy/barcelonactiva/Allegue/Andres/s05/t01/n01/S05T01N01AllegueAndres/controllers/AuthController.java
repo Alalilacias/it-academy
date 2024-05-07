@@ -1,14 +1,13 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.controllers;
 
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegistrationDTO;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.MyUserRepository;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.UserServiceImplemented;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.AuthResponse;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.AuthenticateRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.RegisterRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,30 +15,15 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserServiceImplemented userService;
+    private AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO registrationDTO){
-        if (userService.isUserRegisteredByUsername(registrationDTO.email())){
-            ResponseEntity.ok(
-                    Map.of(
-                            "already_registered_email", true
-                    )
-            );
-        }
-        if (userService.isUserRegisteredByUsername(registrationDTO.username())){
-            ResponseEntity.ok(
-                    Map.of(
-                            "username_registered_username", true
-                    )
-            );
-        }
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest registerRequest){
+        return ResponseEntity.ok(authenticationService.register(registerRequest));
+    }
 
-        userService.add(registrationDTO);
-        return ResponseEntity.ok(
-                Map.of(
-                        "user_registered", true
-                )
-        );
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody AuthenticateRequest authenticateRequest){
+        return ResponseEntity.ok(authenticationService.authenticate(authenticateRequest));
     }
 }
