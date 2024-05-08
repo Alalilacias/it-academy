@@ -3,9 +3,10 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.BranchNotFoundException;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.exceptions.custom.NullBranchTypeException;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.Branch;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchAddRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchDTO;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.enums.BranchType;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.enums.EUCountries;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.BranchType;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.EUCountries;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.BranchRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ public class BranchServiceImplemented implements BranchService {
     private BranchRepository branchRepository;
 
     @Override
-    public BranchDTO add(BranchDTO branchDTO) {
-        Branch branchToSave = convertToNonDTO(branchDTO);
-        return convertToDTO(branchRepository.save(branchToSave));
+    public BranchDTO add(BranchAddRequest branchAddRequest) {
+        return convertToDTO(branchRepository.save(branchAddRequest.toBranch()));
     }
 
     @Override

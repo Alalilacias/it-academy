@@ -13,6 +13,7 @@ import org.hibernate.type.SqlTypes;
 @Getter
 @NoArgsConstructor
 @Setter
+@Table(name = "branches")
 @SuppressWarnings("unused")
 public class Branch {
     @Column(name = "idbranches", nullable = false)
@@ -22,7 +23,7 @@ public class Branch {
     @Schema(description = "Self-explanatory")
     private int id;
 
-    @Column(name = "branch_name", nullable = false, unique = true, length = 45)
+    @Column(name = "name", nullable = false, unique = true, length = 45)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Schema(description = "Self-explanatory")
     private String name;

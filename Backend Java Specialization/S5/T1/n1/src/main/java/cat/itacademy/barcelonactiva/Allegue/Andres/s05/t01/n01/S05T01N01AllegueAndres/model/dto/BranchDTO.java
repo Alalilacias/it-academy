@@ -2,7 +2,6 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@SuppressWarnings("unused")
 public record BranchDTO (
         @Schema(description = "The unique identifier for the branch, automatically given by the database.", example = "1") int id,
         @Schema(description = "The name of the branch", example = "Example Branch") String name,

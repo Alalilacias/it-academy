@@ -3,7 +3,7 @@
 <html lang="en" th:fragment="layout(title,content)" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0, myUser-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0">
     <meta name="description" content="HTML file made for the level 1 exercise of the task 1 of the Sprint 5 of the it-academy backend course.">
     <meta name="keywords" content="Student, ">
     <meta name="author" content="Alalin Allalilacias">
@@ -69,10 +69,9 @@
             </ul>
         </div>
     </nav>
-    <div th:replace="${content}"></div>
-    <script src="/libraries/js/template.js"></script>
+    <div class="d-flex flex-grow-1" th:replace="${content}"></div>
 </body>
-<footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom">
+<footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom clearfix mt-auto">
     <div class="button-toolbar" role="toolbar" aria-label="Toolbar with buttons redirecting to home, Documentation, and Contact">
         <div class="btn-group me-2" role="group" aria-label="Home button">
             <button class="button btn-secondary btn-sm bg-dark text-white" onclick="window.location.href='/'" th:text="#{messages.home}">Home</button>

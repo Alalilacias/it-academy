@@ -3,18 +3,114 @@
 <head>
     <title>Manager | Isle</title>
 </head>
-<body>
-<section>
-    <div class="d-flex justify-content-between">
-                <h1 th:text="#{messages.manager_header}"></h1>
-
-                <button type="button"
-                        class="btn btn-custom ms-auto"
-                        th:text="#{messages.manager_add_branch}"
-                        data-bs-toggle="modal"
-                        data-bs-target="branch_add_modal">
-                </button>
+<body class="d-flex flex-column min-vh-80">
+<section class="overflow-auto">
+<!--    Title-->
+    <div>
+        <h1 th:text="#{messages.manager_header}"></h1>
     </div>
+    <hr>
+<!--    Utilities Container-->
+    <div class="d-flex justify-content-start">
+<!--        Utilities Title-->
+        <div>
+            <h4 class="pe-2" th:text="#{messages.manager_utilities}"></h4>
+        </div>
+<!--        Add Branch Button-->
+        <div>
+            <button type="button"
+                    class="btn btn-custom"
+                    th:text="#{messages.manager_add-branch-modal_title}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#branch_add_modal">
+            </button>
+        </div>
+    </div>
+
+<!--    Table Container-->
+    <div>
+        <div class="alert alert-error alert-dismissible" th:if="${deleteError}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" th:utext="#{messages.manager_add-branch-modal_delete-error}"></button>
+        </div>
+        <table class="table table-stripped table-hover">
+<!--            Table Head-->
+            <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th scope="col" th:text="#{messages.manager_add-branch-modal_name}"></th>
+                <th scope="col" th:text="#{messages.manager_add-branch-modal_country}"></th>
+                <th scope="col" th:text="#{messages.manager_add-branch-modal_category}"></th>
+                <th scope="col" th:text="#{messages.manager_add-branch-modal_utilities}"></th>
+            </tr>
+            </thead>
+
+<!--            Table Body-->
+            <tbody>
+            <tr class="table-danger" th:each="branch : ${branches}">
+                <td th:text="${branch.id}"></td>
+                <td th:text="${branch.name}"></td>
+                <td th:text="${branch.country}"></td>
+                <td th:text="${branch.type}"></td>
+                <td>
+                    <button class="btn btn-sm btn-custom"
+                       th:href="@{/branches/update/(id='${branch.id}')}"
+                       th:text="#{messages.manager_add-branch-modal_update}">
+                    </button>
+                    <form th:action="@{/branches/delete/{id}(id=${branch.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button class="btn btn-sm btn-custom"
+                                type="submit"
+                                th:text="#{messages.manager_add-branch-modal_delete}"></button>
+                    </form>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<!--    Add Branch Modal-->
+    <div class="modal fade" id="branch_add_modal">
+        <form th:action="@{/branches/add}" th:object="${branchAddRequest}" method="post">
+            <div class="modal-dialog modal-fullscreen-sm-down">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 th:text="#{messages.manager_add-branch-modal_title}"></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label" th:text="#{messages.manager_add-branch-modal_name}">Name</label>
+                            <input type="text" class="form-control" id="name" th:field="*{name}" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="country" class="form-label" th:text="#{messages.manager_add-branch-modal_country}">Country</label>
+                            <select class="form-select" id="country" th:field="*{country}" required>
+                                <option th:each="country : ${countries}"
+                                        th:value="${country}"
+                                        th:text="${country}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="alert alert-error alert-dismissible" th:if="${addError}">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" th:utext="#{messages.manager_add-branch-modal_add-error}"></button>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
+                        <button type="submit" class="btn btn-custom" th:text="#{messages.manager_add-branch-modal_title}">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
 </section>
 
 </body>
