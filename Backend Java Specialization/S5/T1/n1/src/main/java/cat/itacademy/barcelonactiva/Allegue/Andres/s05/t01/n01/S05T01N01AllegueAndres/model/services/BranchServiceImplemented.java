@@ -69,7 +69,11 @@ public class BranchServiceImplemented implements BranchService {
         }
 
         String type = EUCountries.getBranchType(branch.getCountry()).name();
-        return new BranchDTO(branch.getId(), branch.getName(), branch.getCountry(), type);
+        return new BranchDTO(
+                branch.getId(),
+                branch.getName(),
+                branch.getCountry(),
+                type);
     }
     private static Branch convertToNonDTO(BranchDTO branchDTO){
         if(branchDTO == null){

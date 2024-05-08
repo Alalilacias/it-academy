@@ -21,211 +21,55 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
-    <a class="navbar-brand" href="/">
-        <!--suppress CheckImageSize -->
+        <a class="navbar-brand" href="/">
+            <!--suppress CheckImageSize -->
 
-        <img src="/images/dead_island.png" alt="nav_logo" width="40">
-        Isle
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/documentation}" th:text="#{messages.documentation}">Documentation</a>
+            <img src="/images/dead_island.png" alt="nav_logo" width="40">
+            Isle
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/documentation}" th:text="#{messages.documentation}">Documentation</a>
 
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{/manager}" th:text="#{messages.manager}">Manager</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{/contact}" th:text="#{messages.contact}">Contact</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ms-auto">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="img-fluid rounded"
-                         src="#"
-                         th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
-                         alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
-                    <li th:if="${#locale.language != 'es'}">
-                        <a class="dropdown-item" href="#" th:src="@{/images/es_flag.png}" th:href="@{?lang=es}">
-                            <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
-                        </a>
-                    </li>
-                    <li th:if="${#locale.language != 'ca'}">
-                        <a class="dropdown-item" href="#" th:src="@{/images/ca_flag.png}" th:href="@{?lang=ca}">
-                            <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image">
-                        </a>
-                    </li>
-                    <li th:if="${#locale.language != 'en'}">
-                        <a class="dropdown-item" href="#" th:src="@{/images/en_flag.png}" th:href="@{?lang=en}">
-                            <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="nav-item dropdown" th:unless="${#authorization.expression('isAuthenticated()')}">
-                <button class="nav-link btn" data-bs-toggle="modal" data-bs-target="#loginModal" data-trigger-modal="login" th:text="#{messages.login}"></button>
-                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <!-- Modal header -->
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="loginModalLabel" th:text="#{messages.login}">Login</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <!-- Login form -->
-                                <form id="loginForm" action="/login" method="post">
-                                    <div class="alert alert-success alert-dismissible mb-3" th:if="${already_registered_username}" th:text="${messages.registration_success}"></div>
-                                    <div class="mb-3">
-                                        <label for="loginUsername" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="loginUsername" name="username" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="loginPassword" class="form-label">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="loginPassword" name="password" required>
-                                            <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle">
-                                                <i class="bi-eye-fill"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Registration and password reset links -->
-                                    <div class="text-left">
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" th:text="#{messages.register}">Register</button>
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#resetPasswordModal" th:text="#{messages.reset_password}">Reset Password</button>
-
-                                        <!-- Login with Google button -->
-                                        <!-- Unimplemented due to time constraints, will be implemented in final assignment-->
-                                        <button class="btn btn-primary btn-sm float-end" onclick="redirectToGoogle('loginModal')" th:text="#{messages.login_with_google}">Login with Google</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <!-- Login button -->
-                                <button type="button" class="btn btn-custom btn-sm float-start me-auto" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
-                                <button type="submit" class="btn btn-custom btn-sm float-end" th:text="#{messages.login}">Login</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Registration Modal -->
-                <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <!-- Modal header -->
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="registrationModalLabel" th:text="#{messages.register}">Registration</h5>
-                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-
-                        <!-- Registration form -->
-                        <form id="registrationForm" action="" th:action="@{/auth/register}" th:object="${RegistrationDTO}" method="post">
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label" th:text="#{messages.username}">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" th:field="*{RegistrationDTO.username}" th:placeholder="#{messages.username_placeholder}" required>
-                                        <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_username}" th:text="${messages.registration_warning_username}"></div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label" th:text="#{messages.email}">Email address</label>
-                                        <input type="email" class="form-control" id="email" name="email" th:field="*{RegistrationDTO.email}" th:placeholder="#{messages.email_placeholder}" required>
-                                        <div class="alert alert-warning alert-dismissible mb-3" th:if="${already_registered_email}" th:text="${messages.registration_warning_email}"></div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="registrationPassword" class="form-label" th:field="*{RegistrationDTO.password}" th:text="#{messages.password}">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="registrationPassword" name="password" required>
-                                            <button class="btn btn-outline-secondary" type="button" id="showPasswordToggleRegistration" th:placeholder="#{messages.password_placeholder}">
-                                                <i class="bi-eye-fill"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="text-left">
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal" th:text="#{messages.login2}">Go back to login</button>
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#resetPasswordModal" th:text="#{messages.reset_password}">Reset Password</button>
-
-                                        <!-- Login with Google button -->
-                                        <!-- Unimplemented due to time constraints, will be implemented in final assignment-->
-                                        <button class="btn btn-primary btn-sm float-end" onclick="redirectToGoogle('registrationModal')" th:text="#{messages.register_with_google}">Login with Google</button>
-                                    </div>
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <!-- Login button -->
-                                <button type="button" class="btn btn-custom btn-sm float-start me-auto" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
-                                <button type="submit" id="registrationSubmitButton" class="btn btn-custom btn-sm float-end" th:text="#{messages.register}">Login</button>
-                            </div>
-                        </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Reset Password Modal -->
-                <div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <!-- Modal header -->
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="resetPasswordModalLabel" th:text="#{messages.reset_password}">Reset Password</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <p>Reset your password using the form below:</p>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="resetPasswordEmail" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="resetPasswordEmail" placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="text-left">
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" th:text="#{messages.register}">Register</button>
-                                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal" th:text="#{messages.login}">Login</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <!-- Login button -->
-                                <button type="button" class="btn btn-custom btn-sm float-start me-auto" data-bs-dismiss="modal" th:text="#{messages.close}">Close</button>
-                                <button type="submit" class="btn btn-custom btn-sm float-end" th:text="#{messages.reset_password2}">Login</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/manager}" th:text="#{messages.manager}">Manager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/contact}" th:text="#{messages.contact}">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-fluid rounded"
+                             src="#"
+                             th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+                             alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
+                        <li th:if="${#locale.language != 'es'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/es_flag.png}" th:href="@{?lang=es}">
+                                <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
+                            </a>
+                        </li>
+                        <li th:if="${#locale.language != 'ca'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/ca_flag.png}" th:href="@{?lang=ca}">
+                                <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image">
+                            </a>
+                        </li>
+                        <li th:if="${#locale.language != 'en'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/en_flag.png}" th:href="@{?lang=en}">
+                                <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </nav>
-
     <div th:replace="${content}"></div>
-    <script th:if="${login_modal_pressed}">
-        window.onload = function() {
-            document.querySelector('[data-bs-target="#loginModal"]').click();
-        };
-    </script>
-    <script th:if="${register_modal_pressed}">
-        window.onload = function() {
-            document.querySelector('[data-bs-target="#registrationModal"]').click();
-        };
-    </script>
-    <script th:if="${user_registered}">
-        window.onload = function() {
-            document.querySelector('[data-bs-target="#loginModal"]').click();
-        };
-    </script>
     <script src="/libraries/js/template.js"></script>
 </body>
 <footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom">
