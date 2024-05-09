@@ -32,7 +32,7 @@
         <div class="alert alert-error alert-dismissible" th:if="${deleteError}">
             <button type="button" class="btn-close" data-bs-dismiss="alert" th:utext="#{messages.manager_add-branch-modal_delete-error}"></button>
         </div>
-        <table class="table table-stripped table-hover">
+        <table class="table table-striped table-hover">
 <!--            Table Head-->
             <thead class="table-dark">
             <tr>
@@ -52,17 +52,16 @@
                 <td th:text="${branch.country}"></td>
                 <td th:text="${branch.type}"></td>
                 <td>
-                    <button class="btn btn-sm btn-custom"
-                       th:href="@{/branches/update/(id='${branch.id}')}"
-                       th:text="#{messages.manager_add-branch-modal_update}">
-                    </button>
-                    <form th:action="@{/branches/delete/{id}(id=${branch.id})}" method="post">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button class="btn btn-sm btn-custom"
-                                type="submit"
-                                th:text="#{messages.manager_add-branch-modal_delete}"></button>
-                    </form>
-
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-sm btn-custom me-2"
+                            th:href="@{/branches/update/(id=${branch.id})}"
+                            th:text="#{messages.manager_add-branch-modal_update}">
+                        </a>
+                        <a class="btn btn-sm btn-custom"
+                            th:href="@{/branches/delete/{id}(id=${branch.id})}"
+                            th:text="#{messages.manager_add-branch-modal_delete}">
+                        </a>
+                    </div>
                 </td>
             </tr>
             </tbody>
@@ -108,6 +107,10 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <div class="modal fade" id="branch_update_modal">
+
     </div>
 
 

@@ -27,8 +27,7 @@ public class BranchController {
             return new ModelAndView("redirect:/manager", model.asMap());
         }
     }
-
-    @DeleteMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public ModelAndView deleteBranch(@PathVariable("id") int id, Model model){
         boolean isDeleted = branchService.delete(id);
         if (!isDeleted) {
