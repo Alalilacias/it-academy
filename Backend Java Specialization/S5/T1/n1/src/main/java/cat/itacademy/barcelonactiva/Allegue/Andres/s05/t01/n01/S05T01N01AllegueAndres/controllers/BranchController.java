@@ -1,6 +1,9 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.controllers;
 
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchAddRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchDTO;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchUpdateRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.UpdateToggle;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.BranchService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +37,31 @@ public class BranchController {
             model.addAttribute("deleteError", true);
         }
         return new ModelAndView("redirect:/manager", model.asMap());
+    }
+
+    @GetMapping("/update/{id}")
+    public ModelAndView setupUpdate(@PathVariable("id") int id, Model model){
+        BranchDTO branchDTO = branchService.getOne(id);
+        UpdateToggle updateToggle = UpdateToggle.builder()
+                .updateModalOpen(true)
+                .id(branchDTO.id())
+                .name(branchDTO.name())
+                .country(branchDTO.country())
+                .build();
+        model.addAttribute("updateToggle", updateToggle);
+
+        return new ModelAndView("redirect:/manager", model.asMap());
+    }
+
+    @PostMapping("/update")
+    public ModelAndView updateBranch (@Valid@ModelAttribute BranchUpdateRequest branchUpdateRequest, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("branchUpdateRequest", new BranchUpdateRequest(0, null, null));
+            model.addAttribute("updateError", true);
+            return new ModelAndView("redirect/manager",model.asMap());
+        }  else {
+            branchService.update(branchUpdateRequest);
+            return new ModelAndView("redirect:/manager", model.asMap());
+        }
     }
 }

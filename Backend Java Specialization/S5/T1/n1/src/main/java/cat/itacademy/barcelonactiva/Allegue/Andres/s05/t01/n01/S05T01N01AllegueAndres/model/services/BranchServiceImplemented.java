@@ -7,6 +7,7 @@ import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueA
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.BranchType;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.EUCountries;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchUpdateRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.repositories.BranchRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +40,23 @@ public class BranchServiceImplemented implements BranchService {
     }
 
     @Override
-    public BranchDTO update(BranchDTO branchDTO) {
-        Branch toUpdatedBranch = convertToNonDTO(getOne(branchDTO.id()));
+    public boolean update(BranchUpdateRequest branchUpdateRequest) {
+        boolean isDifferent = false;
+        Branch branchInRepository = branchRepository.findById(branchUpdateRequest.id()).orElseThrow();
 
-        if(!toUpdatedBranch.getName().equals(branchDTO.name())){
-            toUpdatedBranch.setName(branchDTO.name());
+        if(!branchInRepository.getName().equals(branchUpdateRequest.name())){
+            branchInRepository.setName(branchUpdateRequest.name());
+            isDifferent = true;
         }
-        if(!toUpdatedBranch.getCountry().equals(branchDTO.country())){
-            toUpdatedBranch.setCountry(branchDTO.country());
+        if(!branchInRepository.getCountry().equals(branchUpdateRequest.country())){
+            branchInRepository.setCountry(branchUpdateRequest.country());
+            isDifferent = true;
+        }
+        if(isDifferent){
+            convertToDTO(branchRepository.save(branchInRepository));
         }
 
-        return convertToDTO(branchRepository.save(toUpdatedBranch));
+        return isDifferent;
     }
 
     @Override
@@ -74,14 +81,5 @@ public class BranchServiceImplemented implements BranchService {
                 branch.getName(),
                 branch.getCountry(),
                 type);
-    }
-    private static Branch convertToNonDTO(BranchDTO branchDTO){
-        if(branchDTO == null){
-            throw new NullBranchTypeException(BranchType.NON_DTO);
-        }
-        return Branch.builder()
-                .name(branchDTO.name())
-                .country(branchDTO.country())
-                .build();
     }
 }

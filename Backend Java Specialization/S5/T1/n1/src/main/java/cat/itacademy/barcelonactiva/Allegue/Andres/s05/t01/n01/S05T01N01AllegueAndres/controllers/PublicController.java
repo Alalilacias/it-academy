@@ -2,6 +2,7 @@ package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01Allegue
 
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.domain.enums.Countries;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchAddRequest;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.dto.BranchUpdateRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n01.S05T01N01AllegueAndres.model.services.interfaces.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class PublicController {
     @GetMapping("/manager")
     public String manager(Model model) {
         model.addAttribute("branchAddRequest", new BranchAddRequest(null, null));
+        model.addAttribute("branchUpdateRequest", new BranchUpdateRequest(0, null, null));
         model.addAttribute("countries", getAllCountryNames());
         model.addAttribute("branches", branchService.getAll());
         return "public_pages/manager";
