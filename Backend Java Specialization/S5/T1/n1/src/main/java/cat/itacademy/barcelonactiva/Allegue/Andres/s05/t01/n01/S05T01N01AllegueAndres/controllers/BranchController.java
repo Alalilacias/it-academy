@@ -39,6 +39,9 @@ public class BranchController {
         return new ModelAndView("redirect:/manager", model.asMap());
     }
 
+
+//    These two aren't working. Due to time constraints, they'll be left as deprecated.
+    @Deprecated
     @GetMapping("/update/{id}")
     public ModelAndView setupUpdate(@PathVariable("id") int id, Model model){
         BranchDTO branchDTO = branchService.getOne(id);
@@ -53,6 +56,7 @@ public class BranchController {
         return new ModelAndView("redirect:/manager", model.asMap());
     }
 
+    @Deprecated
     @PostMapping("/update")
     public ModelAndView updateBranch (@Valid@ModelAttribute BranchUpdateRequest branchUpdateRequest, BindingResult result, Model model){
         if(result.hasErrors()){
