@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.domain;
 
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.FlowerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -26,4 +27,13 @@ public class Flower {
     @Column(name = "country", nullable = false, length = 45)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String country;
+
+    public FlowerDTO toDTO(){
+        return FlowerDTO.builder()
+                .id(id)
+                .name(name)
+                .country(country)
+                .type(EuCountries.getFlowerType(country))
+                .build();
+    }
 }
