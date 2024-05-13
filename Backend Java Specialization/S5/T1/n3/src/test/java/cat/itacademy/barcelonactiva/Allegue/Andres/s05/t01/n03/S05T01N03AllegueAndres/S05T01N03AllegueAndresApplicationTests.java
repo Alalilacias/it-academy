@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres;
+package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n03.S05T01N03AllegueAndres;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +8,9 @@ import org.springframework.context.ApplicationContext;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class S05T01N02AllegueAndresApplicationTests {
+class S05T01N03AllegueAndresApplicationTests {
 	@Autowired
-	private ApplicationContext context;
+	ApplicationContext context;
 
 	@Test
 	void contextLoads() {

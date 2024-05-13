@@ -9,7 +9,7 @@ Access the page ->https://start.spring.io/, and generate a Spring boot project w
     - artifact: S05T01N02GognomesName
     - Name: S05T01N02GognomesName
     - Description: S05T01N02GognomesName
-    - Package name: cat.itacademy.barcelonactiva.surnames.name.s05.t01.n01
+    - Package name: cat.itacademy.barcelonactiva.surnames.name.s05.t01.n02
 - PACKAGING: Jar
 - JAVA: Minimum version 11
 - Dependencies:
@@ -66,3 +66,5 @@ The port to be used is 9002.
 
 > **Important**\
 > You should include swagger so that any developer can get a quick idea of ​​the resources available in the API.
+> 
+> > Swagger has been implemented on this project and it can be accessed through the following link: http://localhost:9002/swagger-ui/index.html

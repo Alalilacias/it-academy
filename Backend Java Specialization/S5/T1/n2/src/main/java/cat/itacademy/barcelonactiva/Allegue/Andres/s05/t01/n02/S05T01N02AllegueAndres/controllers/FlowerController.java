@@ -86,7 +86,7 @@ public class FlowerController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFlower(@PathVariable int id) {
         if(flowerService.delete(id)){
-            return ResponseEntity.ok("Flower with ID:" + id + "deleted.");
+            return ResponseEntity.ok("Flower with ID:" + id + " deleted.");
         } else {
             return ResponseEntity.ok("Unable to delete flower with ID: " + id);
         }

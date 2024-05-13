@@ -71,7 +71,7 @@ public class FlowerServiceImplemented implements FlowerService {
             originalName = originalFlower.getName();
             originalFlower.setName(updateFlower.requestName());
         }
-        if ((originalFlower.getCountry().equals(updateFlower.requestCountry()))){
+        if (!originalFlower.getCountry().equals(updateFlower.requestCountry())){
             countryUpdated = true;
             originalCountry = originalFlower.getCountry();
             originalFlower.setCountry(updateFlower.requestCountry());
