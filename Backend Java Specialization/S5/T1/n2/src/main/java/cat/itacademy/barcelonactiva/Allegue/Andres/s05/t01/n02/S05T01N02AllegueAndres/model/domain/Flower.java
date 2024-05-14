@@ -28,6 +28,38 @@ public class Flower {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String country;
 
+    public String updateName(String name){
+        StringBuilder message = new StringBuilder("- name: ");
+
+        if(!this.name.equals(name)){
+            message
+                    .append(this.name)
+                    .append(" -> ")
+                    .append(name);
+            setCountry(name);
+        } else {
+            message.append("\n");
+        }
+
+        return message.toString();
+    }
+
+    public String updateCountry(String country){
+        StringBuilder message = new StringBuilder("- Country: ");
+
+        if(!this.country.equals(country)){
+            message
+                    .append(this.country)
+                    .append(" -> ")
+                    .append(country);
+            setCountry(country);
+        } else {
+            message.append("\n");
+        }
+
+        return message.toString();
+    }
+
     public FlowerDTO toDTO(){
         return FlowerDTO.builder()
                 .id(id)

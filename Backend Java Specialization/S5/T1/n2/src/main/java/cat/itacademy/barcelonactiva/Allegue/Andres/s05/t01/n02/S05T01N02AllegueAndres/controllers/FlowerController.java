@@ -4,7 +4,6 @@ import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueA
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.requests.FlowerCreateRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.requests.FlowerUpdateRequest;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.responses.FlowerResponse;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.responses.FlowerUpdateResponse;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.services.interfaces.FlowerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,9 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,24 +26,8 @@ public class FlowerController {
 
     @Operation(summary = "Create a Flower Controller.")
     @PostMapping("/add")
-    public ResponseEntity<FlowerResponse> createFlower(@RequestBody FlowerCreateRequest request) {
-
-        FlowerDTO createdFlower = flowerService.add(request);
-
-        FlowerResponse response = FlowerResponse.builder()
-                .error(null)
-                .flower(createdFlower)
-                .build();
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/flower/getOne/{id}")
-                .buildAndExpand(createdFlower.id())
-                .toUri();
-
-        return ResponseEntity
-                .created(location)
-                .body(response);
+    public FlowerDTO createFlower(@RequestBody FlowerCreateRequest request) {
+        return flowerService.add(request);
     }
 
     @Operation(summary = "Retrieve a single flower by id")
@@ -58,15 +39,9 @@ public class FlowerController {
             @ApiResponse(responseCode = "404", description = "Flower not found")
     })
     @GetMapping("/getOne/{id}")
-    public ResponseEntity<FlowerDTO> getOne(@Parameter(description = "Id of the flower to be obtained. Cannot be empty.", required = true)
+    public FlowerDTO getOne(@Parameter(description = "Id of the flower to be obtained. Cannot be empty.", required = true)
                                    @PathVariable int id) {
-        FlowerDTO serviceResponse = flowerService.getOne(id);
-
-        if(serviceResponse == null){
-            ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(serviceResponse);
+        return flowerService.getOne(id);
     }
 
     @Operation(summary = "Retrieve all flowers")
@@ -84,12 +59,8 @@ public class FlowerController {
 
     @Operation(summary = "Delete a flower")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteFlower(@PathVariable int id) {
-        if(flowerService.delete(id)){
-            return ResponseEntity.ok("Flower with ID:" + id + " deleted.");
-        } else {
-            return ResponseEntity.ok("Unable to delete flower with ID: " + id);
-        }
+    public boolean deleteFlower(@PathVariable int id) {
+        return flowerService.delete(id);
     }
 
 }

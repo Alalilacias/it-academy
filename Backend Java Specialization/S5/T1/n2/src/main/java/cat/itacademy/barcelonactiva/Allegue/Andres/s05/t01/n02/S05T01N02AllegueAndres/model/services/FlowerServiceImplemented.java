@@ -1,11 +1,13 @@
 package cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.services;
 
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.exceptions.implementations.FlowerServerAddException;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.exceptions.implementations.FlowerServerGetAllException;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.exceptions.implementations.FlowerServerGetOneException;
+import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.exceptions.implementations.FlowerServerUpdateException;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.domain.Flower;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.exceptions.FlowerException;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.requests.FlowerCreateRequest;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.requests.FlowerUpdateRequest;
-import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.responses.FlowerResponse;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.dto.responses.FlowerUpdateResponse;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.repository.FlowerRepository;
 import cat.itacademy.barcelonactiva.Allegue.Andres.s05.t01.n02.S05T01N02AllegueAndres.model.services.interfaces.FlowerService;
@@ -22,76 +24,70 @@ public class FlowerServiceImplemented implements FlowerService {
 
     @Override
     public FlowerDTO add(FlowerCreateRequest request) {
-        return repository
-                .save(request.toFlower())   //SaveRequest, after turning to EntityObject.
-                .toDTO();                   //Return the entity, returned to DTO for controller processing.
+        try{
+            return repository
+                    .save(request.toFlower())
+                    .toDTO();
+        } catch (Exception e){
+            throw new FlowerServerAddException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
-    public FlowerDTO getOne(int id) {
-        Optional<Flower> optional = repository.findById(id);
-        return optional.map(Flower::toDTO).orElse(null);
+    public FlowerDTO getOne(int id) throws FlowerServerGetOneException {
+        try{
+            Optional<Flower> optional = repository.findById(id);
+            return optional.map(Flower::toDTO).orElse(null);
+        } catch (Exception e) {
+            throw new FlowerServerGetOneException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
     public List<FlowerDTO> getAll() {
-        return repository.findAll().stream()
-                .map(Flower::toDTO)
-                .toList();
+        try{
+            return repository.findAll().stream()
+                    .map(Flower::toDTO)
+                    .toList();
+        } catch (Exception e) {
+            throw new FlowerServerGetAllException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
-    public FlowerUpdateResponse update(FlowerUpdateRequest updateFlower) {
-        Flower originalFlower = repository.findById(updateFlower.originalId()).orElse(null);
-        FlowerResponse response;
-        boolean nameUpdated = false;
-        String originalName = "";
-        boolean countryUpdated = false;
-        String originalCountry = "";
+    public FlowerUpdateResponse update(FlowerUpdateRequest request) {
+        try {
+            Optional<Flower> flower = repository.findById(request.originalId());
+            if (flower.isEmpty()){
+                throw new FlowerServerUpdateException("Unable to recover the flower you've requested to update");
+            }
 
-
-        if(originalFlower == null){
-            response = FlowerResponse.builder()
-                    .flower(null)
-                    .error(new FlowerException("Flower Service, update method, findById operation.",
-                            "Unable to find flower with id " + updateFlower.originalId()))
-                    .build();
-
-            return FlowerUpdateResponse.builder()
-                    .nameUpdated(nameUpdated)
-                    .oldName(originalName)
-                    .countryUpdated(countryUpdated)
-                    .oldCountry(originalCountry)
-                    .flowerResponse(response)
-                    .build();
+            return updateFlower(flower.get(), request);
+        } catch (Exception e) {
+            throw new FlowerServerUpdateException(e.getMessage(), e.getCause());
         }
+    }
 
-        if(!originalFlower.getName().equals(updateFlower.requestName())){
-            nameUpdated = true;
-            originalName = originalFlower.getName();
-            originalFlower.setName(updateFlower.requestName());
+    private FlowerUpdateResponse updateFlower(Flower flower, FlowerUpdateRequest request){
+        boolean isUpdated = false;
+        StringBuilder message = new StringBuilder("Changes:\n");
+
+        if(!flower.getName().equals(request.requestName())){
+            isUpdated = true;
+            message.append(flower.updateName(request.requestName()));
         }
-        if (!originalFlower.getCountry().equals(updateFlower.requestCountry())){
-            countryUpdated = true;
-            originalCountry = originalFlower.getCountry();
-            originalFlower.setCountry(updateFlower.requestCountry());
+        if (!flower.getCountry().equals(request.requestCountry())){
+            isUpdated = true;
+            message.append(flower.updateCountry(request.requestCountry()));
         }
-
-        FlowerDTO flowerToReturn = repository.save(originalFlower).toDTO();
-
-        response = FlowerResponse.builder()
-                .flower(flowerToReturn)
-                .error(null)
-                .build();
+        if(isUpdated){
+            repository.save(flower).toDTO();
+        }
 
         return FlowerUpdateResponse.builder()
-                .nameUpdated(nameUpdated)
-                .oldName(originalName)
-                .countryUpdated(countryUpdated)
-                .oldCountry(originalCountry)
-                .flowerResponse(response)
+                .flower(flower.toDTO())
+                .message(message.toString())
                 .build();
-
     }
 
     @Override

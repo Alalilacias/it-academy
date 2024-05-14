@@ -7,9 +7,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class FlowerWebClient {
     @Bean
-    public WebClient flowerWebClient(){
+    public WebClient WebClient(){
         return WebClient.builder()
-                .baseUrl("localhost:9002")
+                .baseUrl("""
+                        http://localhost:9002""")
                 .build();
     }
 }
