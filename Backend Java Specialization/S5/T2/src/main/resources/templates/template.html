@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en" th:fragment="layout(title,content)" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0">
+    <meta name="description" content="Fortuna is a dice game made using Spring Boot, MongoDB and Thymeleaf, secured using JWT.">
+    <meta name="author" content="Alalin Allalilacias">
+
+    <title th:replace="${title}"></title>
+
+    <link rel="icon" type="image/png" href="/images/fortuna_icon.png">
+
+
+    <link rel="stylesheet" href="/libraries/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/libraries/css/template.css">
+
+    <script src="/libraries/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
+        <a class="navbar-brand" href="/">
+            <!--suppress CheckImageSize -->
+
+            <img src="/images/dead_island.png" alt="nav_logo" width="40">
+            Isle
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/documentation}" th:text="#{messages.documentation}">Documentation</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/manager}" th:text="#{messages.manager}">Manager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/contact}" th:text="#{messages.contact}">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-fluid rounded"
+                             src="#"
+                             th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+                             alt="profile_pic" width="40" height="40" style="border-radius: 50%;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
+                        <li th:if="${#locale.language != 'es'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/es_flag.png}" th:href="@{?lang=es}">
+                                <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
+                            </a>
+                        </li>
+                        <li th:if="${#locale.language != 'ca'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/ca_flag.png}" th:href="@{?lang=ca}">
+                                <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image">
+                            </a>
+                        </li>
+                        <li th:if="${#locale.language != 'en'}">
+                            <a class="dropdown-item" href="#" th:src="@{/images/en_flag.png}" th:href="@{?lang=en}">
+                                <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="d-flex flex-grow-1" th:replace="${content}"></div>
+</body>
+<footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom clearfix mt-auto">
+    <div class="button-toolbar" role="toolbar" aria-label="Toolbar with buttons redirecting to home, Documentation, and Contact">
+        <div class="btn-group me-2" role="group" aria-label="Home button">
+            <button class="button btn-secondary btn-sm bg-dark text-white" onclick="window.location.href='/'" th:text="#{messages.home}">Home</button>
+        </div>
+        <div class="btn-group me-2" role="group" aria-label="Documentation button">
+            <button class="button btn-secondary btn-sm bg-dark text-white" onclick="window.location.href='/documentation'" th:text="#{messages.documentation}">Documentation</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Contact button">
+            <button class="button btn-secondary btn-sm bg-dark text-white" onclick="window.location.href='/contact'" th:text="#{messages.contact}">Contact</button>
+        </div>
+    </div>
+    <p class="pt-1" th:text="#{messages.footer}">Isle, designed with tons of love. Made by and for learners.</p>
+</footer>
+</html>

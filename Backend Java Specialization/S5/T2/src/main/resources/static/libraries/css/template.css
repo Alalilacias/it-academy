@@ -1,0 +1,14 @@
+.navbar-nav .nav-item:hover {
+    background-color: #FFFF00 !important;
+}
+.navbar-nav .navbar-link:hover {
+    background-color: #FFFF00 !important;
+}
+.btn-custom {
+    background-color: #FFFF00;
+    color: #000000; /* Text color */
+}
+
+.btn-custom:hover {
+    background-color: #E6E600;
+}
