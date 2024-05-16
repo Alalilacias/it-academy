@@ -9,16 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.api.fortuna.configuration.SecurityVariables.*;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     private DaoAuthenticationProvider authenticationProvider;
-
-    private static final String[] AUTHORIZED_REQUESTS = {
-            "/public/**",
-            "/auth/**"
-    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,6 +23,9 @@ public class SecurityConfig {
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         requests -> requests.requestMatchers(AUTHORIZED_REQUESTS).permitAll()
+                                .requestMatchers(GUEST_REQUESTS).hasRole("ROLE_GUEST")
+                                .requestMatchers(USER_REQUESTS).hasRole("ROLE_USER")
+                                .requestMatchers(ADMIN_REQUESTS).hasRole("ROLE_ADMIN")
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider);
 
