@@ -9,7 +9,7 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class PlayerSqlTest {
+class PlayerTest {
     Player player = Player.builder()
             .id(0L)
             .username("Test_Player")

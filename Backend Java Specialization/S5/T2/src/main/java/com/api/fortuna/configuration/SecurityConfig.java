@@ -9,8 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.api.fortuna.configuration.SecurityVariables.*;
+import static com.api.fortuna.configuration.Constants.Security.*;
 
+/**
+ * TODO finish laying out security and test.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

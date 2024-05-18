@@ -8,7 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * TODO finish UserDetailsService() and test class.
+ */
 public class WebConfig {
+
     @Bean
     private UserDetailsService userDetailsService(){
         return username -> null;
