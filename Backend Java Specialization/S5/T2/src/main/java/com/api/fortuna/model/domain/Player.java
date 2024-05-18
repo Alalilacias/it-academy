@@ -15,11 +15,8 @@ import java.util.Collection;
  * This class represents a player in the system.
  * Implements UserDetails for integration with Spring Security.
  * Uses Lombok annotations for boilerplate code reduction and JPA annotations for database mapping.
- * TODO fix testing to adapt to best practices.
  */
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -37,6 +34,7 @@ public class Player implements UserDetails {
     /**
      * The username of the player.
      */
+    @Setter
     private String username;
 
     /**
@@ -61,20 +59,47 @@ public class Player implements UserDetails {
     private Roles role;
 
     /**
-     * The number of games the player has played.
-     */
-    private int defeats;
-
-    /**
      * The number of victories the player has achieved.
      */
     private int victories;
 
     /**
-     * TODO Finish the return process and decide if this variable is needed.
+     * The number of games the player has played.
+     */
+    private int defeats;
+
+    /**
      * The victory rate of the player
      */
     private float winRate;
+
+
+
+    /**
+     * Required arguments constructor. Annotated with lombok to reduce boilerplate code, but personalized due to needs of the class.
+     * @param username of the player.
+     * @param email of the player.
+     * @param password of the player.
+     * @param role of the player
+     */
+    @Builder
+    private Player (String username, String email, String password, Roles role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.defeats = 0;
+        this.victories = 0;
+        calculateWinRate();
+    }
+
+    /**
+     * Automatically updates the Win Rate variable.
+     */
+    private void calculateWinRate() {
+        int totalGames = victories + defeats;
+        this.winRate = totalGames > 0 ? (float) victories / totalGames : 0;
+    }
 
     /**
      * Returns the authorities granted to the player.
@@ -94,6 +119,19 @@ public class Player implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Victories and defeats are automatically updated.
+     * @param isVictory, boolean that expresses if the player has won.
+     */
+    public void addResult (boolean isVictory){
+        if(isVictory){
+            this.victories++;
+        } else {
+            this.defeats++;
+        }
+        calculateWinRate();
     }
 
     /**
@@ -136,7 +174,11 @@ public class Player implements UserDetails {
         return true; // Players are always enabled in this implementation
     }
 
-    public PlayerDTO toDTO(){
+    /**
+     * Converts player entity to DTO equivalent.
+     * @return {@link PlayerDTO} record of the necessary values from the Player.
+     */
+    public PlayerDTO toDTO (){
         return new PlayerDTO(this.id, this.username, this.role, this.winRate);
     }
 }
