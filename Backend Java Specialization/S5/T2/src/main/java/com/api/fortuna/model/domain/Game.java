@@ -26,14 +26,35 @@ public class Game {
     private long playerID;
 
     /**
-     * The two dices, named after two temples dedicated to the worship of the name holder of our app.
+     *  First of two dices, named after one of the two temples dedicated to the worship of the name holder of our app.<br><br>
+     *  The temple of Fortuna Primigenia was an ancient Roman temple within the sanctuary of Fortuna Primigenia, a religious
+     *  complex in Praeneste (now Palestrina, 35 km (22 mi) east of Rome) founded in 204 BC by Publius Sempronius Tuditanus.<br><br>
+     *  The temple was dedicated to the goddess Fortuna Primigenia, the exact meaning of whose name is unclear.<br><br>
+     *  Parents brought their newly-born first child to the temple in order to improve its likelihood of surviving infancy and perpetuating the family.
+     */
+    private int primigenia;
+
+    /**
+     *  Second of the two dices, named after one of the two temples dedicated to the worship of the name holder of our app.<br><br>
+     *  The Temple of Fortuna Muliebris was a temple in ancient Rome dedicated by Proculus Verginius Tricostus Rutilus in 486 BC
+     *  to the goddess Fortuna and located at the fourth milestone of the Via Latina.<br><br>
+     *  It was founded on behalf of the Roman women who opposed the war of Gaius Marcius Coriolanus and the Volsci against Rome,
+     *  commemorating their role in ending Coriolanus' advance on the city.<br><br>
+     *  The temple was dedicated in 486 BCE after the war and was formally founded in 493 BCE.<br><br>
+     *  Aside from some inscriptions recording restoration work in the Roman imperial period, no remains of the temple exist
+     *  and the date it went into disuse is unknown.
      */
     private int muliebris;
-    private int primigenia;
+
+    /**
+     * Boolean representation of whether the game has been won.
+     */
+    private boolean isWon;
 
     public Game(long playerID){
         this.playerID = playerID;
-        this.muliebris = ThreadLocalRandom.current().nextInt(1,7);
         this.primigenia = ThreadLocalRandom.current().nextInt(1,7);
+        this.muliebris = ThreadLocalRandom.current().nextInt(1,7);
+        this.isWon = this.primigenia + this.muliebris == 7;
     }
 }
