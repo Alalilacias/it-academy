@@ -47,10 +47,18 @@ public class Game {
     private int muliebris;
 
     /**
-     * Boolean representation of whether the game has been won.
+     * Boolean representation of whether the game has been won or not.
      */
     private boolean isWon;
 
+    /**
+     * Constructs a new game instance of Player.<br><br>
+     *
+     * Using the given id, a new game is created. Automatically, separate random values between 1-6 are assigned to each of the dices
+     * and victory is determined based on the sum of them.
+     *
+     * @param playerID The id of the player who has played this game.
+     */
     public Game(long playerID){
         this.playerID = playerID;
         this.primigenia = ThreadLocalRandom.current().nextInt(1,7);

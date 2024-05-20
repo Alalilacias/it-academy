@@ -9,14 +9,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.api.fortuna.configuration.Constants.Security.*;
-
 /**
  * TODO finish laying out security and test.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    public static final String[] AUTHORIZED_REQUESTS = {"/","player/auth/**"};
+    public static final String[] GUEST_REQUESTS = {"/public/**"};
+    public static final String[] USER_REQUESTS = {"/game/**", "player/**"};
+    public static final String[] ADMIN_REQUESTS = {};
     @Autowired
     private DaoAuthenticationProvider authenticationProvider;
 

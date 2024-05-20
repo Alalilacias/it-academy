@@ -28,4 +28,9 @@ class GameTest {
         int primigenia = game.getPrimigenia();
         assertTrue(primigenia > 0 && primigenia < 7);
     }
+
+    @Test
+    void isWon(){
+        assertInstanceOf(Boolean.class, game.isWon());
+    }
 }

@@ -14,7 +14,7 @@ public interface GameService {
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      */
-    Game createGame(long id) throws EntityPersistenceException;
+    Game createGame(Long id) throws EntityPersistenceException;
 
     /**
      * Returns all game entities associated with the given id.

@@ -32,7 +32,7 @@ public interface PlayerService {
      * @throws PlayerNotFoundException If no player is found with the id.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see GameService#createGame(long)
+     * @see GameService#createGame(Long)
      * @see Player#addResult(boolean)
      */
     Game throwDice(long id) throws PlayerNotFoundException, EntityPersistenceException;

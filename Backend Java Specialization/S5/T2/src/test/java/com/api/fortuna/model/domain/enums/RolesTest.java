@@ -26,5 +26,8 @@ class RolesTest {
 
     @Test
     void valueOf() {
+        assertEquals(Roles.GUEST, Roles.valueOf("GUEST"));
+        assertEquals(Roles.USER, Roles.valueOf("USER"));
+        assertEquals(Roles.ADMIN, Roles.valueOf("ADMIN"));
     }
 }

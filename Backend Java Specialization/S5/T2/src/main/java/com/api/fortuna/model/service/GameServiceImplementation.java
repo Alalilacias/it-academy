@@ -22,7 +22,7 @@ public class GameServiceImplementation implements GameService {
      * {@inheritDoc}
      */
     @Override
-    public Game createGame(long id) throws EntityPersistenceException {
+    public Game createGame(Long id) throws EntityPersistenceException {
         try {
             return repository.save(new Game(id));
         } catch (Exception e){

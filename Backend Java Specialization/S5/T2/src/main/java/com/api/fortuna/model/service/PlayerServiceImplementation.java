@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service implementation for managing Player entities and related operations regarding the repository.
+ * Service implementation for managing Player entities and related operations.
  * TODO Do unit testing.
  */
 @Service
@@ -100,7 +100,7 @@ public class PlayerServiceImplementation implements PlayerService {
         Player player = getOne(id);
         Game game = service.createGame(id);
 
-        player.addResult(game.getMuliebris() + game.getPrimigenia() == 7);
+        player.addResult(game.isWon());
 
         return game;
     }

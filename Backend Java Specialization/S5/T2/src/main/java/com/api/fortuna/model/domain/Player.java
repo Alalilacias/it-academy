@@ -73,8 +73,6 @@ public class Player implements UserDetails {
      */
     private float winRate;
 
-
-
     /**
      * Required arguments constructor. Annotated with lombok to reduce boilerplate code, but personalized due to needs of the class.
      * @param username of the player.
@@ -109,6 +107,16 @@ public class Player implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return The email of the user, which will serve the purpose of username in this implementation.
+     */
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     /**
