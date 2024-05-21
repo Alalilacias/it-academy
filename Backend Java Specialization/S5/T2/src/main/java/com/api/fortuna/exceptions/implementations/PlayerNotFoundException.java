@@ -1,4 +1,4 @@
-package com.api.fortuna.exceptions;
+package com.api.fortuna.exceptions.implementations;
 
 /**
  * Exception thrown if the service cannot find the player with the given id.

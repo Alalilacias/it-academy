@@ -1,4 +1,4 @@
-package com.api.fortuna.exceptions;
+package com.api.fortuna.exceptions.implementations;
 
 /**
  * Exception thrown if any exception is thrown by persistence related operations.

@@ -1,6 +1,6 @@
 package com.api.fortuna.model.service.interfaces;
 
-import com.api.fortuna.exceptions.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.model.domain.Game;
 
 import java.util.List;

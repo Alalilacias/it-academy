@@ -1,10 +1,11 @@
 package com.api.fortuna.controllers;
 
-import com.api.fortuna.exceptions.EntityPersistenceException;
-import com.api.fortuna.exceptions.PlayerNotFoundException;
+import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.dto.PlayerDTO;
 import com.api.fortuna.model.dto.requests.ClientAuthRequest;
+import com.api.fortuna.model.dto.responses.ClientAuthResponse;
 import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +33,12 @@ public class PlayerController {
      * @return Player DTO of the player created.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see PlayerService#create(ClientAuthRequest)
+     * @see PlayerService#register(ClientAuthRequest)
      */
     @PostMapping("/auth/register")
-    public PlayerDTO registerPlayer(@RequestBody ClientAuthRequest request) throws EntityPersistenceException {
-        return service.create(request);
+    public ClientAuthResponse registerPlayer(@RequestBody ClientAuthRequest request) throws EntityPersistenceException {
+        return service.register(request);
     }
-
     /**
      * Creates a game of dice under the player's id, updates the player statistics.
      * @param id the id of the player.
@@ -55,7 +55,6 @@ public class PlayerController {
 
 
 //    Read methods
-
     /**
      * Returns a List with DTO representation of all Players in the system.
      *

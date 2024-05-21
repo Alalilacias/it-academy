@@ -1,6 +1,6 @@
 package com.api.fortuna.model.service;
 
-import com.api.fortuna.exceptions.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.repository.GameRepository;
 import com.api.fortuna.model.service.interfaces.GameService;

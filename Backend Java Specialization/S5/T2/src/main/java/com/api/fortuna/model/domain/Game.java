@@ -23,7 +23,7 @@ public class Game {
     /**
      * The unique identifier for the player, taken from the player class during game creation in the service layer and passed through constructor.
      */
-    private long playerID;
+    private long playerId;
 
     /**
      *  First of two dices, named after one of the two temples dedicated to the worship of the name holder of our app.<br><br>
@@ -60,7 +60,7 @@ public class Game {
      * @param playerID The id of the player who has played this game.
      */
     public Game(long playerID){
-        this.playerID = playerID;
+        this.playerId = playerID;
         this.primigenia = ThreadLocalRandom.current().nextInt(1,7);
         this.muliebris = ThreadLocalRandom.current().nextInt(1,7);
         this.isWon = this.primigenia + this.muliebris == 7;

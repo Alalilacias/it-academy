@@ -1,4 +1,4 @@
-package com.api.fortuna.configuration.jwt;
+package com.api.fortuna.configuration.filters;
 
 import com.api.fortuna.model.service.FortunaTokenService;
 import jakarta.servlet.FilterChain;

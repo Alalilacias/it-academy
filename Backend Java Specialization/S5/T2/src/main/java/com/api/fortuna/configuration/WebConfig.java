@@ -1,7 +1,11 @@
 package com.api.fortuna.configuration;
 
+import com.api.fortuna.model.repository.PlayerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,20 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * TODO finish UserDetailsService() and test class.
  */
+@Configuration
 public class WebConfig {
 
+    @Autowired
+    private PlayerRepository repository;
+
     @Bean
-    private UserDetailsService userDetailsService(){
-        return username -> null;
+    public UserDetailsService userDetailsService() {
+        return username -> repository.findPlayerByEmail(username)
+                .orElseThrow();
     }
 
     @Bean
-    private PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setUserDetailsService(userDetailsService());

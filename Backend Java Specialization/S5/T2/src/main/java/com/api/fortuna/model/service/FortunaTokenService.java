@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -22,10 +23,33 @@ public class FortunaTokenService {
     @Value("${fortuna.token.key}")
     private String key;
     @Value("${fortuna.token.expiration}")
-    private String expiration;
+    private long expiration;
 
+    /**
+     * Generates a JWT token with the provided user details.
+     *
+     * @param details the UserDetails object representing the user.
+     * @return the generated JWT token as a String.
+     */
+    public String generateToken(UserDetails details){
+        return generateToken(new HashMap<>(), details);
+    }
+
+    /**
+     * Generates a JWT token with the provided claims and user details.
+     *
+     * @param claims a map of claims to be included in the JWT token
+     * @param details the UserDetails object representing the user
+     * @return the generated JWT token as a String
+     */
     public String generateToken(Map<String, Object> claims, UserDetails details){
-        return "";
+        return Jwts.builder()
+                .claims(claims)
+                .subject(details.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey())
+                .compact();
     }
 
     /**

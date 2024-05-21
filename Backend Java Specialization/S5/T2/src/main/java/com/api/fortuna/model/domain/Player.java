@@ -110,7 +110,7 @@ public class Player implements UserDetails {
     }
 
     /**
-     * Returns the username used to authenticate the user.
+     * Returns the username used to register the user.
      *
      * @return The email of the user, which will serve the purpose of username in this implementation.
      */
@@ -120,7 +120,7 @@ public class Player implements UserDetails {
     }
 
     /**
-     * Returns the password used to authenticate the player.
+     * Returns the password used to register the player.
      *
      * @return the player's password.
      */

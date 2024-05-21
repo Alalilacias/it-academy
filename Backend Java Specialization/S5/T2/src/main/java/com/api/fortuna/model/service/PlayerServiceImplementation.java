@@ -1,17 +1,20 @@
 package com.api.fortuna.model.service;
 
-import com.api.fortuna.exceptions.EntityPersistenceException;
-import com.api.fortuna.exceptions.PlayerNotFoundException;
+import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.domain.Player;
 import com.api.fortuna.model.domain.enums.Roles;
 import com.api.fortuna.model.dto.PlayerDTO;
 import com.api.fortuna.model.dto.requests.ClientAuthRequest;
+import com.api.fortuna.model.dto.responses.ClientAuthResponse;
 import com.api.fortuna.model.repository.PlayerRepository;
 import com.api.fortuna.model.service.interfaces.GameService;
 import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +28,27 @@ import java.util.Optional;
 @Service
 public class PlayerServiceImplementation implements PlayerService {
     @Autowired
-    private PlayerRepository repository;
+    private PlayerRepository playerRepository;
     @Autowired
-    private GameService service;
+    private GameService gameService;
+    @Autowired
+    private FortunaTokenService tokenService;
     @Autowired
     private static PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PlayerDTO create (ClientAuthRequest request) throws EntityPersistenceException {
+    public ClientAuthResponse register(ClientAuthRequest request) throws EntityPersistenceException {
         try {
-            return repository.save(toRegisterPlayer(request)).toDTO();
+            Player player = playerRepository.save(toRegisterPlayer(request));
+            return new ClientAuthResponse(
+                    player.toDTO(),
+                    tokenService.generateToken(player)
+            );
         } catch (Exception e){
             throw new EntityPersistenceException(e.getMessage(), e.getCause());
         }
@@ -48,8 +59,29 @@ public class PlayerServiceImplementation implements PlayerService {
      */
     @Override
     public Player getOne(long id) throws PlayerNotFoundException {
-        return repository.findById(id)
+        return playerRepository.findById(id)
                 .orElseThrow(() -> new PlayerNotFoundException("Unable to find player at method update() in PlayerServiceImplementation."));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClientAuthResponse authenticate(ClientAuthRequest request) throws  PlayerNotFoundException {
+        Player player = playerRepository.findPlayerByEmail(request.email())
+                .orElseThrow(() -> new PlayerNotFoundException("Unable to find player at method authenticate() in PlayerServiceImplementation."));
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.email(),
+                        request.password()
+                )
+        );
+
+        return new ClientAuthResponse(
+                player.toDTO(),
+                tokenService.generateToken(player)
+        );
     }
 
     /**
@@ -58,7 +90,7 @@ public class PlayerServiceImplementation implements PlayerService {
     @Override
     public List<PlayerDTO> getAll() throws EntityPersistenceException {
         try {
-            return repository.findAll().stream()
+            return playerRepository.findAll().stream()
                     .map(Player::toDTO)
                     .toList();
         } catch (DataAccessException e) {
@@ -73,7 +105,7 @@ public class PlayerServiceImplementation implements PlayerService {
      */
     @Override
     public List<Game> getAllPlayerGames(long id) throws EntityPersistenceException {
-        return service.getAll(id);
+        return gameService.getAll(id);
     }
 
     /**
@@ -86,7 +118,7 @@ public class PlayerServiceImplementation implements PlayerService {
         player.setUsername(username);
 
         try{
-            return repository.save(player).toDTO();
+            return playerRepository.save(player).toDTO();
         } catch (Exception e){
             throw new EntityPersistenceException(e.getMessage(), e.getCause());
         }
@@ -98,7 +130,7 @@ public class PlayerServiceImplementation implements PlayerService {
     @Override
     public Game throwDice(long id) throws PlayerNotFoundException, EntityPersistenceException {
         Player player = getOne(id);
-        Game game = service.createGame(id);
+        Game game = gameService.createGame(id);
 
         player.addResult(game.isWon());
 
@@ -110,12 +142,12 @@ public class PlayerServiceImplementation implements PlayerService {
      */
     @Override
     public String deleteThrows(long id) throws PlayerNotFoundException, EntityPersistenceException {
-        Optional<Player> player = repository.findById(id);
+        Optional<Player> player = playerRepository.findById(id);
         if(player.isEmpty()){
             throw new PlayerNotFoundException("Unable to find player at method throwDice() in PlayerServiceImplementation.");
         }
 
-        return service.deleteAllGames(id)
+        return gameService.deleteAllGames(id)
                 ? "All games for player ID: " + id + " deleted."
                 : "Unable to delete all games for player ID: " + id;
     }

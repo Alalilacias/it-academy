@@ -1,8 +1,9 @@
 package com.api.fortuna.model.service.interfaces;
 
-import com.api.fortuna.exceptions.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.model.domain.Player;
-import com.api.fortuna.exceptions.PlayerNotFoundException;
+import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
+import com.api.fortuna.model.dto.responses.ClientAuthResponse;
 import com.api.fortuna.model.repository.PlayerRepository;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.dto.PlayerDTO;
@@ -17,14 +18,18 @@ import java.util.List;
 public interface PlayerService {
 
     /**
-     * Saves a player to the database.
-     * @param request see ClientAuthRequest documentation for more information.
-     * @return the saved entity, will never be null.
+     * Saves a player to the database, serves as the registration method for security.
+     *
+     * @param request The ClientAuthRequest, with all necessary fields filled.
+     * @return The ClientAuthResponse, with the DTO representation of the player entity and the JWT token that authenticates it.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      * @see PlayerRepository#save(Object)
+     * @see ClientAuthRequest
+     * @see ClientAuthResponse
+     * @see PlayerDTO
      */
-    PlayerDTO create(ClientAuthRequest request) throws EntityPersistenceException;
+    ClientAuthResponse register(ClientAuthRequest request) throws EntityPersistenceException;
     /**
      * Creates a game using the player's id and modifies the player's counts depending on the result.
      * @param id The id of the player.
@@ -35,7 +40,7 @@ public interface PlayerService {
      * @see GameService#createGame(Long)
      * @see Player#addResult(boolean)
      */
-    Game throwDice(long id) throws PlayerNotFoundException, EntityPersistenceException;
+    Game throwDice (long id) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
      * Returns player entity with the given id.
@@ -45,7 +50,16 @@ public interface PlayerService {
      * @throws PlayerNotFoundException If the player cannot be found.
      * @see PlayerRepository#findById(Object)
      */
-    Player getOne(long id) throws PlayerNotFoundException;
+    Player getOne (long id) throws PlayerNotFoundException;
+
+    /**
+     * Authenticates the user in question and returns the appropriate response to the client.
+     *
+     * @param request {@link ClientAuthRequest} instance, only email and password are necessary.
+     * @return {@link ClientAuthResponse} instance, with the DTO representation of the player authenticated and the JWT corresponding.
+     * @throws PlayerNotFoundException if no player can be found with the given data.
+     */
+    ClientAuthResponse authenticate(ClientAuthRequest request) throws PlayerNotFoundException;
     /**
      * Returns all player entities in the repository.
      *
@@ -54,7 +68,6 @@ public interface PlayerService {
      * @see PlayerRepository#findAll()
      */
     List<PlayerDTO> getAll() throws EntityPersistenceException;
-
     /**
      * Returns all game entities associated with the given player id.
      * @param id The id of the player associated with the given id.
