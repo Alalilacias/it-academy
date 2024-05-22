@@ -5,6 +5,6 @@ package com.api.fortuna.exceptions.implementations;
  */
 public class EntityPersistenceException extends Exception {
     public EntityPersistenceException(String message, Throwable cause) {
-        super(message, cause, false, false);
+        super(message, cause);
     }
 }
