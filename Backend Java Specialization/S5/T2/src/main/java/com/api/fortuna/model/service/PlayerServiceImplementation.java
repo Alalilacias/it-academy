@@ -8,6 +8,7 @@ import com.api.fortuna.model.domain.enums.Roles;
 import com.api.fortuna.model.dto.PlayerDTO;
 import com.api.fortuna.model.dto.requests.ClientAuthRequest;
 import com.api.fortuna.model.dto.responses.ClientAuthResponse;
+import com.api.fortuna.model.dto.responses.GamblingResponse;
 import com.api.fortuna.model.repository.PlayerRepository;
 import com.api.fortuna.model.service.interfaces.GameService;
 import com.api.fortuna.model.service.interfaces.PlayerService;
@@ -18,7 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,16 +114,17 @@ public class PlayerServiceImplementation implements PlayerService {
      * {@inheritDoc}
      */
     @Override
-    public List<Game> getAllPlayerGames(long id) throws EntityPersistenceException {
-        return gameService.getAll(id);
+    public List<Game> getAllPlayerGames(String token) throws EntityPersistenceException, PlayerNotFoundException {
+        Player player = getOne(tokenService.getUsername(token.substring(7)));
+        return gameService.getAll(player.getId());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PlayerDTO update (long id, String username) throws PlayerNotFoundException, EntityPersistenceException {
-        Player player = getOne(id);
+    public PlayerDTO update (String token, String username) throws PlayerNotFoundException, EntityPersistenceException {
+        Player player = getOne(tokenService.getUsername(token.substring(7)));
 
         player.setUsername(username);
 
@@ -151,33 +152,48 @@ public class PlayerServiceImplementation implements PlayerService {
      * {@inheritDoc}
      */
     @Override
-    public List<Game> simulateGamblingAddiction(String token) throws PlayerNotFoundException, EntityPersistenceException {
+    public GamblingResponse simulateGamblingAddiction(String token, double minutes) throws PlayerNotFoundException, EntityPersistenceException {
         Player player = getOne(tokenService.getUsername(token.substring(7)));
-        List<Game> games = new ArrayList<>();
+        Game game;
 
-        for(int i = 0; i < 1000; i++){
-            games.add(gameService.createGame(player.getId()));
-            player.addResult(games.get(i).isWon());
-        }
+        long startTime = System.currentTimeMillis();
+        long totalRepetitions = 0;
+
+        do {
+            game = gameService.createGame(player.getId());
+            player.addResult(game.isWon());
+            totalRepetitions++;
+        } while(System.currentTimeMillis() - startTime < ((long) (minutes * 60 * 1000)));
+
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
 
         playerRepository.save(player);
 
-        return games;
+        return new GamblingResponse(
+                totalTime,
+                totalRepetitions,
+                (double) totalRepetitions /totalTime
+        );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String deleteThrows(long id) throws PlayerNotFoundException, EntityPersistenceException {
-        Optional<Player> player = playerRepository.findById(id);
-        if(player.isEmpty()){
-            throw new PlayerNotFoundException("Unable to find player at method throwDice() in PlayerServiceImplementation.");
-        }
+    public String deleteThrows(String token) throws PlayerNotFoundException, EntityPersistenceException {
+        Player player = getOne(tokenService.getUsername(token.substring(7)));
+        gameService.deleteAllGames(player.getId());
 
-        return gameService.deleteAllGames(id)
-                ? "All games for player ID: " + id + " deleted."
-                : "Unable to delete all games for player ID: " + id;
+        player.cleanResults();
+        playerRepository.save(player);
+
+        return "All games for player ID: " + player.getId() + " deleted.";
+    }
+
+    @Override
+    public boolean deletePlayer(long id) {
+        return false;
     }
 
     /**

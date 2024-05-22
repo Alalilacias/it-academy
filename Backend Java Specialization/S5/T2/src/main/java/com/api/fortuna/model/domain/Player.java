@@ -130,19 +130,6 @@ public class Player implements UserDetails {
     }
 
     /**
-     * Victories and defeats are automatically updated.
-     * @param isVictory, boolean that expresses if the player has won.
-     */
-    public void addResult (boolean isVictory){
-        if(isVictory){
-            this.victories++;
-        } else {
-            this.defeats++;
-        }
-        calculateWinRate();
-    }
-
-    /**
      * Indicates whether the player's account has expired.
      *
      * @return true if the account is non-expired, false otherwise.
@@ -188,5 +175,27 @@ public class Player implements UserDetails {
      */
     public PlayerDTO toDTO (){
         return new PlayerDTO(this.id, this.username, this.role, this.winRate);
+    }
+
+    /**
+     * Victories and defeats are automatically updated.
+     * @param isVictory, boolean that expresses if the player has won.
+     */
+    public void addResult (boolean isVictory){
+        if(isVictory){
+            this.victories++;
+        } else {
+            this.defeats++;
+        }
+        calculateWinRate();
+    }
+
+    /**
+     * Returns all values to
+     */
+    public void cleanResults() {
+        this.defeats = 0;
+        this.victories = 0;
+        this.winRate = 0;
     }
 }

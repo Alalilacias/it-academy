@@ -23,7 +23,8 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
-    public static final String[] AUTHORIZED_REQUESTS = {"/", "/auth/**"};
+    public static final String[] AUTHORIZED_REQUESTS = {"/auth/**"};
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         requests -> requests
                                 .requestMatchers(AUTHORIZED_REQUESTS).permitAll()
+                                .requestMatchers("/admins/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)

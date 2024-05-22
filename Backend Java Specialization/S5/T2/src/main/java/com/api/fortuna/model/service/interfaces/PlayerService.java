@@ -4,6 +4,7 @@ import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.model.domain.Player;
 import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.dto.responses.ClientAuthResponse;
+import com.api.fortuna.model.dto.responses.GamblingResponse;
 import com.api.fortuna.model.repository.PlayerRepository;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.dto.PlayerDTO;
@@ -78,45 +79,56 @@ public interface PlayerService {
      */
     List<PlayerDTO> getAll() throws EntityPersistenceException;
     /**
-     * Returns all game entities associated with the given player id.
-     * @param id The id of the player associated with the given id.
+     * Returns all game entities associated with the given player token.
+     * @param token The token of the player associated with the given token.
      * @return A list of game entities, empty if there's none.
+     * @throws PlayerNotFoundException if no player is found associated with the given token.
      * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
      * @see GameService#getAll(long) 
      */
-    List<Game> getAllPlayerGames(long id) throws EntityPersistenceException;
+    List<Game> getAllPlayerGames(String token) throws EntityPersistenceException, PlayerNotFoundException;
 
     /**
-     * Updates the username of the owner of the id.
-     * @param id The id of the player whose username will be modified.
+     * Updates the username of the owner of the token.
+     * @param token The token of the player whose username will be modified.
      * @param username The new username to be applied to the player.
      * @return The saved entity, will never be null.
-     * @throws PlayerNotFoundException If no player is found with the id.
+     * @throws PlayerNotFoundException If no player is found with the token.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      */
-    PlayerDTO update(long id, String username) throws PlayerNotFoundException, EntityPersistenceException;
+    PlayerDTO update(String token, String username) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
-     * Runs throwDice() method one thousand times, simulating for a second the trials of an addict.
+     * TODO fix up.
+     * Runs throwDice() method following the exponential formula in which 10 is the base and minutes is the exponent, simulating for a second the trials of an addict.
      *
-     * @param token must not be null and must be the valid token, without 'Bearer' tag.
-     * @return A list of all one thousand {@link Game} instances.
+     * @param token must not be null and must be the valid token, security chain will cut off operation otherwise.
+     * @param minutes the exponent to which the base number of times will be raised to the power of.
+     * @return A {@link GamblingResponse} containing the exact milliseconds taken for game related operations and the number of repetitions.
      * @throws PlayerNotFoundException if no player is found with the given token.
-     * @throws EntityPersistenceException if any issu is encountered during entity persistence.
+     * @throws EntityPersistenceException if any issue is encountered during entity persistence.
      * @see GameService#createGame(Long) 
      */
-    List<Game> simulateGamblingAddiction(String token) throws PlayerNotFoundException, EntityPersistenceException;
+    GamblingResponse simulateGamblingAddiction(String token, double minutes) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
-     * Deletes all games of the player that owns the given id.
+     * Deletes all games of the player that owns the given token.
      *
-     * @param id The id of the player whose games are to be deleted.
+     * @param token The token of the player whose games are to be deleted.
      * @return A text, detailing the success or lack thereof of the operation.
-     * @throws PlayerNotFoundException If no player is found with the given id.
+     * @throws PlayerNotFoundException If no player is found with the given token.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      * @see GameService#deleteAllGames(long)  
      */
-    String deleteThrows(long id) throws PlayerNotFoundException, EntityPersistenceException;
+    String deleteThrows(String token) throws PlayerNotFoundException, EntityPersistenceException;
+
+    /**
+     * TODO Do this.
+     *
+     * @param id
+     * @return
+     */
+    boolean deletePlayer(long id);
 }

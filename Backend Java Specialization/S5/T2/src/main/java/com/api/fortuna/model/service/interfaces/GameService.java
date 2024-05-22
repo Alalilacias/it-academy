@@ -30,9 +30,8 @@ public interface GameService {
      * Deletes all games associated with the given player ID.
      *
      * @param id the id of the player whose games will be deleted.
-     * @return A boolean representing the success of the operation.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
-     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
+     *                                    if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      */
-    boolean deleteAllGames(long id) throws EntityPersistenceException;
+    void deleteAllGames(long id) throws EntityPersistenceException;
 }

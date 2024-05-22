@@ -46,9 +46,9 @@ public class GameServiceImplementation implements GameService {
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteAllGames(long id) throws EntityPersistenceException {
+    public void deleteAllGames(long id) throws EntityPersistenceException {
         try {
-            return repository.deleteAllByPlayerId(id);
+            repository.deleteAllByPlayerId(id);
         } catch (Exception e){
             throw new EntityPersistenceException(e.getMessage(), e);
         }

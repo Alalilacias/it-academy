@@ -4,6 +4,7 @@ import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.dto.PlayerDTO;
+import com.api.fortuna.model.dto.responses.GamblingResponse;
 import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,36 +36,36 @@ public class PlayerController {
     public Game throwDice(@RequestHeader("authorization") String token) throws PlayerNotFoundException, EntityPersistenceException {
         return service.throwDice(token);
     }
-    @PostMapping("/games/addiction")
-    public List<Game> throwDiceWithAddiction(@RequestHeader("authorization") String token) throws PlayerNotFoundException, EntityPersistenceException {
-        return service.simulateGamblingAddiction(token);
+
+    /**
+     * Simulates max speed gambling for a user for the amount of minutes given by a path variable.
+     * 
+     * @param token the JWT token of the user.
+     * @param minutes the time, in minutes, the user wants to experience the wonders of max speed betting.
+     * @return List of the full amount of games the user speed played.
+     * @throws PlayerNotFoundException If no player is found with the given id.
+     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store.
+     * @see PlayerService#simulateGamblingAddiction(String, double)
+     */
+    @PostMapping("/games/addiction/{minutes}")
+    public GamblingResponse throwDiceWithAddiction(@RequestHeader("authorization") String token, @PathVariable double minutes) throws PlayerNotFoundException, EntityPersistenceException {
+        return service.simulateGamblingAddiction(token, minutes);
     }
 
 
-//    Read methods
     /**
-     * Returns a List with DTO representation of all Players in the system.
+     * Returns a List with all the games associated with the player token in the system.
      *
-     * @return A List of Player DTOs, empty if there's none.
+     * @param token The token of the player whose games must be returned, must not be null.
+     * @return A list of games associated with the given token, empty if there's none.
+     * @throws PlayerNotFoundException if no player is found associated with the given token.
      * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
-     * @see PlayerService#getAll()
+     * @see PlayerService#getAllPlayerGames(String)
      */
-    @GetMapping("/getAll")
-    private List<PlayerDTO> getAllPlayers() throws EntityPersistenceException {
-        return service.getAll();
-    }
-
-    /**
-     * Returns a List with all the games associated with the player id in the system.
-     *
-     * @param id The id of the player whose games must be returned, must not be null.
-     * @return A list of games associated with the given id, empty if there's none.
-     * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
-     * @see PlayerService#getAllPlayerGames(long) 
-     */
-    @GetMapping("/{id}/games")
-    public List<Game> getAllPlayerGames(@PathVariable long id) throws EntityPersistenceException {
-        return service.getAllPlayerGames(id);
+    @GetMapping("/games")
+    public List<Game> getAllPlayerGames(@RequestHeader("authorization") String token) throws EntityPersistenceException, PlayerNotFoundException {
+        return service.getAllPlayerGames(token);
     }
 
     /**
@@ -72,11 +73,11 @@ public class PlayerController {
      *
      * @return A list of player DTOs, ordered by their win rate. Empty if there's none.
      * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
-     * @see PlayerController#getAllPlayers()
+     * @see PlayerService#getAll()
      */
-    @GetMapping("/players/ranking")
+    @GetMapping("/ranking")
     public List<PlayerDTO> getRanking() throws EntityPersistenceException {
-        return getAllPlayers().stream()
+        return service.getAll().stream()
                 .sorted(Comparator
                         .comparingDouble(PlayerDTO::winRate)
                         .thenComparing(PlayerDTO::username)
@@ -91,7 +92,7 @@ public class PlayerController {
      * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
      * @see PlayerController#getRanking()
      */
-    @GetMapping("/players/ranking/winner")
+    @GetMapping("/ranking/winner")
     public PlayerDTO getBestRanking() throws EntityPersistenceException {
         return getRanking().getFirst();
     }
@@ -103,7 +104,7 @@ public class PlayerController {
      * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
      * @see PlayerController#getRanking()
      */
-    @GetMapping("/players/ranking/loser")
+    @GetMapping("/ranking/loser")
     public PlayerDTO getWorstRanking() throws EntityPersistenceException {
         return getRanking().getLast();
     }
@@ -111,32 +112,32 @@ public class PlayerController {
 //    Update methods
     /**
      * Updates an existing user's username.
-     * @param id Must be null and >0
+     * @param token Must be null and >0
      * @param username must not be null
      * @return {@link PlayerDTO} of the updated user.
-     * @throws PlayerNotFoundException If the player with the given id is not found.
+     * @throws PlayerNotFoundException If the player with the given token is not found.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see PlayerService#update(long, String)
+     * @see PlayerService#update(String, String)
      */
-    @PutMapping("/update/{id}")
-    public PlayerDTO updatePlayer(@PathVariable long id, @RequestParam String username) throws PlayerNotFoundException, EntityPersistenceException {
-        return service.update(id, username);
+    @PutMapping
+    public PlayerDTO updatePlayer(@RequestHeader("authorization") String token, @RequestBody String username) throws PlayerNotFoundException, EntityPersistenceException {
+        return service.update(token, username);
     }
 
 
 //    Delete methods
     /**
-     * Deletes all games of the player that owns the given id.
-     * @param id The id of the player whose games are to be deleted.
+     * Deletes all games of the player that owns the given token.
+     * @param token The token of the player whose games are to be deleted.
      * @return A text, detailing the success or lack thereof of the operation.
-     * @throws PlayerNotFoundException If no player is found with the given id.
+     * @throws PlayerNotFoundException If no player is found with the given token.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see PlayerService#deleteThrows(long)
+     * @see PlayerService#deleteThrows(String)
      */
-    @DeleteMapping({"{id}/games"})
-    public String deletePlayerThrows(@PathVariable long id) throws PlayerNotFoundException, EntityPersistenceException {
-        return service.deleteThrows(id);
+    @DeleteMapping({"/games"})
+    public String deletePlayerThrows(@RequestHeader("authorization") String token) throws PlayerNotFoundException, EntityPersistenceException {
+        return service.deleteThrows(token);
     }
 }
