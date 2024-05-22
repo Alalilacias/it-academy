@@ -25,21 +25,6 @@ public class PlayerController {
 
 //    Create Methods
     /**
-     * Registers a player in the system.
-     *
-     * @param request {@link ClientAuthRequest} instance.
-     *                <br>Email and Password must be valid and present.
-     *                <br>Username can be left empty.
-     * @return Player DTO of the player created.
-     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
-     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see PlayerService#register(ClientAuthRequest)
-     */
-    @PostMapping("/auth/register")
-    public ClientAuthResponse registerPlayer(@RequestBody ClientAuthRequest request) throws EntityPersistenceException {
-        return service.register(request);
-    }
-    /**
      * Creates a game of dice under the player's id, updates the player statistics.
      * @param id the id of the player.
      * @return {@link Game} that was created.

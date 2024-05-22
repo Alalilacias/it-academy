@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("")
 public class SecurityController {
     @Autowired
     private PlayerService service;
@@ -32,7 +32,6 @@ public class SecurityController {
     public ClientAuthResponse registerPlayer(@RequestBody ClientAuthRequest request) throws EntityPersistenceException {
         return service.register(request);
     }
-
 
     @PostMapping("/login")
     public ClientAuthResponse authenticatePlayer(@RequestBody ClientAuthRequest request) throws PlayerNotFoundException {

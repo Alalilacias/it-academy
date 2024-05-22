@@ -34,7 +34,7 @@ public class PlayerServiceImplementation implements PlayerService {
     @Autowired
     private FortunaTokenService tokenService;
     @Autowired
-    private static PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
 
