@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +61,15 @@ public class PlayerServiceImplementation implements PlayerService {
     @Override
     public Player getOne(long id) throws PlayerNotFoundException {
         return playerRepository.findById(id)
+                .orElseThrow(() -> new PlayerNotFoundException("Unable to find player at method update() in PlayerServiceImplementation."));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Player getOne(String email) throws PlayerNotFoundException {
+        return playerRepository.findPlayerByEmail(email)
                 .orElseThrow(() -> new PlayerNotFoundException("Unable to find player at method update() in PlayerServiceImplementation."));
     }
 
@@ -128,13 +138,31 @@ public class PlayerServiceImplementation implements PlayerService {
      * {@inheritDoc}
      */
     @Override
-    public Game throwDice(long id) throws PlayerNotFoundException, EntityPersistenceException {
-        Player player = getOne(id);
-        Game game = gameService.createGame(id);
+    public Game throwDice(String token) throws PlayerNotFoundException, EntityPersistenceException {
+        Player player = getOne(tokenService.getUsername(token.substring(7)));
+        Game game = gameService.createGame(player.getId());
 
         player.addResult(game.isWon());
-
+        playerRepository.save(player);
         return game;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Game> simulateGamblingAddiction(String token) throws PlayerNotFoundException, EntityPersistenceException {
+        Player player = getOne(tokenService.getUsername(token.substring(7)));
+        List<Game> games = new ArrayList<>();
+
+        for(int i = 0; i < 1000; i++){
+            games.add(gameService.createGame(player.getId()));
+            player.addResult(games.get(i).isWon());
+        }
+
+        playerRepository.save(player);
+
+        return games;
     }
 
     /**

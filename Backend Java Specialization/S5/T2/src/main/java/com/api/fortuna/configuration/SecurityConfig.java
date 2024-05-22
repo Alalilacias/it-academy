@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
-    public static final String[] AUTHORIZED_REQUESTS = {"/", "/register", "/login"};
+    public static final String[] AUTHORIZED_REQUESTS = {"/", "/auth/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

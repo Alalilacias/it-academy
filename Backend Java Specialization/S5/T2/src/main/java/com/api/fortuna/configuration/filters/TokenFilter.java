@@ -33,18 +33,16 @@ public class TokenFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         final String header = request.getHeader("authorization");
-        final String token;
-        final String username;
 
-        if (header == null ||  !header.startsWith("Bearer")) {
+        if (header == null || !header.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        token = header.substring(7);
-        username = tokenService.getUsername(token);
+        final String token = header.substring(7);
+        final String username = tokenService.getUsername(token);
 
-        if(username == null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = detailsService.loadUserByUsername(username);
             if(tokenService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

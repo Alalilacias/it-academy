@@ -4,8 +4,6 @@ import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
 import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.domain.Game;
 import com.api.fortuna.model.dto.PlayerDTO;
-import com.api.fortuna.model.dto.requests.ClientAuthRequest;
-import com.api.fortuna.model.dto.responses.ClientAuthResponse;
 import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +13,10 @@ import java.util.List;
 
 /**
  * Rest controller for players and all operations related to them.
- * TODO: Do Unit Testing.
+ * TODO: Restructure, Add RequestHeaders and Do Unit Testing.
  */
 @RestController
-@RequestMapping("/player")
+@RequestMapping("/players")
 public class PlayerController {
     @Autowired
     private PlayerService service;
@@ -26,16 +24,20 @@ public class PlayerController {
 //    Create Methods
     /**
      * Creates a game of dice under the player's id, updates the player statistics.
-     * @param id the id of the player.
+     * @param token the JWT token of the user.
      * @return {@link Game} that was created.
      * @throws PlayerNotFoundException If no player is found with the given id.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
-     * @see PlayerService#throwDice(long)
+     * @see PlayerService#throwDice(String) 
      */
-    @PostMapping("{id}/games")
-    public Game throwDice(@PathVariable long id) throws PlayerNotFoundException, EntityPersistenceException {
-        return service.throwDice(id);
+    @PostMapping("/games")
+    public Game throwDice(@RequestHeader("authorization") String token) throws PlayerNotFoundException, EntityPersistenceException {
+        return service.throwDice(token);
+    }
+    @PostMapping("/games/addiction")
+    public List<Game> throwDiceWithAddiction(@RequestHeader("authorization") String token) throws PlayerNotFoundException, EntityPersistenceException {
+        return service.simulateGamblingAddiction(token);
     }
 
 
@@ -48,7 +50,7 @@ public class PlayerController {
      * @see PlayerService#getAll()
      */
     @GetMapping("/getAll")
-    public List<PlayerDTO> getAllPlayers() throws EntityPersistenceException {
+    private List<PlayerDTO> getAllPlayers() throws EntityPersistenceException {
         return service.getAll();
     }
 

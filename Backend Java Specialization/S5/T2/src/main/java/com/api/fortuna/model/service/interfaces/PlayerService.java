@@ -32,7 +32,7 @@ public interface PlayerService {
     ClientAuthResponse register(ClientAuthRequest request) throws EntityPersistenceException;
     /**
      * Creates a game using the player's id and modifies the player's counts depending on the result.
-     * @param id The id of the player.
+     * @param token The id of the player.
      * @return {@link Game} entity.
      * @throws PlayerNotFoundException If no player is found with the id.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
@@ -40,7 +40,7 @@ public interface PlayerService {
      * @see GameService#createGame(Long)
      * @see Player#addResult(boolean)
      */
-    Game throwDice (long id) throws PlayerNotFoundException, EntityPersistenceException;
+    Game throwDice (String token) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
      * Returns player entity with the given id.
@@ -51,6 +51,15 @@ public interface PlayerService {
      * @see PlayerRepository#findById(Object)
      */
     Player getOne (long id) throws PlayerNotFoundException;
+
+    /**
+     * Returns player entity with the given email.
+     *
+     * @param email The email of the user.
+     * @return Player entity, never null.
+     * @throws PlayerNotFoundException if no player with the given email is found.
+     */
+    Player getOne(String email) throws PlayerNotFoundException;
 
     /**
      * Authenticates the user in question and returns the appropriate response to the client.
@@ -87,6 +96,17 @@ public interface PlayerService {
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      */
     PlayerDTO update(long id, String username) throws PlayerNotFoundException, EntityPersistenceException;
+
+    /**
+     * Runs throwDice() method one thousand times, simulating for a second the trials of an addict.
+     *
+     * @param token must not be null and must be the valid token, without 'Bearer' tag.
+     * @return A list of all one thousand {@link Game} instances.
+     * @throws PlayerNotFoundException if no player is found with the given token.
+     * @throws EntityPersistenceException if any issu is encountered during entity persistence.
+     * @see GameService#createGame(Long) 
+     */
+    List<Game> simulateGamblingAddiction(String token) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
      * Deletes all games of the player that owns the given id.
