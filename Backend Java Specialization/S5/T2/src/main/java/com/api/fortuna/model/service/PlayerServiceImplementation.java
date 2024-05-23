@@ -54,23 +54,27 @@ public class PlayerServiceImplementation implements PlayerService {
         }
     }
 
-//    public void registerAdmin() throws EntityPersistenceException {
-//        try {
-//            Player admin = Player.builder()
-//                    .username("IT_ACADEMY_ADMIN")
-//                    .email("it@academy.cat")
-//                    .password(passwordEncoder.encode("IT_academy_2024"))
-//                    .role(Roles.ADMIN)
-//                    .build();
-//            playerRepository.save(admin);
-//            System.out.println(new ClientAuthResponse(
-//                    admin.toDTO(),
-//                    tokenService.generateToken(admin)
-//            ));
-//        } catch (Exception e){
-//            throw new EntityPersistenceException(e.getMessage(), e.getCause());
-//        }
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerAdmin() throws EntityPersistenceException {
+        try {
+            Player admin = Player.builder()
+                    .username("IT_ACADEMY_ADMIN")
+                    .email("it@academy.cat")
+                    .password(passwordEncoder.encode("IT_academy_2024"))
+                    .role(Roles.ADMIN)
+                    .build();
+            playerRepository.save(admin);
+            System.out.println(new ClientAuthResponse(
+                    admin.toDTO(),
+                    tokenService.generateToken(admin)
+            ));
+        } catch (Exception e){
+            throw new EntityPersistenceException(e.getMessage(), e.getCause());
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -169,7 +173,7 @@ public class PlayerServiceImplementation implements PlayerService {
      * {@inheritDoc}
      */
     @Override
-    public GamblingResponse simulateGamblingAddiction(String token, double minutes) throws PlayerNotFoundException, EntityPersistenceException {
+    public GamblingResponse simulateGamblingAddiction(String token, double time) throws PlayerNotFoundException, EntityPersistenceException {
         Player player = getOne(tokenService.getUsername(token.substring(7)));
         Game game;
 
@@ -180,7 +184,7 @@ public class PlayerServiceImplementation implements PlayerService {
             game = gameService.createGame(player.getId());
             player.addResult(game.isWon());
             totalRepetitions++;
-        } while(System.currentTimeMillis() - startTime < ((long) (minutes * 60 * 1000)));
+        } while(System.currentTimeMillis() - startTime < ((long) (time * 60 * 1000)));
 
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
@@ -212,7 +216,9 @@ public class PlayerServiceImplementation implements PlayerService {
      * {@inheritDoc}
      */
     @Override
-    public String deletePlayer(long id) {
+    public String deletePlayer(long id) throws PlayerNotFoundException {
+        Player ignored = getOne(id);
+
         playerRepository.deleteById(id);
         return "Player ID: " + id + " deleted.";
     }

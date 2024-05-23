@@ -1,13 +1,11 @@
 package com.api.fortuna.controllers;
 
 import com.api.fortuna.exceptions.implementations.EntityPersistenceException;
+import com.api.fortuna.exceptions.implementations.PlayerNotFoundException;
 import com.api.fortuna.model.dto.PlayerDTO;
 import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,9 +32,10 @@ public class AdminController {
      *
      * @param id the id of the player to delete.
      * @return String with textual confirmation of the success.
+     * @throws PlayerNotFoundException if no player is found with given id.
      */
-    @GetMapping("/delete/{id}")
-    public String deletePlayer(@RequestParam long id){
+    @DeleteMapping("/delete/{id}")
+    public String deletePlayer(@RequestParam long id) throws PlayerNotFoundException {
         return service.deletePlayer(id);
     }
 }

@@ -24,7 +24,7 @@ public interface PlayerService {
      * @param request The ClientAuthRequest, with all necessary fields filled.
      * @return The ClientAuthResponse, with the DTO representation of the player entity and the JWT token that authenticates it.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
-     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store.
      * @see PlayerRepository#save(Object)
      * @see ClientAuthRequest
      * @see ClientAuthResponse
@@ -35,13 +35,22 @@ public interface PlayerService {
      * Creates a game using the player's id and modifies the player's counts depending on the result.
      * @param token The id of the player.
      * @return {@link Game} entity.
-     * @throws PlayerNotFoundException If no player is found with the id.
+     * @throws PlayerNotFoundException If no player is found with the given id.
      * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
      * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      * @see GameService#createGame(Long)
      * @see Player#addResult(boolean)
      */
     Game throwDice (String token) throws PlayerNotFoundException, EntityPersistenceException;
+
+    /**
+     * Creates an admin user. For the purpose of this development, it'll be automatically created. Expand if necessary.
+     *
+     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
+     */
+    @SuppressWarnings("unused")
+    void registerAdmin() throws EntityPersistenceException;
 
     /**
      * Returns player entity with the given id.
@@ -59,6 +68,7 @@ public interface PlayerService {
      * @param email The email of the user.
      * @return Player entity, never null.
      * @throws PlayerNotFoundException if no player with the given email is found.
+     * @see PlayerRepository#findPlayerByEmail(String)
      */
     Player getOne(String email) throws PlayerNotFoundException;
 
@@ -74,7 +84,8 @@ public interface PlayerService {
      * Returns all player entities in the repository.
      *
      * @return A list of all Player DTOs in the system, empty if there's none.
-     * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
+     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      * @see PlayerRepository#findAll()
      */
     List<PlayerDTO> getAll() throws EntityPersistenceException;
@@ -83,7 +94,8 @@ public interface PlayerService {
      * @param token The token of the player associated with the given token.
      * @return A list of game entities, empty if there's none.
      * @throws PlayerNotFoundException if no player is found associated with the given token.
-     * @throws EntityPersistenceException If there's any issue with extracting the players from the database.
+     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
      * @see GameService#getAll(long) 
      */
     List<Game> getAllPlayerGames(String token) throws EntityPersistenceException, PlayerNotFoundException;
@@ -100,17 +112,17 @@ public interface PlayerService {
     PlayerDTO update(String token, String username) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
-     * TODO fix up.
-     * Runs throwDice() method following the exponential formula in which 10 is the base and minutes is the exponent, simulating for a second the trials of an addict.
+     * Throws the dice the maximum amount of times possible, simulating, for the stipulated time, the trials of an addict.
      *
      * @param token must not be null and must be the valid token, security chain will cut off operation otherwise.
-     * @param minutes the exponent to which the base number of times will be raised to the power of.
+     * @param time the time during which the game will continue to throw the dice.
      * @return A {@link GamblingResponse} containing the exact milliseconds taken for game related operations and the number of repetitions.
      * @throws PlayerNotFoundException if no player is found with the given token.
-     * @throws EntityPersistenceException if any issue is encountered during entity persistence.
-     * @see GameService#createGame(Long) 
+     * @throws EntityPersistenceException If the entity is null, is presumed to be present in database but isn't, or
+     * if it uses optimistic locking and has a version attribute with a different value from that found in the persistence store
+     * @see PlayerService#throwDice(String)
      */
-    GamblingResponse simulateGamblingAddiction(String token, double minutes) throws PlayerNotFoundException, EntityPersistenceException;
+    GamblingResponse simulateGamblingAddiction(String token, double time) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
      * Deletes all games of the player that owns the given token.
@@ -125,10 +137,11 @@ public interface PlayerService {
     String deleteThrows(String token) throws PlayerNotFoundException, EntityPersistenceException;
 
     /**
-     * TODO Do this.
+     * Deletes the player in the system.
      *
-     * @param id
-     * @return
+     * @param id the id of the player to eliminate.
+     * @return a String representation of the success of the action, change to boolean in production and handle in front.
+     * @throws PlayerNotFoundException If no player is found with the given id.
      */
-    String deletePlayer(long id);
+    String deletePlayer(long id) throws PlayerNotFoundException;
 }

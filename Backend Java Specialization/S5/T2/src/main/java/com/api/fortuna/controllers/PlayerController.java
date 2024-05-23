@@ -65,7 +65,6 @@ public class PlayerController {
      */
     @GetMapping("/games")
     public List<Game> getAllPlayerGames(@RequestHeader("authorization") String token) throws EntityPersistenceException, PlayerNotFoundException {
-//        service.registerAdmin();
         return service.getAllPlayerGames(token);
     }
 
