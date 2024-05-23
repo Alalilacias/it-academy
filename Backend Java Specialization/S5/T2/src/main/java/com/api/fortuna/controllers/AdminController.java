@@ -29,8 +29,14 @@ public class AdminController {
         return service.getAll();
     }
 
+    /**
+     * Deletes a player from the system. Returns String confirmation of the success of the operation.
+     *
+     * @param id the id of the player to delete.
+     * @return String with textual confirmation of the success.
+     */
     @GetMapping("/delete/{id}")
-    public boolean deletePlayer(@RequestParam long id){
+    public String deletePlayer(@RequestParam long id){
         return service.deletePlayer(id);
     }
 }

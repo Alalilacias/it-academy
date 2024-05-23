@@ -23,7 +23,11 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
-    public static final String[] AUTHORIZED_REQUESTS = {"/auth/**"};
+    public static final String[] AUTHORIZED_REQUESTS = {
+            "/auth/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
+    };
 
 
     @Bean

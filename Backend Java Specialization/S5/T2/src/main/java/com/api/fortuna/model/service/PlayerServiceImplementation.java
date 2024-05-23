@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service implementation for managing Player entities and related operations.
@@ -54,6 +53,24 @@ public class PlayerServiceImplementation implements PlayerService {
             throw new EntityPersistenceException(e.getMessage(), e.getCause());
         }
     }
+
+//    public void registerAdmin() throws EntityPersistenceException {
+//        try {
+//            Player admin = Player.builder()
+//                    .username("IT_ACADEMY_ADMIN")
+//                    .email("it@academy.cat")
+//                    .password(passwordEncoder.encode("IT_academy_2024"))
+//                    .role(Roles.ADMIN)
+//                    .build();
+//            playerRepository.save(admin);
+//            System.out.println(new ClientAuthResponse(
+//                    admin.toDTO(),
+//                    tokenService.generateToken(admin)
+//            ));
+//        } catch (Exception e){
+//            throw new EntityPersistenceException(e.getMessage(), e.getCause());
+//        }
+//    }
 
     /**
      * {@inheritDoc}
@@ -191,9 +208,13 @@ public class PlayerServiceImplementation implements PlayerService {
         return "All games for player ID: " + player.getId() + " deleted.";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean deletePlayer(long id) {
-        return pla;
+    public String deletePlayer(long id) {
+        playerRepository.deleteById(id);
+        return "Player ID: " + id + " deleted.";
     }
 
     /**

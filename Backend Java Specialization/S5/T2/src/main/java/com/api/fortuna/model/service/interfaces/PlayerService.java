@@ -130,5 +130,5 @@ public interface PlayerService {
      * @param id
      * @return
      */
-    boolean deletePlayer(long id);
+    String deletePlayer(long id);
 }
