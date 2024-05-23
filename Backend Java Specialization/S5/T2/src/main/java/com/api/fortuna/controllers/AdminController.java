@@ -6,6 +6,7 @@ import com.api.fortuna.model.service.interfaces.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public class AdminController {
         return service.getAll();
     }
 
-    public boolean deletePlayer(long id){
+    @GetMapping("/delete/{id}")
+    public boolean deletePlayer(@RequestParam long id){
         return service.deletePlayer(id);
     }
 }

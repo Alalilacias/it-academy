@@ -193,7 +193,7 @@ public class PlayerServiceImplementation implements PlayerService {
 
     @Override
     public boolean deletePlayer(long id) {
-        return false;
+        return pla;
     }
 
     /**
