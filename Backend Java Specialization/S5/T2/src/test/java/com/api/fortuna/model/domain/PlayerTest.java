@@ -102,7 +102,7 @@ class PlayerTest {
 
     @Test
     void getUsername() {
-        assertEquals("Test_Player", player.getUsername(), "Username should match original value.");
+        assertEquals("Test_Player", player.getUserPersonalName(), "Username should match original value.");
     }
 
     @Test
@@ -133,8 +133,9 @@ class PlayerTest {
     @Test
     void setUsername() {
         String username = "test_user";
-        player.setUsername(username);
-        assertEquals(username, player.getUsername(), "Username should match the value that was introduced to it's setter.");
+        player.setUserPersonalName(username);
+
+        assertEquals(username, player.getUserPersonalName(), "Username should match the value that was introduced to it's setter.");
     }
 
     /**

@@ -35,7 +35,7 @@ public class Player implements UserDetails {
      * The username of the player.
      */
     @Setter
-    private String username;
+    private String userPersonalName;
 
     /**
      * The email of the player.
@@ -82,7 +82,7 @@ public class Player implements UserDetails {
      */
     @Builder
     private Player (String username, String email, String password, Roles role) {
-        this.username = username;
+        this.userPersonalName = username;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -174,7 +174,7 @@ public class Player implements UserDetails {
      * @return {@link PlayerDTO} record of the necessary values from the Player.
      */
     public PlayerDTO toDTO (){
-        return new PlayerDTO(this.id, this.username, this.role, this.winRate);
+        return new PlayerDTO(this.id, this.userPersonalName, this.role, this.winRate);
     }
 
     /**
@@ -191,7 +191,7 @@ public class Player implements UserDetails {
     }
 
     /**
-     * Returns all values to
+     * Returns all values to their base values.
      */
     public void cleanResults() {
         this.defeats = 0;

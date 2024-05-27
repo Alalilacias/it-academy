@@ -147,7 +147,7 @@ public class PlayerServiceImplementation implements PlayerService {
     public PlayerDTO update (String token, String username) throws PlayerNotFoundException, EntityPersistenceException {
         Player player = getOne(tokenService.getUsername(token.substring(7)));
 
-        player.setUsername(username);
+        player.setUserPersonalName(username);
 
         try{
             return playerRepository.save(player).toDTO();

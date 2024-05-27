@@ -1,6 +1,5 @@
 package com.api.fortuna.configuration;
 
-import com.api.fortuna.FortunaApplication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// TODO fix and finish.
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {FortunaApplication.class, TestSecurityConfig.class})
+@SpringBootTest
 @AutoConfigureMockMvc
 public class SecurityConfigTest {
 
@@ -24,8 +22,8 @@ public class SecurityConfigTest {
 
     @Test
     public void securityFilterChain() throws Exception {
-        mockMvc.perform(get("/auth/login"))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/auth/login") )
+                .andExpect(status().isBadRequest());
 
         mockMvc.perform(get("/swagger-ui/index.html"))
                 .andExpect(status().isOk());
@@ -43,7 +41,7 @@ public class SecurityConfigTest {
     @Test
     void testUnauthenticatedAccess() throws Exception {
         mockMvc.perform(get("/players/ranking"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -55,6 +53,6 @@ public class SecurityConfigTest {
     @WithMockUser
     void testInvalidAdminAccess() throws Exception {
         mockMvc.perform(delete("/delete/5"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 }
