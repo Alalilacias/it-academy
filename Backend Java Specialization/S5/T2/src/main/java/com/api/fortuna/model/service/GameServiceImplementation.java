@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Service implementation for managing Game entities and related operations regarding the repository.
- * TODO Do unit testing.
  */
 @Service
 public class GameServiceImplementation implements GameService {

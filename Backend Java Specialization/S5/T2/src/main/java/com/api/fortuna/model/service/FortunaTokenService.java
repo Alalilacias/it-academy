@@ -16,7 +16,6 @@ import java.util.function.Function;
 
 /**
  * Service implementation for managing token entities and related operations.
- * TODO Do unit testing.
  */
 @Service
 public class FortunaTokenService {
