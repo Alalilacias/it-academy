@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -19,6 +20,11 @@ public class Game {
      */
     @Id
     private String id;
+
+    /**
+     * Time representation of each throw.
+     */
+    private Instant dateTime;
 
     /**
      * The unique identifier for the player, taken from the player class during game creation in the service layer and passed through constructor.
@@ -64,5 +70,6 @@ public class Game {
         this.primigenia = ThreadLocalRandom.current().nextInt(1,7);
         this.muliebris = ThreadLocalRandom.current().nextInt(1,7);
         this.isWon = this.primigenia + this.muliebris == 7;
+        this.dateTime = Instant.now();
     }
 }
