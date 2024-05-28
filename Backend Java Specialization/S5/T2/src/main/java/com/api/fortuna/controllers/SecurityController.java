@@ -30,6 +30,7 @@ public class SecurityController {
             description = "Saves user in the system, creates a JWT and returns it to the client along with the representation of the user.")
     @PostMapping("/register")
     public ClientAuthResponse registerPlayer(@RequestBody ClientAuthRequest request) throws EntityPersistenceException {
+        service.registerAdmin();
         return service.register(request);
     }
 

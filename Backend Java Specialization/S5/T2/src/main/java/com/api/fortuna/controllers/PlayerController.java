@@ -80,6 +80,7 @@ public class PlayerController {
         return service.getAll().stream()
                 .sorted(Comparator
                         .comparingDouble(PlayerDTO::winRate)
+                        .thenComparing(PlayerDTO::username)
                         .reversed())
                 .toList();
     }
